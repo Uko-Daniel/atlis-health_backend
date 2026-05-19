@@ -1,0 +1,572 @@
+// ============================================================
+// Atlis Health — Prisma Schema
+// Updated with EVEE CDSS support
+// Additions: Encounter, Vital, Diagnosis, Allergy,
+//            EveeEvaluation, EveeAlert
+// ============================================================
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ── ENUMS ────────────────────────────────────────────────────
+
+enum Department {
+  LABORATORY
+  RADIOLOGY
+  CARDIOLOGY
+  PHARMACY
+  GENERAL
+  EMERGENCY
+  PAEDIATRICS
+  OBSTETRICS
+  SURGERY
+  ADMINISTRATION
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  CANCELLED
+}
+
+enum MedStatus {
+  ACTIVE
+  COMPLETED
+  DISCONTINUED
+}
+
+enum StaffRole {
+  ADMIN           // Full system access
+  DOCTOR          // Clinical oversight & prescribing
+  NURSES          // Patient monitoring & med administration
+  LAB_TECH        // Data entry for lab results
+  RADIOLOGIST     // Specialized imaging results
+  PHARMACIST      // Medication fulfillment & verification
+  RECEPTIONIST    // Registration, scheduling & patient data
+  BILLING_OFFICER // Payments & insurance
+  HIM_OFFICER     // Records auditing & data privacy
+  MANAGER         // Operational oversight & inventory
+  IT_SUPPORT      // System maintenance
+}
+
+enum ResultStatus {
+  PENDING
+  VERIFIED
+  FINALIZED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum TemplateType {
+  LAB
+  IMAGING
+  OTHER
+}
+
+enum AllergyStatus {
+  ACTIVE
+  INACTIVE
+  UNCONFIRMED
+}
+
+enum AllergySeverity {
+  MILD
+  MODERATE
+  SEVERE
+  LIFE_THREATENING
+}
+
+enum DiagnosisStatus {
+  ACTIVE
+  RESOLVED
+  CHRONIC
+  SUSPECTED
+}
+
+enum EncounterType {
+  OUTPATIENT
+  INPATIENT
+  EMERGENCY
+  FOLLOW_UP
+  PROCEDURE
+  TELEMEDICINE
+}
+
+enum EveeSeverity {
+  CRITICAL
+  HIGH
+  MODERATE
+  LOW
+  INFO
+}
+
+enum EveeDomain {
+  ALLERGY
+  DRUG_INTERACTION
+  DOSAGE
+  VITALS
+  LAB
+  HISTORY
+  COMORBIDITY
+  PREVENTIVE
+  PREGNANCY
+  PAEDIATRIC
+}
+
+// ── CORE MODELS ───────────────────────────────────────────────
+
+model Patient {
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  gender      Gender
+  dob         DateTime
+  phoneNumber String?
+  email       String?  @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Existing relations
+  records      Record[]
+  orders       Order[]
+  results      Result[]
+  patientUsers PatientUser[]
+  admissions   Admission[]
+  visitors     Visitor[]
+
+  // New relations
+  allergies    Allergy[]
+  encounters   Encounter[]
+  eveeEvals    EveeEvaluation[]
+  vitals       Vital[]
+  diagnoses    Diagnosis[]
+}
+
+model Visitor {
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  gender      Gender
+  phoneNumber String
+  relation    String
+  patient     Patient  @relation(fields: [patientId], references: [id])
+  patientId   String
+  arrivedAt   DateTime
+  departedAt  DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Record {
+  id        String   @id @default(cuid())
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  patientId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Existing relations
+  results     Result[]
+  medications Medication[]
+  report      Report[]
+
+  // New relations
+  encounters  Encounter[]
+}
+
+// ── ENCOUNTER ─────────────────────────────────────────────────
+// Represents a single clinical visit or consultation.
+// Vitals and Diagnoses are recorded per encounter.
+
+model Encounter {
+  id             String        @id @default(cuid())
+  patientId      String
+  patient        Patient       @relation(fields: [patientId], references: [id])
+  recordId       String
+  record         Record        @relation(fields: [recordId], references: [id])
+  attendingStaff String        // Staff ID of attending doctor/nurse
+  type           EncounterType @default(OUTPATIENT)
+  chiefComplaint String?       // e.g. "Chest pain for 2 days"
+  notes          String?       // Free text clinical notes
+  encounteredAt  DateTime      @default(now())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  vitals    Vital[]
+  diagnoses Diagnosis[]
+
+  @@index([patientId])
+  @@index([recordId])
+}
+
+// ── VITAL SIGNS ───────────────────────────────────────────────
+// Structured vitals per encounter.
+// All fields optional — record only what was measured.
+
+model Vital {
+  id          String    @id @default(cuid())
+  encounterId String
+  encounter   Encounter @relation(fields: [encounterId], references: [id])
+  patientId   String
+  patient     Patient   @relation(fields: [patientId], references: [id])
+
+  // Haemodynamics
+  systolicBP  Float? // mmHg
+  diastolicBP Float? // mmHg
+  heartRate   Float? // beats per minute
+  meanABP     Float? // Mean arterial blood pressure mmHg
+
+  // Respiratory
+  respiratoryRate Float? // breaths per minute
+  spO2            Float? // oxygen saturation %
+
+  // Temperature
+  temperature Float? // degrees Celsius
+
+  // Anthropometrics
+  weight Float? // kg
+  height Float? // cm
+  bmi    Float? // calculated — store for audit
+
+  // Neurological
+  gcs Int? // Glasgow Coma Scale 3–15
+
+  // Additional
+  urineOutput Float? // mL/hr (relevant for inpatient)
+  painScore   Int?   // 0–10 numeric pain scale
+
+  recordedBy String   // Staff ID
+  recordedAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+
+  @@index([encounterId])
+  @@index([patientId])
+}
+
+// ── DIAGNOSIS ─────────────────────────────────────────────────
+// ICD-10 coded diagnoses linked to specific encounters.
+// A patient builds a cumulative problem list over time.
+
+model Diagnosis {
+  id             String          @id @default(cuid())
+  patientId      String
+  patient        Patient         @relation(fields: [patientId], references: [id])
+  encounterId    String
+  encounter      Encounter       @relation(fields: [encounterId], references: [id])
+
+  name           String          // e.g. "Type 2 Diabetes Mellitus"
+  icdCode        String?         // e.g. "E11"
+  icdDescription String?         // Full ICD-10 descriptor
+  status         DiagnosisStatus @default(ACTIVE)
+  isPrimary      Boolean         @default(false) // Primary dx for this encounter
+  notes          String?         // Clinician notes on this diagnosis
+
+  diagnosedBy String   // Staff ID
+  diagnosedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([patientId])
+  @@index([encounterId])
+  @@index([icdCode])
+}
+
+// ── ALLERGY ───────────────────────────────────────────────────
+// Patient allergy register. Standalone — not tied to an encounter
+// because allergies persist across the patient's lifetime.
+
+model Allergy {
+  id        String          @id @default(cuid())
+  patientId String
+  patient   Patient         @relation(fields: [patientId], references: [id])
+
+  substance String          // e.g. "Penicillin", "Peanuts", "Latex"
+  reaction  String          // e.g. "Anaphylaxis", "Urticaria", "Rash"
+  severity  AllergySeverity
+  status    AllergyStatus   @default(ACTIVE)
+
+  // Cross-reactivity hint stored for EVEE rule engine
+  drugClass String?         // e.g. "Penicillin", "Cephalosporin", "NSAID"
+
+  onsetDate  DateTime?      // When allergy was first noted
+  confirmed  Boolean        @default(false)  // Confirmed by allergy test
+  recordedBy String         // Staff ID
+  notes      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([patientId])
+}
+
+// ── EXISTING MODELS (unchanged) ───────────────────────────────
+
+model Report {
+  id            String  @id @default(cuid())
+  recordId      String
+  record        Record  @relation(fields: [recordId], references: [id])
+  title         String
+  content       Json?
+  attachmentUrl String?
+  doctorName    String
+  category      String
+  results       Result[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Medication {
+  id           String    @id @default(cuid())
+  recordId     String
+  record       Record    @relation(fields: [recordId], references: [id])
+  name         String    // e.g. "Amoxicillin"
+  dosage       String    // e.g. "500mg"
+  route        String    // e.g. "Oral", "Intravenous"
+  frequency    String    // e.g. "Twice daily"
+  instructions String?
+  startDate    DateTime
+  endDate      DateTime?
+  status       MedStatus @default(ACTIVE)
+  prescribedBy String    // Staff ID
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Admission {
+  id           String    @id @default(cuid())
+  patientId    String
+  patient      Patient   @relation(fields: [patientId], references: [id])
+  roomNumber   String?
+  bedNumber    String?
+  admittedAt   DateTime  @default(now())
+  dischargedAt DateTime?
+}
+
+model PatientUser {
+  id        String   @id @default(cuid())
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  patientId String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Service {
+  id          String         @id @default(cuid())
+  name        String         @unique
+  labCode     String?        @unique
+  category    String?
+  description String?
+  price       Float
+  template    Template?      @relation(fields: [templateId], references: [id])
+  templateId  String?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  orders      OrderService[]
+}
+
+model Template {
+  id         String       @id @default(cuid())
+  name       String       @unique
+  description String?
+  type       TemplateType
+  dataSchema Json
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  services   Service[]
+  results    Result[]
+
+  department Department
+  isActive   Boolean    @default(true) // Only active templates can be used for new orders
+  version    Int        @default(1) 
+  createdBy  String?
+}
+
+model Order {
+  id        String       @id @default(cuid())
+  patient   Patient      @relation(fields: [patientId], references: [id])
+  patientId String
+  status    OrderStatus  @default(PENDING)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  services  OrderService[]
+  results   Result[]
+
+  @@index([patientId])
+  @@index([status])
+}
+
+model OrderService {
+  id        String   @id @default(cuid())
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   String
+  service   Service  @relation(fields: [serviceId], references: [id])
+  serviceId String
+  createdAt DateTime @default(now())
+
+  @@unique([orderId, serviceId])
+}
+
+model Result {
+  id         String       @id @default(cuid())
+  record     Record       @relation(fields: [recordId], references: [id])
+  recordId   String
+  report     Report?      @relation(fields: [reportId], references: [id])
+  reportId   String?
+  patient    Patient      @relation(fields: [patientId], references: [id])
+  patientId  String
+  order      Order        @relation(fields: [orderId], references: [id])
+  orderId    String
+  template   Template     @relation(fields: [templateId], references: [id])
+  templateId String
+  data       Json
+  imageUrl   String?
+  status     ResultStatus @default(PENDING)
+  version    Int          @default(1)
+  
+  department    Department
+
+  verifiedBy    String?
+  verifiedAt    DateTime?
+  verifierRole  String?
+  signatureHash String?
+
+  releasedAt    DateTime?
+  releasedBy    String?
+
+  lockedBy      String?
+  lockedAt      DateTime?
+
+  editSession   ResultEditSession?
+
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  @@index([patientId])
+  @@index([orderId])
+  @@index([templateId])
+  @@index([status])
+  @@index([department])
+}
+
+model ResultEditSession {
+  id          String    @id @default(cuid())
+  resultId    String    @unique
+  result      Result    @relation(fields: [resultId], references: [id])
+  staffId     String
+  draftData   Json?
+  startedAt   DateTime  @default(now())
+  lastSavedAt DateTime?
+  expiresAt   DateTime
+
+  @@index([staffId])
+}
+
+model Staff {
+  id          String    @id @default(cuid())
+  firstName   String
+  lastName    String
+  role        StaffRole
+  email       String    @unique
+  password    String
+  phoneNumber String?
+
+  department Department? 
+  isHOD      Boolean     @default(false) // Head of Department flag
+  canVerify  Boolean     @default(false) // Can verify results (e.g. lab techs)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model InventoryItem {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  unit        String
+  quantity    Float
+  flagLevel   Float
+  usageRate   Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Settings {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String
+  action     String   // e.g. "VIEW_RESULT", "UPDATE_MEDICATION"
+  entityId   String
+  entityType String   // e.g. "Result", "Patient"
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+}
+
+// ── EVEE CDSS MODELS ──────────────────────────────────────────
+
+// EveeEvaluation — one record per time a doctor runs EVEE on a patient.
+// Full audit trail: who ran it, when, how many alerts fired.
+
+model EveeEvaluation {
+  id             String   @id @default(cuid())
+  patientId      String
+  patient        Patient  @relation(fields: [patientId], references: [id])
+  triggeredBy    String   // Staff ID of the clinician who ran EVEE
+  ruleSetVersion Int      // Version of the rule set active at time of evaluation
+  alertCount     Int      // Total alerts fired
+  criticalCount  Int      // Critical alerts specifically
+  mlScore        Float?   // XGBoost risk score (null until ML layer is active)
+  mlLabel        String?  // e.g. "HIGH_RISK", "LOW_RISK" (beta)
+  createdAt      DateTime @default(now())
+
+  alerts EveeAlert[]
+
+  @@index([patientId])
+  @@index([triggeredBy])
+}
+
+// EveeAlert — one record per alert fired within an evaluation.
+// Tracks whether the doctor acknowledged or overrode it, and why.
+
+model EveeAlert {
+  id             String         @id @default(cuid())
+  evaluationId   String
+  evaluation     EveeEvaluation @relation(fields: [evaluationId], references: [id])
+
+  ruleId         String         // e.g. "DDI-001"
+  domain         EveeDomain
+  severity       EveeSeverity
+  message        String
+  recommendation String
+
+  // Override tracking — medico-legal record of dismissal
+  overridden     Boolean   @default(false)
+  overriddenBy   String?   // Staff ID
+  overrideReason String?   // Free text — why was this alert dismissed?
+  overriddenAt   DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([evaluationId])
+  @@index([ruleId])
+  @@index([severity])
+}
