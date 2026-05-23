@@ -9,7 +9,8 @@ import { prisma } from '../lib/prisma';
 // ── AUDIT LOGGER ──────────────────────────────────────────────
 
 function getPathParts(url: string): string[] {
-  return url.split('?')[0].split('/').filter(Boolean);
+    const [path = ''] = url.split('?');
+  return path.split('/').filter(Boolean);
 }
 
 function deriveAction(method: string, url: string | undefined | null): string {

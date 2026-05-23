@@ -94,18 +94,18 @@ export const encounterController = {
     }
   },
 
-  async getEncountersByPatient(request: FastifyRequest, reply: FastifyReply) {
-    try {
-      const { patientId } = request.params as { patientId: string };
-      const query         = request.query as { limit?: number; type?: any };
-      const encounters    = await encounterService.getEncountersByPatient(
-        patientId, { limit: query.limit, type: query.type }
-      );
-      return reply.status(200).send(encounters);
-    } catch (err: any) {
-      return reply.status(500).send({ error: err.message });
-    }
-  },
+//  async getEncountersByPatient(request: FastifyRequest, reply: FastifyReply) {
+//    try {
+//      const { patientId } = request.params as { patientId: string };
+//      const query         = request.query as { limit?: number; type?: any };
+//      const encounters    = await encounterService.getEncountersByPatient(
+//        patientId, { limit: query.limit, type: query.type }
+//      );
+//      return reply.status(200).send(encounters);
+//    } catch (err: any) {
+//      return reply.status(500).send({ error: err.message });
+//    }
+//  },
 
   async getEncountersByRecord(request: FastifyRequest, reply: FastifyReply) {
     try {
