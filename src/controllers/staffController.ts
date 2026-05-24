@@ -4,6 +4,29 @@ import { type Department } from '../../generated/prisma/enums';
 
 export const staffController = {
 
+  async login(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const staff = await staffService.login(request.body as any);
+
+      const token = request.server.jwt.sign({
+        sub: staff.id,
+        role: staff.role,
+        department: staff.department,
+        isHOD: staff.isHOD,
+        canVerify: staff.canVerify,
+        email: staff.email,
+      });
+
+      return reply.send({
+        staff,
+        token,
+      });
+
+    } catch (err: any) {
+      return reply.status(401).send({ error: err.message });
+    }
+  },
+
   async createStaff(request: FastifyRequest, reply: FastifyReply) {
     try {
       const staff = await staffService.createStaff(request.body as any);

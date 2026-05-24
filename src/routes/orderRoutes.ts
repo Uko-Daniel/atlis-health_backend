@@ -1,5 +1,5 @@
 import type { FastifyInstance } from 'fastify';
-import { orderController } from '../controllers/orderController';
+import { orderController } from '../controllers/orderServiceController';
 
 export default async function orderRoutes(fastify: FastifyInstance) {
     fastify.post('/orders', orderController.createOrder);

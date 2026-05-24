@@ -27,8 +27,10 @@ export const patientController = {
   },
 
   async getAllPatients(request: FastifyRequest, reply: FastifyReply) {
-    try {
-      const { page, limit } = request.query as { page?: number; limit?: number };
+    try {  
+      const query = request.query as { page?: string | number; limit?: string | number };
+      const page  = Number(query.page)  || 1;
+      const limit = Number(query.limit) || 15;
       const result = await patientService.getAllPatients(page, limit);
       return reply.status(200).send(result);
     } catch (err: any) {

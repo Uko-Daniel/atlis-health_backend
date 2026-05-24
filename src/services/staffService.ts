@@ -114,25 +114,20 @@ export const staffService = {
   },
 
   async login(data: LoginInput) {
-    if (!data.email?.trim() || !data.password?.trim()) {
-      throw new Error('Email and password are required');
-    }
-
     const staff = await prisma.staff.findUnique({
       where: { email: data.email.toLowerCase().trim() },
     });
 
-    // Constant-time response — never reveal if email exists
     if (!staff) {
-      await argon2.hash('dummy_password_for_timing');
+      await argon2.hash('dummy');
       throw new Error('Invalid credentials');
     }
 
     const valid = await argon2.verify(staff.password, data.password);
     if (!valid) throw new Error('Invalid credentials');
 
-    // Return staff without password for JWT payload construction
-    const { password: _, ...safeStaff } = staff;
+    const { password, ...safeStaff } = staff;
+
     return safeStaff;
   },
 
