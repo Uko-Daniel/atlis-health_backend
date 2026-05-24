@@ -1,3 +1,4 @@
+
 module.exports = {
   apps: [
     {
@@ -11,7 +12,10 @@ module.exports = {
       watch:       false,
       max_memory_restart: '512M',
       env_production: {
-        NODE_ENV: 'production',
+        NODE_ENV:     'production',
+        CORS_ORIGIN:  'https://atlis.com.ng',
+        PORT:         '3000',
+        HOST:         '127.0.0.1',
       },
     },
   ],
