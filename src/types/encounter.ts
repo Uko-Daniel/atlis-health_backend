@@ -2,16 +2,19 @@ export type EncounterType = 'OUTPATIENT' | 'INPATIENT' | 'EMERGENCY' | 'FOLLOW_U
 
 export interface CreateEncounterInput {
   patientId:      string;
-  recordId:       string;
+  recordId?:       string;
   attendingStaff: string;   // Staff ID
   type?:          EncounterType;
   chiefComplaint?: string;
   notes?:          string;
   encounteredAt?:  string;  // ISO datetime — defaults to now
+  startTime?:     string;  // ISO datetime — defaults to now
+  stopTime?:      string;  // ISO datetime — optional, can be set later for ongoing encounters
 }
 
 export interface UpdateEncounterInput {
   chiefComplaint?: string;
   notes?:          string;
   type?:           EncounterType;
+  stopTime?:      string;  // ISO datetime — optional, can be set later for ongoing encounters
 }

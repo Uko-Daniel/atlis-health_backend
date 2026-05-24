@@ -143,6 +143,8 @@ export const EncounterScalarFieldEnum = {
   chiefComplaint: 'chiefComplaint',
   notes: 'notes',
   encounteredAt: 'encounteredAt',
+  startTime: 'startTime',
+  stopTime: 'stopTime',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

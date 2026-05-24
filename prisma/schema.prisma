@@ -199,6 +199,8 @@ model Encounter {
   chiefComplaint String?       // e.g. "Chest pain for 2 days"
   notes          String?       // Free text clinical notes
   encounteredAt  DateTime      @default(now())
+  startTime      DateTime      @default(now())
+  stopTime       DateTime?
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 

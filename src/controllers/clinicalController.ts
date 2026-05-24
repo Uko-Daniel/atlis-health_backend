@@ -83,6 +83,24 @@ export const encounterController = {
     }
   },
 
+  async getAllEncounters(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const query = request.query as {
+        type?:  string
+        limit?: number
+        page?:  number
+      }
+      const encounters = await encounterService.getAllEncounters({
+        type:  query.type  as any,
+        limit: Number(query.limit) || 20,
+        page:  Number(query.page)  || 1,
+      })
+      return reply.status(200).send(encounters)
+    } catch (err: any) {
+      return reply.status(500).send({ error: err.message })
+    }
+  },
+
   async getEncounterById(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id }      = request.params as { id: string };
@@ -94,18 +112,18 @@ export const encounterController = {
     }
   },
 
-//  async getEncountersByPatient(request: FastifyRequest, reply: FastifyReply) {
-//    try {
-//      const { patientId } = request.params as { patientId: string };
-//      const query         = request.query as { limit?: number; type?: any };
-//      const encounters    = await encounterService.getEncountersByPatient(
-//        patientId, { limit: query.limit, type: query.type }
-//      );
-//      return reply.status(200).send(encounters);
-//    } catch (err: any) {
-//      return reply.status(500).send({ error: err.message });
-//    }
-//  },
+  async getEncountersByPatient(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const { patientId } = request.params as { patientId: string };
+      const query         = request.query as { limit?: number; type?: any };
+      const encounters    = await encounterService.getEncountersByPatient(
+        patientId, { ...(query.limit !== undefined && { limit: query.limit }), ...(query.type !== undefined && { type: query.type }) }
+      );
+      return reply.status(200).send(encounters);
+    } catch (err: any) {
+      return reply.status(500).send({ error: err.message });
+    }
+  },
 
   async getEncountersByRecord(request: FastifyRequest, reply: FastifyReply) {
     try {
@@ -135,6 +153,19 @@ export const encounterController = {
       return reply.status(200).send(encounter);
     } catch (err: any) {
       const status = err.message.includes('not found') ? 404 : 400;
+      return reply.status(status).send({ error: err.message });
+    }
+  },
+
+  async closeEncounter(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const { id }       = request.params as { id: string };
+      const { stopTime } = request.body   as { stopTime?: string };
+      const encounter    = await encounterService.closeEncounter(id, stopTime);
+      return reply.status(200).send(encounter);
+    } catch (err: any) {
+      const status = err.message.includes('not found')  ? 404
+                   : err.message.includes('already closed') ? 409 : 400;
       return reply.status(status).send({ error: err.message });
     }
   },

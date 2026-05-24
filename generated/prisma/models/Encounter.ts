@@ -33,6 +33,8 @@ export type EncounterMinAggregateOutputType = {
   chiefComplaint: string | null
   notes: string | null
   encounteredAt: Date | null
+  startTime: Date | null
+  stopTime: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -46,6 +48,8 @@ export type EncounterMaxAggregateOutputType = {
   chiefComplaint: string | null
   notes: string | null
   encounteredAt: Date | null
+  startTime: Date | null
+  stopTime: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -59,6 +63,8 @@ export type EncounterCountAggregateOutputType = {
   chiefComplaint: number
   notes: number
   encounteredAt: number
+  startTime: number
+  stopTime: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -74,6 +80,8 @@ export type EncounterMinAggregateInputType = {
   chiefComplaint?: true
   notes?: true
   encounteredAt?: true
+  startTime?: true
+  stopTime?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -87,6 +95,8 @@ export type EncounterMaxAggregateInputType = {
   chiefComplaint?: true
   notes?: true
   encounteredAt?: true
+  startTime?: true
+  stopTime?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -100,6 +110,8 @@ export type EncounterCountAggregateInputType = {
   chiefComplaint?: true
   notes?: true
   encounteredAt?: true
+  startTime?: true
+  stopTime?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -186,6 +198,8 @@ export type EncounterGroupByOutputType = {
   chiefComplaint: string | null
   notes: string | null
   encounteredAt: Date
+  startTime: Date
+  stopTime: Date | null
   createdAt: Date
   updatedAt: Date
   _count: EncounterCountAggregateOutputType | null
@@ -220,6 +234,8 @@ export type EncounterWhereInput = {
   chiefComplaint?: Prisma.StringNullableFilter<"Encounter"> | string | null
   notes?: Prisma.StringNullableFilter<"Encounter"> | string | null
   encounteredAt?: Prisma.DateTimeFilter<"Encounter"> | Date | string
+  startTime?: Prisma.DateTimeFilter<"Encounter"> | Date | string
+  stopTime?: Prisma.DateTimeNullableFilter<"Encounter"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Encounter"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Encounter"> | Date | string
   patient?: Prisma.XOR<Prisma.PatientScalarRelationFilter, Prisma.PatientWhereInput>
@@ -237,6 +253,8 @@ export type EncounterOrderByWithRelationInput = {
   chiefComplaint?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   encounteredAt?: Prisma.SortOrder
+  startTime?: Prisma.SortOrder
+  stopTime?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   patient?: Prisma.PatientOrderByWithRelationInput
@@ -257,6 +275,8 @@ export type EncounterWhereUniqueInput = Prisma.AtLeast<{
   chiefComplaint?: Prisma.StringNullableFilter<"Encounter"> | string | null
   notes?: Prisma.StringNullableFilter<"Encounter"> | string | null
   encounteredAt?: Prisma.DateTimeFilter<"Encounter"> | Date | string
+  startTime?: Prisma.DateTimeFilter<"Encounter"> | Date | string
+  stopTime?: Prisma.DateTimeNullableFilter<"Encounter"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Encounter"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Encounter"> | Date | string
   patient?: Prisma.XOR<Prisma.PatientScalarRelationFilter, Prisma.PatientWhereInput>
@@ -274,6 +294,8 @@ export type EncounterOrderByWithAggregationInput = {
   chiefComplaint?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   encounteredAt?: Prisma.SortOrder
+  startTime?: Prisma.SortOrder
+  stopTime?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.EncounterCountOrderByAggregateInput
@@ -293,6 +315,8 @@ export type EncounterScalarWhereWithAggregatesInput = {
   chiefComplaint?: Prisma.StringNullableWithAggregatesFilter<"Encounter"> | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"Encounter"> | string | null
   encounteredAt?: Prisma.DateTimeWithAggregatesFilter<"Encounter"> | Date | string
+  startTime?: Prisma.DateTimeWithAggregatesFilter<"Encounter"> | Date | string
+  stopTime?: Prisma.DateTimeNullableWithAggregatesFilter<"Encounter"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Encounter"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Encounter"> | Date | string
 }
@@ -304,6 +328,8 @@ export type EncounterCreateInput = {
   chiefComplaint?: string | null
   notes?: string | null
   encounteredAt?: Date | string
+  startTime?: Date | string
+  stopTime?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutEncountersInput
@@ -321,6 +347,8 @@ export type EncounterUncheckedCreateInput = {
   chiefComplaint?: string | null
   notes?: string | null
   encounteredAt?: Date | string
+  startTime?: Date | string
+  stopTime?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   vitals?: Prisma.VitalUncheckedCreateNestedManyWithoutEncounterInput
@@ -334,6 +362,8 @@ export type EncounterUpdateInput = {
   chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   encounteredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stopTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutEncountersNestedInput
@@ -351,6 +381,8 @@ export type EncounterUncheckedUpdateInput = {
   chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   encounteredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stopTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vitals?: Prisma.VitalUncheckedUpdateManyWithoutEncounterNestedInput
@@ -366,6 +398,8 @@ export type EncounterCreateManyInput = {
   chiefComplaint?: string | null
   notes?: string | null
   encounteredAt?: Date | string
+  startTime?: Date | string
+  stopTime?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -377,6 +411,8 @@ export type EncounterUpdateManyMutationInput = {
   chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   encounteredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stopTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -390,6 +426,8 @@ export type EncounterUncheckedUpdateManyInput = {
   chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   encounteredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stopTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -413,6 +451,8 @@ export type EncounterCountOrderByAggregateInput = {
   chiefComplaint?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   encounteredAt?: Prisma.SortOrder
+  startTime?: Prisma.SortOrder
+  stopTime?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -426,6 +466,8 @@ export type EncounterMaxOrderByAggregateInput = {
   chiefComplaint?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   encounteredAt?: Prisma.SortOrder
+  startTime?: Prisma.SortOrder
+  stopTime?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -439,6 +481,8 @@ export type EncounterMinOrderByAggregateInput = {
   chiefComplaint?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   encounteredAt?: Prisma.SortOrder
+  startTime?: Prisma.SortOrder
+  stopTime?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -536,6 +580,10 @@ export type EnumEncounterTypeFieldUpdateOperationsInput = {
   set?: $Enums.EncounterType
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 export type EncounterCreateNestedOneWithoutVitalsInput = {
   create?: Prisma.XOR<Prisma.EncounterCreateWithoutVitalsInput, Prisma.EncounterUncheckedCreateWithoutVitalsInput>
   connectOrCreate?: Prisma.EncounterCreateOrConnectWithoutVitalsInput
@@ -571,6 +619,8 @@ export type EncounterCreateWithoutPatientInput = {
   chiefComplaint?: string | null
   notes?: string | null
   encounteredAt?: Date | string
+  startTime?: Date | string
+  stopTime?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   record: Prisma.RecordCreateNestedOneWithoutEncountersInput
@@ -586,6 +636,8 @@ export type EncounterUncheckedCreateWithoutPatientInput = {
   chiefComplaint?: string | null
   notes?: string | null
   encounteredAt?: Date | string
+  startTime?: Date | string
+  stopTime?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   vitals?: Prisma.VitalUncheckedCreateNestedManyWithoutEncounterInput
@@ -630,6 +682,8 @@ export type EncounterScalarWhereInput = {
   chiefComplaint?: Prisma.StringNullableFilter<"Encounter"> | string | null
   notes?: Prisma.StringNullableFilter<"Encounter"> | string | null
   encounteredAt?: Prisma.DateTimeFilter<"Encounter"> | Date | string
+  startTime?: Prisma.DateTimeFilter<"Encounter"> | Date | string
+  stopTime?: Prisma.DateTimeNullableFilter<"Encounter"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Encounter"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Encounter"> | Date | string
 }
@@ -641,6 +695,8 @@ export type EncounterCreateWithoutRecordInput = {
   chiefComplaint?: string | null
   notes?: string | null
   encounteredAt?: Date | string
+  startTime?: Date | string
+  stopTime?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutEncountersInput
@@ -656,6 +712,8 @@ export type EncounterUncheckedCreateWithoutRecordInput = {
   chiefComplaint?: string | null
   notes?: string | null
   encounteredAt?: Date | string
+  startTime?: Date | string
+  stopTime?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   vitals?: Prisma.VitalUncheckedCreateNestedManyWithoutEncounterInput
@@ -695,6 +753,8 @@ export type EncounterCreateWithoutVitalsInput = {
   chiefComplaint?: string | null
   notes?: string | null
   encounteredAt?: Date | string
+  startTime?: Date | string
+  stopTime?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutEncountersInput
@@ -711,6 +771,8 @@ export type EncounterUncheckedCreateWithoutVitalsInput = {
   chiefComplaint?: string | null
   notes?: string | null
   encounteredAt?: Date | string
+  startTime?: Date | string
+  stopTime?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   diagnoses?: Prisma.DiagnosisUncheckedCreateNestedManyWithoutEncounterInput
@@ -739,6 +801,8 @@ export type EncounterUpdateWithoutVitalsInput = {
   chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   encounteredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stopTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutEncountersNestedInput
@@ -755,6 +819,8 @@ export type EncounterUncheckedUpdateWithoutVitalsInput = {
   chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   encounteredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stopTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   diagnoses?: Prisma.DiagnosisUncheckedUpdateManyWithoutEncounterNestedInput
@@ -767,6 +833,8 @@ export type EncounterCreateWithoutDiagnosesInput = {
   chiefComplaint?: string | null
   notes?: string | null
   encounteredAt?: Date | string
+  startTime?: Date | string
+  stopTime?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutEncountersInput
@@ -783,6 +851,8 @@ export type EncounterUncheckedCreateWithoutDiagnosesInput = {
   chiefComplaint?: string | null
   notes?: string | null
   encounteredAt?: Date | string
+  startTime?: Date | string
+  stopTime?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   vitals?: Prisma.VitalUncheckedCreateNestedManyWithoutEncounterInput
@@ -811,6 +881,8 @@ export type EncounterUpdateWithoutDiagnosesInput = {
   chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   encounteredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stopTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutEncountersNestedInput
@@ -827,6 +899,8 @@ export type EncounterUncheckedUpdateWithoutDiagnosesInput = {
   chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   encounteredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stopTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vitals?: Prisma.VitalUncheckedUpdateManyWithoutEncounterNestedInput
@@ -840,6 +914,8 @@ export type EncounterCreateManyPatientInput = {
   chiefComplaint?: string | null
   notes?: string | null
   encounteredAt?: Date | string
+  startTime?: Date | string
+  stopTime?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -851,6 +927,8 @@ export type EncounterUpdateWithoutPatientInput = {
   chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   encounteredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stopTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   record?: Prisma.RecordUpdateOneRequiredWithoutEncountersNestedInput
@@ -866,6 +944,8 @@ export type EncounterUncheckedUpdateWithoutPatientInput = {
   chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   encounteredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stopTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vitals?: Prisma.VitalUncheckedUpdateManyWithoutEncounterNestedInput
@@ -880,6 +960,8 @@ export type EncounterUncheckedUpdateManyWithoutPatientInput = {
   chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   encounteredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stopTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -892,6 +974,8 @@ export type EncounterCreateManyRecordInput = {
   chiefComplaint?: string | null
   notes?: string | null
   encounteredAt?: Date | string
+  startTime?: Date | string
+  stopTime?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -903,6 +987,8 @@ export type EncounterUpdateWithoutRecordInput = {
   chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   encounteredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stopTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutEncountersNestedInput
@@ -918,6 +1004,8 @@ export type EncounterUncheckedUpdateWithoutRecordInput = {
   chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   encounteredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stopTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vitals?: Prisma.VitalUncheckedUpdateManyWithoutEncounterNestedInput
@@ -932,6 +1020,8 @@ export type EncounterUncheckedUpdateManyWithoutRecordInput = {
   chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   encounteredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stopTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -985,6 +1075,8 @@ export type EncounterSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   chiefComplaint?: boolean
   notes?: boolean
   encounteredAt?: boolean
+  startTime?: boolean
+  stopTime?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
@@ -1003,6 +1095,8 @@ export type EncounterSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   chiefComplaint?: boolean
   notes?: boolean
   encounteredAt?: boolean
+  startTime?: boolean
+  stopTime?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
@@ -1018,6 +1112,8 @@ export type EncounterSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   chiefComplaint?: boolean
   notes?: boolean
   encounteredAt?: boolean
+  startTime?: boolean
+  stopTime?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
@@ -1033,11 +1129,13 @@ export type EncounterSelectScalar = {
   chiefComplaint?: boolean
   notes?: boolean
   encounteredAt?: boolean
+  startTime?: boolean
+  stopTime?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type EncounterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "patientId" | "recordId" | "attendingStaff" | "type" | "chiefComplaint" | "notes" | "encounteredAt" | "createdAt" | "updatedAt", ExtArgs["result"]["encounter"]>
+export type EncounterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "patientId" | "recordId" | "attendingStaff" | "type" | "chiefComplaint" | "notes" | "encounteredAt" | "startTime" | "stopTime" | "createdAt" | "updatedAt", ExtArgs["result"]["encounter"]>
 export type EncounterInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
   record?: boolean | Prisma.RecordDefaultArgs<ExtArgs>
@@ -1071,6 +1169,8 @@ export type $EncounterPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     chiefComplaint: string | null
     notes: string | null
     encounteredAt: Date
+    startTime: Date
+    stopTime: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["encounter"]>
@@ -1508,6 +1608,8 @@ export interface EncounterFieldRefs {
   readonly chiefComplaint: Prisma.FieldRef<"Encounter", 'String'>
   readonly notes: Prisma.FieldRef<"Encounter", 'String'>
   readonly encounteredAt: Prisma.FieldRef<"Encounter", 'DateTime'>
+  readonly startTime: Prisma.FieldRef<"Encounter", 'DateTime'>
+  readonly stopTime: Prisma.FieldRef<"Encounter", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Encounter", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Encounter", 'DateTime'>
 }

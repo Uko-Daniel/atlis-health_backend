@@ -543,10 +543,6 @@ export type EnumAllergyStatusFieldUpdateOperationsInput = {
   set?: $Enums.AllergyStatus
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type AllergyCreateWithoutPatientInput = {
   id?: string
   substance: string
