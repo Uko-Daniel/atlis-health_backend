@@ -6,20 +6,32 @@ import { getSkipTake, paginate, type PaginatedResult } from '../utils/pagination
 export const patientService = {
 
   async createPatient(data: Partial<Patient>) {
-    const { valid, errors } = validatePatient(data, false);
-    if (!valid) throw new Error(errors?.join(', '));
+  const { valid, errors } = validatePatient(data, false)
+  if (!valid) throw new Error(errors?.join(', '))
 
-    return prisma.patient.create({
+  // Create patient + clinical record in one atomic transaction
+  const result = await prisma.$transaction(async (tx) => {
+    const patient = await tx.patient.create({
       data: {
-        firstName: data.firstName!,
-        lastName:  data.lastName!,
-        dob:       new Date(data.dob!),
-        gender:    data.gender as 'MALE' | 'FEMALE' | 'OTHER',
+        firstName:   data.firstName!,
+        lastName:    data.lastName!,
+        dob:         new Date(data.dob!),
+        gender:      data.gender as 'MALE' | 'FEMALE' | 'OTHER',
         phoneNumber: data.phoneNumber ?? null,
-        email:       data.email       ?? null,
+        email:       data.email ?? null,
       },
-    });
-  },
+    })
+
+    // Auto-open clinical chart
+    await tx.record.create({
+      data: { patientId: patient.id },
+    })
+
+    return patient
+  })
+
+  return result
+},
 
   async getPatientById(id: string) {
     return prisma.patient.findUnique({

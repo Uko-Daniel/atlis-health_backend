@@ -74,28 +74,32 @@ export const orderService = {
     },
 
     async getOrdersByStatus(status: OrderStatus, page = 1, limit = 50) {
-        const where = { status };
+    page = Number(page);
+    limit = Number(limit);
 
-        const total = await prisma.order.count({ where });
-        const { skip, take } = getSkipTake(page, limit);
+    const where = { status };
 
-        const orders = await prisma.order.findMany({
-            where,
-            orderBy: { createdAt: 'asc' }, // queue logic still applies
-            skip,
-            take,
-            include: {
-                patient: true,
-                services: {
-                    include: {
-                        service: true,
-                    },
+    const total = await prisma.order.count({ where });
+
+    const { skip, take } = getSkipTake(page, limit);
+
+    const orders = await prisma.order.findMany({
+        where,
+        orderBy: { createdAt: 'asc' },
+        skip,
+        take,
+        include: {
+            patient: true,
+            services: {
+                include: {
+                    service: true,
                 },
             },
-        });
+        },
+    });
 
-        return paginate(orders, total, page, limit);
-    },
+    return paginate(orders, total, page, limit);
+},
 
     async updateOrderStatus(orderId: string, status: OrderStatus) {
         const validStatus = validateEnum(status, Status, 'Order status')

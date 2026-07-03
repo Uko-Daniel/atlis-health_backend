@@ -42,56 +42,49 @@ function validateEncounterInput(
 
 export const encounterService = {
 
-  async createEncounter(data: CreateEncounterInput) {
-    const { valid, errors } = validateEncounterInput(data, false);
-    if (!valid) throw new Error(errors.join(', '));
+    async createEncounter(data: {
+    patientId:      string
+    attendingStaff: string
+    type?:          EncounterType
+    chiefComplaint?: string
+    notes?:         string
+    startTime?:     string
+    stopTime?:      string
+    recordId?:      string    // optional — we look it up if not provided
+  }) {
+    const { patientId, recordId: providedRecordId, ...rest } = data
 
-    // Verify patient exists
-    const patient = await prisma.patient.findUnique({ where: { id: data.patientId } });
-    if (!patient) throw new Error('Patient not found');
-
-    // Resolve record — use provided recordId if valid, otherwise find or create
-    let record;
-
-    if (data.recordId) {
-      // Caller provided a recordId — verify it belongs to this patient
-      record = await prisma.record.findFirst({
-        where: { id: data.recordId, patientId: data.patientId },
-      });
-      if (!record) throw new Error('Provided recordId not found or does not belong to patient');
-    } else {
-      // No recordId — use most recent record or create one automatically
-      record = await prisma.record.findFirst({
-        where:   { patientId: data.patientId },
-        orderBy: { createdAt: 'desc' },
-      });
-
+    // Auto-resolve recordId — never require it from the client
+    let recordId = providedRecordId
+    if (!recordId) {
+      const record = await prisma.record.findFirst({
+        where:   { patientId },
+        orderBy: { createdAt: 'asc' },
+      })
       if (!record) {
-        record = await prisma.record.create({
-          data: { patientId: data.patientId },
-        });
+        // Safety net — create one if somehow missing
+        const newRecord = await prisma.record.create({ data: { patientId } })
+        recordId = newRecord.id
+      } else {
+        recordId = record.id
       }
     }
 
-    const now = new Date();
-
     return prisma.encounter.create({
       data: {
-        patientId:      data.patientId,
-        recordId:       record.id,
+        patientId,
+        recordId,
         attendingStaff: data.attendingStaff,
-        type:           data.type           ?? 'OUTPATIENT',
-        chiefComplaint: data.chiefComplaint  ?? null,
-        notes:          data.notes           ?? null,
-        encounteredAt:  data.encounteredAt   ? new Date(data.encounteredAt) : now,
-        startTime:      data.startTime       ? new Date(data.startTime)     : now,
-        stopTime:       data.stopTime        ? new Date(data.stopTime)      : null,
+        type:           data.type ?? 'OUTPATIENT',
+        chiefComplaint: data.chiefComplaint ?? null,
+        notes:          data.notes ?? null,
+        startTime:      data.startTime ? new Date(data.startTime) : new Date(),
       },
       include: {
         vitals:    true,
         diagnoses: true,
       },
-    });
+    })
   },
 
   async getAllEncounters(params: {

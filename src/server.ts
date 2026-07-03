@@ -26,6 +26,9 @@ await server.register(cors, {
 
 server.register(jwt, {
   secret: JWT_SECRET,
+  sign: {
+    expiresIn: '24h',
+  },
 });
 
 // Register the main app (all routes, plugins, etc.)

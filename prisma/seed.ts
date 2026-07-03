@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient, TemplateType } from "../generated/prisma/client";
+import { Department, PrismaClient, TemplateType } from "../generated/prisma/client";
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -29,6 +29,7 @@ async function main() {
             create: {
                 name: 'CBC Template',
                 type: TemplateType.LAB,
+                department: Department.LABORATORY,
                 dataSchema: {
                     fields: [
                         { name: 'hemoglobin', unit: 'g/dL', range: '12-16' },
@@ -46,6 +47,7 @@ async function main() {
             create: {
                 name: 'Malaria Template',
                 type: TemplateType.LAB,
+                department: Department.LABORATORY,
                 dataSchema: {
                     fields: [
                         { name: 'parasiteDetected', type: 'boolean' },
@@ -62,6 +64,7 @@ async function main() {
             create: {
                 name: 'Urinalysis Template',
                 type: TemplateType.LAB,
+                department: Department.LABORATORY,
                 dataSchema: {
                     fields: [
                         { name: 'color', type: 'string' },
@@ -80,6 +83,7 @@ async function main() {
             create: {
                 name: 'X-Ray Template',
                 type: TemplateType.IMAGING,
+                department: Department.RADIOLOGY,
                 dataSchema: {
                     fields: [
                         { name: 'finding', type: 'text' },
@@ -96,6 +100,7 @@ async function main() {
             create: {
                 name: 'Ultrasound Template',
                 type: TemplateType.IMAGING,
+                department: Department.RADIOLOGY,
                 dataSchema: {
                     fields: [
                         { name: 'organ', type: 'string' },
