@@ -23,10 +23,20 @@ export * from './enums';
  */
 export type Patient = Prisma.PatientModel
 /**
+ * Model NextOfKin
+ * 
+ */
+export type NextOfKin = Prisma.NextOfKinModel
+/**
  * Model Visitor
  * 
  */
 export type Visitor = Prisma.VisitorModel
+/**
+ * Model HMO
+ * 
+ */
+export type HMO = Prisma.HMOModel
 /**
  * Model Record
  * 
@@ -107,6 +117,11 @@ export type ResultEditSession = Prisma.ResultEditSessionModel
  * 
  */
 export type Staff = Prisma.StaffModel
+/**
+ * Model SignupRequest
+ * 
+ */
+export type SignupRequest = Prisma.SignupRequestModel
 /**
  * Model InventoryItem
  * 

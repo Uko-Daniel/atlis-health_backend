@@ -21,7 +21,7 @@ const server = Fastify({
 await server.register(cors, {
   origin: 'http://localhost:5173',   // your Vite dev server
   credentials: true,                  // needed for httpOnly cookie refresh token
-  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 })
 
 server.register(jwt, {

@@ -52,7 +52,9 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Patient: 'Patient',
+  NextOfKin: 'NextOfKin',
   Visitor: 'Visitor',
+  HMO: 'HMO',
   Record: 'Record',
   Encounter: 'Encounter',
   Vital: 'Vital',
@@ -69,6 +71,7 @@ export const ModelName = {
   Result: 'Result',
   ResultEditSession: 'ResultEditSession',
   Staff: 'Staff',
+  SignupRequest: 'SignupRequest',
   InventoryItem: 'InventoryItem',
   Settings: 'Settings',
   AuditLog: 'AuditLog',
@@ -100,11 +103,32 @@ export const PatientScalarFieldEnum = {
   dob: 'dob',
   phoneNumber: 'phoneNumber',
   email: 'email',
+  adress: 'adress',
+  maritalStatus: 'maritalStatus',
+  nationality: 'nationality',
+  occupation: 'occupation',
+  religion: 'religion',
+  hmoId: 'hmoId',
+  NIN: 'NIN',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type PatientScalarFieldEnum = (typeof PatientScalarFieldEnum)[keyof typeof PatientScalarFieldEnum]
+
+
+export const NextOfKinScalarFieldEnum = {
+  id: 'id',
+  patientId: 'patientId',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  relation: 'relation',
+  phoneNumber: 'phoneNumber',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NextOfKinScalarFieldEnum = (typeof NextOfKinScalarFieldEnum)[keyof typeof NextOfKinScalarFieldEnum]
 
 
 export const VisitorScalarFieldEnum = {
@@ -122,6 +146,18 @@ export const VisitorScalarFieldEnum = {
 } as const
 
 export type VisitorScalarFieldEnum = (typeof VisitorScalarFieldEnum)[keyof typeof VisitorScalarFieldEnum]
+
+
+export const HMOScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  planType: 'planType',
+  contactInfo: 'contactInfo',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type HMOScalarFieldEnum = (typeof HMOScalarFieldEnum)[keyof typeof HMOScalarFieldEnum]
 
 
 export const RecordScalarFieldEnum = {
@@ -377,11 +413,35 @@ export const StaffScalarFieldEnum = {
   department: 'department',
   isHOD: 'isHOD',
   canVerify: 'canVerify',
+  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type StaffScalarFieldEnum = (typeof StaffScalarFieldEnum)[keyof typeof StaffScalarFieldEnum]
+
+
+export const SignupRequestScalarFieldEnum = {
+  id: 'id',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  email: 'email',
+  phone: 'phone',
+  profession: 'profession',
+  department: 'department',
+  facility: 'facility',
+  licenseNumber: 'licenseNumber',
+  message: 'message',
+  status: 'status',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  reviewNotes: 'reviewNotes',
+  createdStaffId: 'createdStaffId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SignupRequestScalarFieldEnum = (typeof SignupRequestScalarFieldEnum)[keyof typeof SignupRequestScalarFieldEnum]
 
 
 export const InventoryItemScalarFieldEnum = {

@@ -109,7 +109,9 @@ function convertTemplateToAjvSchema(templateDataSchema: any) {
 
   templateDataSchema.fields.forEach((f: any) => {
     properties[f.name] = { type: f.type };
-    required.push(f.name);
+    if (f.required) {
+      required.push(f.name);
+    }
 
     if (f.range && f.type === 'number') {
       const [min, max] = f.range.split('-').map(Number);

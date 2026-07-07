@@ -385,7 +385,9 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Patient: 'Patient',
+  NextOfKin: 'NextOfKin',
   Visitor: 'Visitor',
+  HMO: 'HMO',
   Record: 'Record',
   Encounter: 'Encounter',
   Vital: 'Vital',
@@ -402,6 +404,7 @@ export const ModelName = {
   Result: 'Result',
   ResultEditSession: 'ResultEditSession',
   Staff: 'Staff',
+  SignupRequest: 'SignupRequest',
   InventoryItem: 'InventoryItem',
   Settings: 'Settings',
   AuditLog: 'AuditLog',
@@ -422,7 +425,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "patient" | "visitor" | "record" | "encounter" | "vital" | "diagnosis" | "allergy" | "report" | "medication" | "admission" | "patientUser" | "service" | "template" | "order" | "orderService" | "result" | "resultEditSession" | "staff" | "inventoryItem" | "settings" | "auditLog" | "eveeEvaluation" | "eveeAlert"
+    modelProps: "patient" | "nextOfKin" | "visitor" | "hMO" | "record" | "encounter" | "vital" | "diagnosis" | "allergy" | "report" | "medication" | "admission" | "patientUser" | "service" | "template" | "order" | "orderService" | "result" | "resultEditSession" | "staff" | "signupRequest" | "inventoryItem" | "settings" | "auditLog" | "eveeEvaluation" | "eveeAlert"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -500,6 +503,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    NextOfKin: {
+      payload: Prisma.$NextOfKinPayload<ExtArgs>
+      fields: Prisma.NextOfKinFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.NextOfKinFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NextOfKinPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.NextOfKinFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NextOfKinPayload>
+        }
+        findFirst: {
+          args: Prisma.NextOfKinFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NextOfKinPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.NextOfKinFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NextOfKinPayload>
+        }
+        findMany: {
+          args: Prisma.NextOfKinFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NextOfKinPayload>[]
+        }
+        create: {
+          args: Prisma.NextOfKinCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NextOfKinPayload>
+        }
+        createMany: {
+          args: Prisma.NextOfKinCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.NextOfKinCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NextOfKinPayload>[]
+        }
+        delete: {
+          args: Prisma.NextOfKinDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NextOfKinPayload>
+        }
+        update: {
+          args: Prisma.NextOfKinUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NextOfKinPayload>
+        }
+        deleteMany: {
+          args: Prisma.NextOfKinDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.NextOfKinUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.NextOfKinUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NextOfKinPayload>[]
+        }
+        upsert: {
+          args: Prisma.NextOfKinUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NextOfKinPayload>
+        }
+        aggregate: {
+          args: Prisma.NextOfKinAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateNextOfKin>
+        }
+        groupBy: {
+          args: Prisma.NextOfKinGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NextOfKinGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.NextOfKinCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NextOfKinCountAggregateOutputType> | number
+        }
+      }
+    }
     Visitor: {
       payload: Prisma.$VisitorPayload<ExtArgs>
       fields: Prisma.VisitorFieldRefs
@@ -571,6 +648,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.VisitorCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.VisitorCountAggregateOutputType> | number
+        }
+      }
+    }
+    HMO: {
+      payload: Prisma.$HMOPayload<ExtArgs>
+      fields: Prisma.HMOFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.HMOFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HMOPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.HMOFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HMOPayload>
+        }
+        findFirst: {
+          args: Prisma.HMOFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HMOPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.HMOFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HMOPayload>
+        }
+        findMany: {
+          args: Prisma.HMOFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HMOPayload>[]
+        }
+        create: {
+          args: Prisma.HMOCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HMOPayload>
+        }
+        createMany: {
+          args: Prisma.HMOCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.HMOCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HMOPayload>[]
+        }
+        delete: {
+          args: Prisma.HMODeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HMOPayload>
+        }
+        update: {
+          args: Prisma.HMOUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HMOPayload>
+        }
+        deleteMany: {
+          args: Prisma.HMODeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.HMOUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.HMOUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HMOPayload>[]
+        }
+        upsert: {
+          args: Prisma.HMOUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HMOPayload>
+        }
+        aggregate: {
+          args: Prisma.HMOAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateHMO>
+        }
+        groupBy: {
+          args: Prisma.HMOGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HMOGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.HMOCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HMOCountAggregateOutputType> | number
         }
       }
     }
@@ -1758,6 +1909,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SignupRequest: {
+      payload: Prisma.$SignupRequestPayload<ExtArgs>
+      fields: Prisma.SignupRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SignupRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignupRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SignupRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignupRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.SignupRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignupRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SignupRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignupRequestPayload>
+        }
+        findMany: {
+          args: Prisma.SignupRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignupRequestPayload>[]
+        }
+        create: {
+          args: Prisma.SignupRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignupRequestPayload>
+        }
+        createMany: {
+          args: Prisma.SignupRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SignupRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignupRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.SignupRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignupRequestPayload>
+        }
+        update: {
+          args: Prisma.SignupRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignupRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.SignupRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SignupRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SignupRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignupRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.SignupRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignupRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.SignupRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSignupRequest>
+        }
+        groupBy: {
+          args: Prisma.SignupRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SignupRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SignupRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SignupRequestCountAggregateOutputType> | number
+        }
+      }
+    }
     InventoryItem: {
       payload: Prisma.$InventoryItemPayload<ExtArgs>
       fields: Prisma.InventoryItemFieldRefs
@@ -2175,11 +2400,32 @@ export const PatientScalarFieldEnum = {
   dob: 'dob',
   phoneNumber: 'phoneNumber',
   email: 'email',
+  adress: 'adress',
+  maritalStatus: 'maritalStatus',
+  nationality: 'nationality',
+  occupation: 'occupation',
+  religion: 'religion',
+  hmoId: 'hmoId',
+  NIN: 'NIN',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type PatientScalarFieldEnum = (typeof PatientScalarFieldEnum)[keyof typeof PatientScalarFieldEnum]
+
+
+export const NextOfKinScalarFieldEnum = {
+  id: 'id',
+  patientId: 'patientId',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  relation: 'relation',
+  phoneNumber: 'phoneNumber',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NextOfKinScalarFieldEnum = (typeof NextOfKinScalarFieldEnum)[keyof typeof NextOfKinScalarFieldEnum]
 
 
 export const VisitorScalarFieldEnum = {
@@ -2197,6 +2443,18 @@ export const VisitorScalarFieldEnum = {
 } as const
 
 export type VisitorScalarFieldEnum = (typeof VisitorScalarFieldEnum)[keyof typeof VisitorScalarFieldEnum]
+
+
+export const HMOScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  planType: 'planType',
+  contactInfo: 'contactInfo',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type HMOScalarFieldEnum = (typeof HMOScalarFieldEnum)[keyof typeof HMOScalarFieldEnum]
 
 
 export const RecordScalarFieldEnum = {
@@ -2452,11 +2710,35 @@ export const StaffScalarFieldEnum = {
   department: 'department',
   isHOD: 'isHOD',
   canVerify: 'canVerify',
+  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type StaffScalarFieldEnum = (typeof StaffScalarFieldEnum)[keyof typeof StaffScalarFieldEnum]
+
+
+export const SignupRequestScalarFieldEnum = {
+  id: 'id',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  email: 'email',
+  phone: 'phone',
+  profession: 'profession',
+  department: 'department',
+  facility: 'facility',
+  licenseNumber: 'licenseNumber',
+  message: 'message',
+  status: 'status',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  reviewNotes: 'reviewNotes',
+  createdStaffId: 'createdStaffId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SignupRequestScalarFieldEnum = (typeof SignupRequestScalarFieldEnum)[keyof typeof SignupRequestScalarFieldEnum]
 
 
 export const InventoryItemScalarFieldEnum = {
@@ -2625,6 +2907,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MaritalStatus'
+ */
+export type EnumMaritalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaritalStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'MaritalStatus[]'
+ */
+export type ListEnumMaritalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaritalStatus[]'>
     
 
 
@@ -2818,6 +3114,34 @@ export type ListEnumStaffRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
 
 
 /**
+ * Reference to a field of type 'AccountStatus'
+ */
+export type EnumAccountStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AccountStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'AccountStatus[]'
+ */
+export type ListEnumAccountStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AccountStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SignupRequestStatus'
+ */
+export type EnumSignupRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SignupRequestStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'SignupRequestStatus[]'
+ */
+export type ListEnumSignupRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SignupRequestStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'EveeDomain'
  */
 export type EnumEveeDomainFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EveeDomain'>
@@ -2940,7 +3264,9 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   patient?: Prisma.PatientOmit
+  nextOfKin?: Prisma.NextOfKinOmit
   visitor?: Prisma.VisitorOmit
+  hMO?: Prisma.HMOOmit
   record?: Prisma.RecordOmit
   encounter?: Prisma.EncounterOmit
   vital?: Prisma.VitalOmit
@@ -2957,6 +3283,7 @@ export type GlobalOmitConfig = {
   result?: Prisma.ResultOmit
   resultEditSession?: Prisma.ResultEditSessionOmit
   staff?: Prisma.StaffOmit
+  signupRequest?: Prisma.SignupRequestOmit
   inventoryItem?: Prisma.InventoryItemOmit
   settings?: Prisma.SettingsOmit
   auditLog?: Prisma.AuditLogOmit

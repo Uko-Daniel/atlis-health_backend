@@ -9,7 +9,9 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/Patient'
+export type * from './models/NextOfKin'
 export type * from './models/Visitor'
+export type * from './models/HMO'
 export type * from './models/Record'
 export type * from './models/Encounter'
 export type * from './models/Vital'
@@ -26,6 +28,7 @@ export type * from './models/OrderService'
 export type * from './models/Result'
 export type * from './models/ResultEditSession'
 export type * from './models/Staff'
+export type * from './models/SignupRequest'
 export type * from './models/InventoryItem'
 export type * from './models/Settings'
 export type * from './models/AuditLog'

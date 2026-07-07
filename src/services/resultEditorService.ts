@@ -6,17 +6,79 @@ import type { FormulaKey, PatientContext } from '../utils/formulaEngine';
 import type { TemplateField, TemplateGroup, DataSchema } from '../types/template';
 import type { FieldFlag, DraftData, FlaggedField, EveeInlineAlert, SessionState } from '../types/editor';
 
-// ─── Types ───────────────────────────────────────────────────────────────────
-
-
-
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 /**
+ * Parse a range string like "12-16" into { min, max }.
+ */
+function parseRangeFromString(rangeStr: string): { min: number; max: number } | undefined {
+  const parts = rangeStr.split('-')
+  const [rawMin, rawMax] = parts
+  if (parts.length === 2 && rawMin !== undefined && rawMax !== undefined) {
+    const min = parseFloat(rawMin)
+    const max = parseFloat(rawMax)
+    if (!isNaN(min) && !isNaN(max)) return { min, max }
+  }
+  return undefined
+}
+
+/**
+ * Normalize a dataSchema to the groups format.
+ * Seeded templates use { fields: [] } — convert to { groups: [{ fields }] }.
+ */
+function normalizeSchema(raw: any): DataSchema {
+  // Already has groups — return as-is
+  if (raw?.groups && Array.isArray(raw.groups)) {
+    return raw as DataSchema
+  }
+
+  // Simple fields format — wrap in a single group
+  if (raw?.fields && Array.isArray(raw.fields)) {
+    return {
+      version: 1,
+      layout: 'sections',
+      groups: [{
+        id: 'default-group',
+        label: 'Results',
+        collapsible: false,
+        fields: raw.fields.map((f: any, i: number) => ({
+          id: f.name ?? `field-${i}`,
+          key: f.name ?? `field-${i}`,
+          label: (f.name ?? `field_${i}`)
+            .replace(/_/g, ' ')
+            .replace(/\b\w/g, (c: string) => c.toUpperCase()),
+          type: f.type === 'text' ? 'text' as const
+            : f.type === 'boolean' ? 'boolean' as const
+            : 'numeric' as const,
+          unit: f.unit ?? undefined,
+          required: f.required ?? false,
+          referenceRange: f.range ? { general: parseRangeFromString(f.range) } : undefined,
+        })),
+      }],
+      interpretation: { enabled: true },
+      signature: { required: false, roles: [] },
+    }
+  }
+
+  // Empty fallback
+  return {
+    version: 1,
+    layout: 'sections',
+    groups: [],
+    interpretation: { enabled: true },
+    signature: { required: false, roles: [] },
+  }
+}
+
+/**
  * Extract a flat list of all fields from a dataSchema.
+ * Handles both { groups: [] } and { fields: [] } formats.
  */
 function flattenSchemaFields(schema: DataSchema): TemplateField[] {
-  return schema.groups.flatMap((g: TemplateGroup) => g.fields);
+  if (schema.groups && Array.isArray(schema.groups)) {
+    return schema.groups.flatMap((g: TemplateGroup) => g.fields)
+  }
+  return []
 }
 
 /**
@@ -203,6 +265,9 @@ export async function openSession(resultId: string, staffId: string): Promise<Se
  * Persist in-progress data without submitting.
  * Validates lock ownership before writing.
  * Runs field flagging and formula calculation on the draft before saving.
+ *
+ * Draft is saved to the ResultEditSession.draftData column as JSON.
+ * It does NOT update the Result record itself — that only happens on submit.
  */
 export async function autoSaveDraft(
   resultId:  string,
@@ -230,9 +295,10 @@ export async function autoSaveDraft(
   });
   if (!result) throw new Error('Result not found');
 
-  const schema    = result.template.dataSchema as unknown as DataSchema;
-  const allFields = flattenSchemaFields(schema);
-  const valueMap  = buildValueMap(draft);
+  const rawSchema  = result.template.dataSchema as any;
+  const schema     = normalizeSchema(rawSchema);
+  const allFields  = flattenSchemaFields(schema);
+  const valueMap   = buildValueMap(draft);
   const patientContext = buildPatientContext(age, sex, valueMap);
 
   // Enrich draft: flag numeric fields, calculate derived fields
@@ -284,7 +350,7 @@ export async function autoSaveDraft(
     }),
   };
 
-  // Persist to session
+  // Persist to session — NOT to the Result record
   const session = await prisma.resultEditSession.findUnique({
     where: { resultId },
   });
@@ -362,9 +428,10 @@ export async function flagFieldEntry(params: {
   if (!result)  throw new Error('Result not found');
   if (!patient) throw new Error('Patient not found');
 
-  const schema    = result.template.dataSchema as unknown as DataSchema;
-  const allFields = flattenSchemaFields(schema);
-  const field     = allFields.find(f => f.id === fieldId);
+  const rawSchema  = result.template.dataSchema as any;
+  const schema     = normalizeSchema(rawSchema);
+  const allFields  = flattenSchemaFields(schema);
+  const field      = allFields.find(f => f.id === fieldId);
 
   if (!field) throw new Error(`Field ${fieldId} not found in template`);
 
@@ -489,11 +556,12 @@ export async function recalculateDerivedFields(
   if (!result)  throw new Error('Result not found');
   if (!patient) throw new Error('Patient not found');
 
-  const schema    = result.template.dataSchema as unknown as DataSchema;
-  const allFields = flattenSchemaFields(schema);
-  const valueMap  = buildValueMap(draft);
-  const age       = ageFromDob(patient.dob);
-  const sex       = patient.gender as 'MALE' | 'FEMALE' | 'OTHER';
+  const rawSchema  = result.template.dataSchema as any;
+  const schema     = normalizeSchema(rawSchema);
+  const allFields  = flattenSchemaFields(schema);
+  const valueMap   = buildValueMap(draft);
+  const age        = ageFromDob(patient.dob);
+  const sex        = patient.gender as 'MALE' | 'FEMALE' | 'OTHER';
   const patientContext = buildPatientContext(age, sex, valueMap);
 
   return {
@@ -532,12 +600,15 @@ export async function recalculateDerivedFields(
  * - Validates all required fields are filled.
  * - Runs a final flag pass over all numeric fields.
  * - Recalculates all derived fields.
- * - Writes data to the Result record.
+ * - Writes the final draft data to the Result.data column (as encrypted JSON).
  * - Clears the edit session.
  * - Releases the lock.
  * - Bumps result status to PENDING (awaiting verification).
  *
  * Does NOT verify or sign — that is a separate step in resultService.
+ *
+ * The submitted data is encrypted via encryptJSON() before storage in Result.data.
+ * The raw draft structure is: { schemaVersion, groups: [...], interpretation }
  */
 export async function submitResult(params: {
   resultId:    string;
@@ -565,11 +636,12 @@ export async function submitResult(params: {
   if (!result)  throw new Error('Result not found');
   if (!patient) throw new Error('Patient not found');
 
-  const schema    = result.template.dataSchema as unknown as DataSchema;
-  const allFields = flattenSchemaFields(schema);
-  const age       = ageFromDob(patient.dob);
-  const sex       = patient.gender as 'MALE' | 'FEMALE' | 'OTHER';
-  const valueMap  = buildValueMap(draft);
+  const rawSchema  = result.template.dataSchema as any;
+  const schema     = normalizeSchema(rawSchema);
+  const allFields  = flattenSchemaFields(schema);
+  const age        = ageFromDob(patient.dob);
+  const sex        = patient.gender as 'MALE' | 'FEMALE' | 'OTHER';
+  const valueMap   = buildValueMap(draft);
   const patientContext = buildPatientContext(age, sex, valueMap);
 
   // ── Required field validation ─────────────────────────────────────────────
@@ -638,15 +710,20 @@ export async function submitResult(params: {
     finalDraft.interpretation = finalInterpretation;
   }
 
-  // ── Persist to Result record ──────────────────────────────────────────────
+  // ── Encrypt and persist to Result record ──────────────────────────────────
+  // Import encryptJSON dynamically to avoid circular deps
+  const { encryptJSON } = await import('../utils/crypto');
+
+  const encryptedData = encryptJSON(finalDraft);
+
   await prisma.$transaction([
-    // Write final data to result
+    // Write final encrypted data to result
     prisma.result.update({
       where: { id: resultId },
       data: {
-        data:    finalDraft as unknown as Prisma.InputJsonValue,
+        data:    encryptedData,
         version: { increment: 1 },
-        status:  ResultStatus.PENDING, // Back to pending — awaiting verification
+        status:  ResultStatus.PENDING,
         // Clear any previous signature if this is a re-submission
         signatureHash: null,
         verifiedBy:    null,
@@ -681,7 +758,7 @@ export async function closeSession(resultId: string, staffId: string): Promise<v
     const now = new Date();
     await prisma.resultEditSession.update({
       where: { id: session.id },
-      data:  { expiresAt: now }, // immediately expired — another user can take over
+      data:  { expiresAt: now },
     });
   }
 }
@@ -719,7 +796,6 @@ export async function getSessionByResult(resultId: string): Promise<SessionState
 export async function expireStaleSession(): Promise<{ expired: number }> {
   const now = new Date();
 
-  // Find all expired sessions
   const stale = await prisma.resultEditSession.findMany({
     where: { expiresAt: { lt: now } },
     select: { resultId: true, staffId: true },
@@ -727,17 +803,15 @@ export async function expireStaleSession(): Promise<{ expired: number }> {
 
   if (stale.length === 0) return { expired: 0 };
 
-  // Release locks for all stale sessions
   await Promise.all(
     stale.map(s =>
       prisma.result.update({
         where: { id: s.resultId },
         data:  { lockedBy: null, lockedAt: null },
-      }).catch(() => null) // swallow if result was deleted
+      }).catch(() => null)
     )
   );
 
-  // Delete all expired sessions
   await prisma.resultEditSession.deleteMany({
     where: { expiresAt: { lt: now } },
   });
@@ -747,10 +821,6 @@ export async function expireStaleSession(): Promise<{ expired: number }> {
 
 // ─── Get Formula Metadata ─────────────────────────────────────────────────────
 
-/**
- * Returns what source fields a formula needs — used by the template builder
- * to show the tech which fields must exist before a calculated field can populate.
- */
 export function getFormulaMetadata(formulaKey: string) {
   if (!isFormulaKey(formulaKey)) return [];
   return getFormulaInputs(formulaKey);

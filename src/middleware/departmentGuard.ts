@@ -64,9 +64,13 @@ export async function guardResultDepartment(
   // Doctors can read results across departments — they cannot edit
   if (role === 'DOCTOR') return;
 
-  const { id } = request.params as { id: string };
+  const { id, resultId } = request.params as {
+    id?:       string;
+    resultId?: string;
+  };
+  const idToCheck = id ?? resultId;
 
-  if (!id) {
+  if (!idToCheck) {
     reply.status(400).send({
       statusCode: 400,
       error:      'Bad Request',
@@ -76,7 +80,7 @@ export async function guardResultDepartment(
   }
 
   const result = await prisma.result.findUnique({
-    where:  { id },
+    where:  { id: idToCheck },
     select: { department: true },
   });
 

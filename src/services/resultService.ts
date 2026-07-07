@@ -85,7 +85,8 @@ async function getResultById(id: string, staffDepartment?: string) {
   const result = await prisma.result.findUnique({
     where:   { id },
     include: {
-      template:    true,
+      patient:  { select: { id: true, firstName: true, lastName: true } },
+      template: true,
       editSession: true,
     },
   });
@@ -129,7 +130,11 @@ async function getResultsByPatient(patientId: string, params?: {
     prisma.result.findMany({
       where,
       orderBy: { createdAt: 'desc' },
-      include: { template: true },
+      include: {
+        patient:  { select: { id: true, firstName: true, lastName: true } },
+        template: true,
+        editSession: true,
+      },
       skip:    (page - 1) * limit,
       take:    limit,
     }),
@@ -153,7 +158,11 @@ async function getResultsByOrder(orderId: string) {
   const results = await prisma.result.findMany({
     where:   { orderId },
     orderBy: { createdAt: 'desc' },
-    include: { template: true, editSession: true },
+    include: {
+      patient:  { select: { id: true, firstName: true, lastName: true } },
+      template: true,
+      editSession: true,
+    },
   });
 
   return results.map(r => ({ ...r, data: decryptStoredResultData(r.data) }));
@@ -179,6 +188,7 @@ async function getResultsByDepartment(department: string, params?: {
       where,
       orderBy: { createdAt: 'asc' }, // oldest first — FIFO worklist
       include: {
+        patient:  { select: { id: true, firstName: true, lastName: true } },
         template:    true,
         editSession: { select: { staffId: true, lastSavedAt: true, expiresAt: true } },
       },

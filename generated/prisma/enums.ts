@@ -9,6 +9,24 @@
 * 🟢 You can import this file directly.
 */
 
+export const SignupRequestStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type SignupRequestStatus = (typeof SignupRequestStatus)[keyof typeof SignupRequestStatus]
+
+
+export const AccountStatus = {
+  ACTIVE: 'ACTIVE',
+  SUSPENDED: 'SUSPENDED',
+  DEACTIVATED: 'DEACTIVATED'
+} as const
+
+export type AccountStatus = (typeof AccountStatus)[keyof typeof AccountStatus]
+
+
 export const Department = {
   LABORATORY: 'LABORATORY',
   RADIOLOGY: 'RADIOLOGY',
@@ -154,3 +172,14 @@ export const EveeDomain = {
 } as const
 
 export type EveeDomain = (typeof EveeDomain)[keyof typeof EveeDomain]
+
+
+export const MaritalStatus = {
+  SINGLE: 'SINGLE',
+  MARRIED: 'MARRIED',
+  DIVORCED: 'DIVORCED',
+  WIDOWED: 'WIDOWED',
+  SEPARATED: 'SEPARATED'
+} as const
+
+export type MaritalStatus = (typeof MaritalStatus)[keyof typeof MaritalStatus]

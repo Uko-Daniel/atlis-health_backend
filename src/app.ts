@@ -10,6 +10,10 @@ import { authRoutes } from "./routes/authRoutes";
 import { templateRoutes } from "./routes/templateRoutes";
 import { eveeRoutes } from "./routes/eveeRoutes";
 import {recordRoutes} from "./routes/recordRoutes";
+import { signupRoutes } from "./routes/signUpRoutes";
+
+
+
 
 export const app = async (fastify: FastifyInstance) => {
   fastify.register(authRoutes,          { prefix: '/api/auth'      });
@@ -23,6 +27,7 @@ export const app = async (fastify: FastifyInstance) => {
   fastify.register(templateRoutes,      { prefix: '/api/templates' });
   fastify.register(eveeRoutes,          { prefix: '/api/evee'      });
   fastify.register(recordRoutes,        { prefix: '/api/records'   });
+  fastify.register(signupRoutes, { prefix: '/api' })
 }
 
 

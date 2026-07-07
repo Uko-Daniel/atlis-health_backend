@@ -35,6 +35,7 @@ export type StaffMinAggregateOutputType = {
   department: $Enums.Department | null
   isHOD: boolean | null
   canVerify: boolean | null
+  status: $Enums.AccountStatus | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,6 +51,7 @@ export type StaffMaxAggregateOutputType = {
   department: $Enums.Department | null
   isHOD: boolean | null
   canVerify: boolean | null
+  status: $Enums.AccountStatus | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -65,6 +67,7 @@ export type StaffCountAggregateOutputType = {
   department: number
   isHOD: number
   canVerify: number
+  status: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -82,6 +85,7 @@ export type StaffMinAggregateInputType = {
   department?: true
   isHOD?: true
   canVerify?: true
+  status?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -97,6 +101,7 @@ export type StaffMaxAggregateInputType = {
   department?: true
   isHOD?: true
   canVerify?: true
+  status?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -112,6 +117,7 @@ export type StaffCountAggregateInputType = {
   department?: true
   isHOD?: true
   canVerify?: true
+  status?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -200,6 +206,7 @@ export type StaffGroupByOutputType = {
   department: $Enums.Department | null
   isHOD: boolean
   canVerify: boolean
+  status: $Enums.AccountStatus
   createdAt: Date
   updatedAt: Date
   _count: StaffCountAggregateOutputType | null
@@ -236,8 +243,10 @@ export type StaffWhereInput = {
   department?: Prisma.EnumDepartmentNullableFilter<"Staff"> | $Enums.Department | null
   isHOD?: Prisma.BoolFilter<"Staff"> | boolean
   canVerify?: Prisma.BoolFilter<"Staff"> | boolean
+  status?: Prisma.EnumAccountStatusFilter<"Staff"> | $Enums.AccountStatus
   createdAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
+  SignUpRequest?: Prisma.XOR<Prisma.SignupRequestNullableScalarRelationFilter, Prisma.SignupRequestWhereInput> | null
 }
 
 export type StaffOrderByWithRelationInput = {
@@ -251,8 +260,10 @@ export type StaffOrderByWithRelationInput = {
   department?: Prisma.SortOrderInput | Prisma.SortOrder
   isHOD?: Prisma.SortOrder
   canVerify?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  SignUpRequest?: Prisma.SignupRequestOrderByWithRelationInput
 }
 
 export type StaffWhereUniqueInput = Prisma.AtLeast<{
@@ -269,8 +280,10 @@ export type StaffWhereUniqueInput = Prisma.AtLeast<{
   department?: Prisma.EnumDepartmentNullableFilter<"Staff"> | $Enums.Department | null
   isHOD?: Prisma.BoolFilter<"Staff"> | boolean
   canVerify?: Prisma.BoolFilter<"Staff"> | boolean
+  status?: Prisma.EnumAccountStatusFilter<"Staff"> | $Enums.AccountStatus
   createdAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
+  SignUpRequest?: Prisma.XOR<Prisma.SignupRequestNullableScalarRelationFilter, Prisma.SignupRequestWhereInput> | null
 }, "id" | "email">
 
 export type StaffOrderByWithAggregationInput = {
@@ -284,6 +297,7 @@ export type StaffOrderByWithAggregationInput = {
   department?: Prisma.SortOrderInput | Prisma.SortOrder
   isHOD?: Prisma.SortOrder
   canVerify?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.StaffCountOrderByAggregateInput
@@ -305,6 +319,7 @@ export type StaffScalarWhereWithAggregatesInput = {
   department?: Prisma.EnumDepartmentNullableWithAggregatesFilter<"Staff"> | $Enums.Department | null
   isHOD?: Prisma.BoolWithAggregatesFilter<"Staff"> | boolean
   canVerify?: Prisma.BoolWithAggregatesFilter<"Staff"> | boolean
+  status?: Prisma.EnumAccountStatusWithAggregatesFilter<"Staff"> | $Enums.AccountStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Staff"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Staff"> | Date | string
 }
@@ -320,8 +335,10 @@ export type StaffCreateInput = {
   department?: $Enums.Department | null
   isHOD?: boolean
   canVerify?: boolean
+  status?: $Enums.AccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  SignUpRequest?: Prisma.SignupRequestCreateNestedOneWithoutCreatedStaffInput
 }
 
 export type StaffUncheckedCreateInput = {
@@ -335,8 +352,10 @@ export type StaffUncheckedCreateInput = {
   department?: $Enums.Department | null
   isHOD?: boolean
   canVerify?: boolean
+  status?: $Enums.AccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  SignUpRequest?: Prisma.SignupRequestUncheckedCreateNestedOneWithoutCreatedStaffInput
 }
 
 export type StaffUpdateInput = {
@@ -350,8 +369,10 @@ export type StaffUpdateInput = {
   department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
   isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  SignUpRequest?: Prisma.SignupRequestUpdateOneWithoutCreatedStaffNestedInput
 }
 
 export type StaffUncheckedUpdateInput = {
@@ -365,8 +386,10 @@ export type StaffUncheckedUpdateInput = {
   department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
   isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  SignUpRequest?: Prisma.SignupRequestUncheckedUpdateOneWithoutCreatedStaffNestedInput
 }
 
 export type StaffCreateManyInput = {
@@ -380,6 +403,7 @@ export type StaffCreateManyInput = {
   department?: $Enums.Department | null
   isHOD?: boolean
   canVerify?: boolean
+  status?: $Enums.AccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -395,6 +419,7 @@ export type StaffUpdateManyMutationInput = {
   department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
   isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -410,6 +435,7 @@ export type StaffUncheckedUpdateManyInput = {
   department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
   isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -425,6 +451,7 @@ export type StaffCountOrderByAggregateInput = {
   department?: Prisma.SortOrder
   isHOD?: Prisma.SortOrder
   canVerify?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -440,6 +467,7 @@ export type StaffMaxOrderByAggregateInput = {
   department?: Prisma.SortOrder
   isHOD?: Prisma.SortOrder
   canVerify?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -455,8 +483,14 @@ export type StaffMinOrderByAggregateInput = {
   department?: Prisma.SortOrder
   isHOD?: Prisma.SortOrder
   canVerify?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type StaffNullableScalarRelationFilter = {
+  is?: Prisma.StaffWhereInput | null
+  isNot?: Prisma.StaffWhereInput | null
 }
 
 export type EnumStaffRoleFieldUpdateOperationsInput = {
@@ -465,6 +499,106 @@ export type EnumStaffRoleFieldUpdateOperationsInput = {
 
 export type NullableEnumDepartmentFieldUpdateOperationsInput = {
   set?: $Enums.Department | null
+}
+
+export type EnumAccountStatusFieldUpdateOperationsInput = {
+  set?: $Enums.AccountStatus
+}
+
+export type StaffCreateNestedOneWithoutSignUpRequestInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutSignUpRequestInput, Prisma.StaffUncheckedCreateWithoutSignUpRequestInput>
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutSignUpRequestInput
+  connect?: Prisma.StaffWhereUniqueInput
+}
+
+export type StaffUpdateOneWithoutSignUpRequestNestedInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutSignUpRequestInput, Prisma.StaffUncheckedCreateWithoutSignUpRequestInput>
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutSignUpRequestInput
+  upsert?: Prisma.StaffUpsertWithoutSignUpRequestInput
+  disconnect?: Prisma.StaffWhereInput | boolean
+  delete?: Prisma.StaffWhereInput | boolean
+  connect?: Prisma.StaffWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StaffUpdateToOneWithWhereWithoutSignUpRequestInput, Prisma.StaffUpdateWithoutSignUpRequestInput>, Prisma.StaffUncheckedUpdateWithoutSignUpRequestInput>
+}
+
+export type StaffCreateWithoutSignUpRequestInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  role: $Enums.StaffRole
+  email: string
+  password: string
+  phoneNumber?: string | null
+  department?: $Enums.Department | null
+  isHOD?: boolean
+  canVerify?: boolean
+  status?: $Enums.AccountStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type StaffUncheckedCreateWithoutSignUpRequestInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  role: $Enums.StaffRole
+  email: string
+  password: string
+  phoneNumber?: string | null
+  department?: $Enums.Department | null
+  isHOD?: boolean
+  canVerify?: boolean
+  status?: $Enums.AccountStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type StaffCreateOrConnectWithoutSignUpRequestInput = {
+  where: Prisma.StaffWhereUniqueInput
+  create: Prisma.XOR<Prisma.StaffCreateWithoutSignUpRequestInput, Prisma.StaffUncheckedCreateWithoutSignUpRequestInput>
+}
+
+export type StaffUpsertWithoutSignUpRequestInput = {
+  update: Prisma.XOR<Prisma.StaffUpdateWithoutSignUpRequestInput, Prisma.StaffUncheckedUpdateWithoutSignUpRequestInput>
+  create: Prisma.XOR<Prisma.StaffCreateWithoutSignUpRequestInput, Prisma.StaffUncheckedCreateWithoutSignUpRequestInput>
+  where?: Prisma.StaffWhereInput
+}
+
+export type StaffUpdateToOneWithWhereWithoutSignUpRequestInput = {
+  where?: Prisma.StaffWhereInput
+  data: Prisma.XOR<Prisma.StaffUpdateWithoutSignUpRequestInput, Prisma.StaffUncheckedUpdateWithoutSignUpRequestInput>
+}
+
+export type StaffUpdateWithoutSignUpRequestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
+  isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type StaffUncheckedUpdateWithoutSignUpRequestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
+  isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -480,8 +614,10 @@ export type StaffSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   department?: boolean
   isHOD?: boolean
   canVerify?: boolean
+  status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  SignUpRequest?: boolean | Prisma.Staff$SignUpRequestArgs<ExtArgs>
 }, ExtArgs["result"]["staff"]>
 
 export type StaffSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -495,6 +631,7 @@ export type StaffSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   department?: boolean
   isHOD?: boolean
   canVerify?: boolean
+  status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["staff"]>
@@ -510,6 +647,7 @@ export type StaffSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   department?: boolean
   isHOD?: boolean
   canVerify?: boolean
+  status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["staff"]>
@@ -525,15 +663,23 @@ export type StaffSelectScalar = {
   department?: boolean
   isHOD?: boolean
   canVerify?: boolean
+  status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type StaffOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "role" | "email" | "password" | "phoneNumber" | "department" | "isHOD" | "canVerify" | "createdAt" | "updatedAt", ExtArgs["result"]["staff"]>
+export type StaffOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "role" | "email" | "password" | "phoneNumber" | "department" | "isHOD" | "canVerify" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["staff"]>
+export type StaffInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  SignUpRequest?: boolean | Prisma.Staff$SignUpRequestArgs<ExtArgs>
+}
+export type StaffIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type StaffIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $StaffPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Staff"
-  objects: {}
+  objects: {
+    SignUpRequest: Prisma.$SignupRequestPayload<ExtArgs> | null
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     firstName: string
@@ -545,6 +691,7 @@ export type $StaffPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     department: $Enums.Department | null
     isHOD: boolean
     canVerify: boolean
+    status: $Enums.AccountStatus
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["staff"]>
@@ -941,6 +1088,7 @@ readonly fields: StaffFieldRefs;
  */
 export interface Prisma__StaffClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  SignUpRequest<T extends Prisma.Staff$SignUpRequestArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Staff$SignUpRequestArgs<ExtArgs>>): Prisma.Prisma__SignupRequestClient<runtime.Types.Result.GetResult<Prisma.$SignupRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -980,6 +1128,7 @@ export interface StaffFieldRefs {
   readonly department: Prisma.FieldRef<"Staff", 'Department'>
   readonly isHOD: Prisma.FieldRef<"Staff", 'Boolean'>
   readonly canVerify: Prisma.FieldRef<"Staff", 'Boolean'>
+  readonly status: Prisma.FieldRef<"Staff", 'AccountStatus'>
   readonly createdAt: Prisma.FieldRef<"Staff", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Staff", 'DateTime'>
 }
@@ -999,6 +1148,10 @@ export type StaffFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Interna
    */
   omit?: Prisma.StaffOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StaffInclude<ExtArgs> | null
+  /**
    * Filter, which Staff to fetch.
    */
   where: Prisma.StaffWhereUniqueInput
@@ -1017,6 +1170,10 @@ export type StaffFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.
    */
   omit?: Prisma.StaffOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StaffInclude<ExtArgs> | null
+  /**
    * Filter, which Staff to fetch.
    */
   where: Prisma.StaffWhereUniqueInput
@@ -1034,6 +1191,10 @@ export type StaffFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the Staff
    */
   omit?: Prisma.StaffOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StaffInclude<ExtArgs> | null
   /**
    * Filter, which Staff to fetch.
    */
@@ -1083,6 +1244,10 @@ export type StaffFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.StaffOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StaffInclude<ExtArgs> | null
+  /**
    * Filter, which Staff to fetch.
    */
   where?: Prisma.StaffWhereInput
@@ -1130,6 +1295,10 @@ export type StaffFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the Staff
    */
   omit?: Prisma.StaffOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StaffInclude<ExtArgs> | null
   /**
    * Filter, which Staff to fetch.
    */
@@ -1179,6 +1348,10 @@ export type StaffCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   omit?: Prisma.StaffOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StaffInclude<ExtArgs> | null
+  /**
    * The data needed to create a Staff.
    */
   data: Prisma.XOR<Prisma.StaffCreateInput, Prisma.StaffUncheckedCreateInput>
@@ -1226,6 +1399,10 @@ export type StaffUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Omit specific fields from the Staff
    */
   omit?: Prisma.StaffOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StaffInclude<ExtArgs> | null
   /**
    * The data needed to update a Staff.
    */
@@ -1293,6 +1470,10 @@ export type StaffUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   omit?: Prisma.StaffOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StaffInclude<ExtArgs> | null
+  /**
    * The filter to search for the Staff to update in case it exists.
    */
   where: Prisma.StaffWhereUniqueInput
@@ -1319,6 +1500,10 @@ export type StaffDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   omit?: Prisma.StaffOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StaffInclude<ExtArgs> | null
+  /**
    * Filter which Staff to delete.
    */
   where: Prisma.StaffWhereUniqueInput
@@ -1339,6 +1524,25 @@ export type StaffDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
+ * Staff.SignUpRequest
+ */
+export type Staff$SignUpRequestArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SignupRequest
+   */
+  select?: Prisma.SignupRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SignupRequest
+   */
+  omit?: Prisma.SignupRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SignupRequestInclude<ExtArgs> | null
+  where?: Prisma.SignupRequestWhereInput
+}
+
+/**
  * Staff without action
  */
 export type StaffDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1350,4 +1554,8 @@ export type StaffDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the Staff
    */
   omit?: Prisma.StaffOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StaffInclude<ExtArgs> | null
 }
