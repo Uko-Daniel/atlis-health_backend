@@ -372,6 +372,11 @@ async function finalizeResult(params: {
     throw new Error('Staff is not in the same department as this result');
   }
 
+  await prisma.order.update({
+    where: { id: result.orderId },
+    data: { status: 'COMPLETED' },
+  });
+
   return prisma.result.update({
     where: { id: resultId },
     data:  { status: ResultStatus.FINALIZED },

@@ -213,7 +213,8 @@ export const vitalController = {
   async getVitalTrend(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { patientId } = request.params as { patientId: string };
-      const { limit }     = request.query  as { limit?: number };
+      const query = request.query as { limit?: string };
+      const limit = query.limit ? parseInt(query.limit, 10) : undefined;
       const vitals = await vitalService.getVitalTrend(patientId, limit);
       return reply.status(200).send(vitals);
     } catch (err: any) {
