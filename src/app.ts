@@ -10,7 +10,7 @@ import { authRoutes } from "./routes/authRoutes";
 import { templateRoutes } from "./routes/templateRoutes";
 import { eveeRoutes } from "./routes/eveeRoutes";
 import {recordRoutes} from "./routes/recordRoutes";
-import { signupRoutes } from "./routes/signUpRoutes";
+import { signupRoutes } from "./routes/signupRoutes";
 
 
 
