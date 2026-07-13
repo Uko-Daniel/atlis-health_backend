@@ -2,14 +2,9 @@ import { type Patient } from '../types/patient';
 import { type Template } from '../types/template';
 import { type Service } from '../types/service';
 import Ajv from 'ajv';
-import type { AnySchema } from 'ajv';
 import { prisma } from '../lib/prisma';
 
 const ajv = new Ajv({ allErrors: true });
-
-function isAjvSchema(value: unknown): value is AnySchema {
-  return typeof value === 'object' && value !== null;
-}
 
 // --------------------------- Patient ---------------------------
 

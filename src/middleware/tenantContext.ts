@@ -31,10 +31,8 @@ export async function resolveTenant(
   const host = request.headers.host ?? '';
   const originHost = host.split(':')[0] ?? ''; // strip port
 
-  let tenant = null;
-
   // 1. Try custom domain exact match
-  tenant = await prisma.tenant.findFirst({
+  let tenant = await prisma.tenant.findFirst({
     where: {
       customDomain: originHost,
       subscriptionStatus: { not: 'EXPIRED' },

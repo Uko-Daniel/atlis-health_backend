@@ -3,7 +3,6 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import {
   Department,
   PrismaClient,
-  TemplateType,
   PlanTier,
   SubscriptionStatus,
   StaffRole,

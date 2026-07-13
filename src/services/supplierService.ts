@@ -34,7 +34,7 @@ export const supplierService = {
     return prisma.supplier.findFirst({ where: { id, tenantId } });
   },
 
-  async update(id: string, tenantId: string, data: {
+  async update(id: string, _tenantId: string, data: {
     name?: string;
     contactPerson?: string;
     phone?: string;
@@ -57,7 +57,7 @@ export const supplierService = {
     });
   },
 
-  async deactivate(id: string, tenantId: string) {
+  async deactivate(id: string, _tenantId: string) {
     return prisma.supplier.update({
       where: { id },
       data: { isActive: false },

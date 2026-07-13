@@ -158,9 +158,9 @@ export const eveeService = {
 
     } catch (err: any) {
       if (err.name === 'AbortError') {
-        throw new Error('EVEE engine timed out — evaluation aborted');
+        throw new Error('EVEE engine timed out — evaluation aborted', { cause: err });
       }
-      throw new Error(`Failed to reach EVEE engine: ${err.message}`);
+      throw new Error(`Failed to reach EVEE engine: ${err.message}`, { cause: err });
     }
 
     const alerts        = engineResponse.alerts ?? [];

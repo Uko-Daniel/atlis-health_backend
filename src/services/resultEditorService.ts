@@ -1,5 +1,5 @@
 import { prisma } from '../lib/prisma';
-import { Department, ResultStatus, Prisma } from '../../generated/prisma/client';
+import { ResultStatus, Prisma } from '../../generated/prisma/client';
 import { acquireLock, releaseLock, refreshLock, assertLockOwner } from '../utils/editLock';
 import { calculate, getAvailableFormulas, getFormulaInputs } from '../utils/formulaEngine';
 import type { FormulaKey, PatientContext } from '../utils/formulaEngine';
@@ -307,8 +307,6 @@ export async function autoSaveDraft(
   const flaggedDraft: DraftData = {
     ...draft,
     groups: draft.groups.map(draftGroup => {
-      const schemaGroup = schema.groups.find(g => g.id === draftGroup.groupId);
-
       return {
         ...draftGroup,
         fields: draftGroup.fields.map(draftField => {
@@ -468,7 +466,7 @@ export async function flagFieldEntry(params: {
 function buildCriticalLabAlert(
   field: TemplateField,
   value: number,
-  flag:  'C',
+  _flag: 'C',
 ): EveeInlineAlert {
   const direction = field.criticalRange?.low !== undefined && value < field.criticalRange.low
     ? 'critically low'

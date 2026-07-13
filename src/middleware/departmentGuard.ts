@@ -57,7 +57,7 @@ export async function guardResultDepartment(
   request: FastifyRequest,
   reply:   FastifyReply,
 ): Promise<void> {
-  const { role, department: userDept } = request.user;
+  const { department: userDept } = request.user;
 
   const { id, resultId } = request.params as {
     id?:       string;
@@ -108,7 +108,7 @@ export async function guardTemplateDepartment(
   request: FastifyRequest,
   reply:   FastifyReply,
 ): Promise<void> {
-  const { role, department: userDept } = request.user;
+  const { department: userDept } = request.user;
 
   const { id } = request.params as { id: string };
 
@@ -154,7 +154,7 @@ export async function guardTemplateDepartment(
  */
 export async function attachDepartmentContext(
   _request: FastifyRequest,
-  _reply:    FastifyReply,
+  _reply: FastifyReply,
 ): Promise<void> {
   // Department is already on request.user from the JWT payload.
   // This hook exists as a named placeholder for route clarity

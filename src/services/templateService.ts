@@ -1,7 +1,7 @@
 import { prisma } from '../lib/prisma';
 import { Department, Prisma, TemplateType } from '../../generated/prisma/client';
 import { paginate } from '../utils/pagination';
-import type { FieldType, LayoutType, CriticalRange, TemplateField, TemplateGroup, InterpretationConfig, SignatureConfig, DataSchema } from '../types/template';
+import type { FieldType, LayoutType, DataSchema } from '../types/template';
 
 // ─── Validation ──────────────────────────────────────────────────────────────
 
@@ -340,7 +340,7 @@ export async function cloneTemplate(data: {
  */
 export async function updateTemplate(
   id: string,
-  staffId: string,
+  _staffId: string,
   tenantId: string,
   updates: {
     name?:        string;
@@ -390,7 +390,7 @@ export async function updateTemplate(
  * Deactivate (soft-delete) a template.
  * Hard deletion is blocked if results exist against it.
  */
-export async function deactivateTemplate(id: string, staffId: string, tenantId: string) {
+export async function deactivateTemplate(id: string, _staffId: string, tenantId: string) {
   if (!id) throw new Error('Template ID is required');
   if (!tenantId) throw new Error('tenantId is required');
 
@@ -410,7 +410,7 @@ export async function deactivateTemplate(id: string, staffId: string, tenantId: 
   });
 }
 
-export async function activateTemplate(id: string, staffId: string) {
+export async function activateTemplate(id: string, _staffId: string) {
   if (!id) throw new Error('Template ID is required');
 
   const template = await prisma.template.findUnique({ where: { id } });

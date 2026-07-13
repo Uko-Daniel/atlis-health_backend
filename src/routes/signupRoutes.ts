@@ -79,7 +79,7 @@ export async function signupRoutes(fastify: FastifyInstance) {
 
   fastify.get('/admin/signup-requests', {
     preHandler: [authenticate],
-    handler: async (request, reply) => {
+    handler: async (request, _reply) => {
       const query = listQuerySchema.parse(request.query)
       return signupService.list({ ...query, tenantId: request.tenantId })
     },

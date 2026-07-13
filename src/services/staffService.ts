@@ -42,7 +42,7 @@ export interface LoginInput {
 
 const VALID_ROLES: StaffRole[] = [
   'ADMIN','DOCTOR','NURSES','LAB_SCIENTIST','IMAGING_TECH',
-  'PHARMACIST','RECEPTIONIST','BILLING_OFFICER',
+  'PHARMACIST', 'PROCUREMENT_OFFICER','RECEPTIONIST','BILLING_OFFICER',
   'HIM_OFFICER','MANAGER','IT_SUPPORT',
 ];
 
@@ -131,7 +131,7 @@ export const staffService = {
     const valid = await argon2.verify(staff.password, data.password);
     if (!valid) throw new Error('Invalid credentials');
 
-    const { password, ...safeStaff } = staff;
+    const { password: _password, ...safeStaff } = staff;
 
     return safeStaff;
   },

@@ -69,7 +69,7 @@ export const purchaseOrderService = {
     });
   },
 
-  async receive(id: string, tenantId: string, receivedBy: string) {
+  async receive(id: string, tenantId: string, _receivedBy: string) {
     const po = await prisma.purchaseOrder.findFirst({
       where: { id, tenantId },
       include: { items: true },

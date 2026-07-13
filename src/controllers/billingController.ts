@@ -1,6 +1,5 @@
 import { type FastifyRequest, type FastifyReply } from 'fastify';
 import {
-  calculateBilling,
   closeBillingPeriod,
   closeAllBillingPeriods,
   getBillingHistory,

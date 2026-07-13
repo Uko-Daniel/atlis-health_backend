@@ -1,5 +1,5 @@
 import { prisma } from '../lib/prisma';
-import type { PlanTier, BillingStatus } from '../../generated/prisma/client';
+import type { PlanTier } from '../../generated/prisma/client';
 
 // ── PRICING CONFIG ────────────────────────────────────────────
 
@@ -89,7 +89,7 @@ async function countEncounters(tenantId: string, periodStart: Date, periodEnd: D
  * In practice this would come from a dedicated metering table —
  * for now, estimate from encounter duration or return 0.
  */
-async function countVideoMinutes(tenantId: string, periodStart: Date, periodEnd: Date): Promise<number> {
+async function countVideoMinutes(_tenantId: string, _periodStart: Date, _periodEnd: Date): Promise<number> {
   // Stub — actual video metering requires Google Meet webhook integration
   return 0;
 }

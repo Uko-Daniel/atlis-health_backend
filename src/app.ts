@@ -1,4 +1,4 @@
-import { fastify, type FastifyInstance } from "fastify";
+import { type FastifyInstance } from "fastify";
 import { patientRoutes } from "./routes/patientRoutes";
 import orderRoutes from "./routes/orderRoutes";
 import { staffRoutes } from "./routes/staffRoutes";
