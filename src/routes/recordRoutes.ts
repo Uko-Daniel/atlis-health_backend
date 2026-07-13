@@ -18,6 +18,12 @@ export async function recordRoutes(fastify: FastifyInstance) {
     handler: recordController.getRecordsByPatient,
   });
 
+  // GET /api/records/completeness
+  fastify.get('/records/completeness', {
+    preHandler: [authorize(['HIM_OFFICER', 'ADMIN', 'MANAGER', 'SUPER_ADMIN'])],
+    handler: recordController.getRecordCompleteness,
+  });
+
   // GET /api/records/:id/summary
   fastify.get('/:id/summary', {
     handler: recordController.getRecordSummary,

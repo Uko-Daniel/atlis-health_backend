@@ -78,6 +78,53 @@ export const recordService = {
     return record;
   },
 
+  async getRecordCompleteness(tenantId: string) {
+  const patients = await prisma.patient.findMany({
+    where: { tenantId },
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      encounters: {
+        orderBy: { encounteredAt: 'desc' },
+        take: 1,
+        select: {
+          id: true,
+          encounteredAt: true,
+          vitals: { take: 1 },
+          diagnoses: { take: 1 },
+        },
+      },
+      allergies: { take: 1 },
+    },
+    take: 100,
+  });
+
+  return patients.map((p) => {
+    const missing: string[] = [];
+    const lastEncounter = p.encounters[0];
+
+    if (!lastEncounter) {
+      missing.push('No encounters');
+    } else {
+      if (!lastEncounter.vitals.length) missing.push('Vitals');
+      if (!lastEncounter.diagnoses.length) missing.push('Diagnosis');
+    }
+
+    if (!p.allergies.length) missing.push('Allergies');
+
+    return {
+      patientId: p.id,
+      patientName: `${p.firstName} ${p.lastName}`,
+      hasVitals: lastEncounter ? lastEncounter.vitals.length > 0 : false,
+      hasDiagnosis: lastEncounter ? lastEncounter.diagnoses.length > 0 : false,
+      hasAllergies: p.allergies.length > 0,
+      lastEncounter: lastEncounter?.encounteredAt?.toISOString() ?? null,
+      missingItems: missing,
+    };
+  });
+},
+
   // Summary counts — useful for a patient overview screen
   async getRecordSummary(id: string, tenantId: string) {
     const record = await prisma.record.findFirst({ where: { id, patient: { tenantId } } });

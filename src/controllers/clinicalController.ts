@@ -339,6 +339,15 @@ export const medicationController = {
     }
   },
 
+  async getActiveMedications(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const medications = await medicationService.getActiveMedications(request.tenantId)
+      return reply.send(medications)
+    } catch (err: any) {
+      return reply.status(500).send({ error: err.message })
+    }
+  },
+
   async getMedicationsByRecord(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { recordId } = request.params as { recordId: string };

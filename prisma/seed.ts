@@ -16,399 +16,169 @@ if (!connectionString) {
   throw new Error("DATABASE_URL is not set");
 }
 
-const adapter = new PrismaPg({
-  connectionString,
-});
-
+const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  console.log('🌱 Seeding tenant, templates, services, and staff accounts...');
+  console.log('🧪 Seeding beta test structure...\n');
+
+  const seedPassword = 'password123';
 
   // =========================
-  // DEFAULT TENANT
+  // TENANT 1: Nova Care Hospital
   // =========================
 
-  const tenant = await prisma.tenant.upsert({
-    where: { subdomain: 'atlis' },
+  const novaCare = await prisma.tenant.upsert({
+    where: { subdomain: 'novacare' },
     update: {},
     create: {
-      facilityName: 'Atlis Health',
-      subdomain: 'atlis',
-      planTier: PlanTier.TIER_4,
+      facilityName: 'Nova Care',
+      subdomain: 'novacare',
+      planTier: PlanTier.TIER_2,
       subscriptionStatus: SubscriptionStatus.ACTIVE,
       licenseExpiresAt: new Date('2027-12-31'),
       eveeEnabled: true,
-      prioritySupport: true,
+      themePrimaryColor: '#242775ff',
+      logoUrl: '/novacare-icon.svg',
     },
   });
 
-  console.log(`🏥 Tenant: ${tenant.facilityName} (${tenant.id})`);
+  console.log(`🏥 ${novaCare.facilityName}`);
 
-  // =========================
-  // TENANT PERMISSIONS (defaults)
-  // =========================
-
-  const defaultPermissions: Array<{
-    permissionKey: string;
-    allowedRoles: StaffRole[];
-  }> = [
-    { permissionKey: 'allowOrderTest', allowedRoles: [] },
-    { permissionKey: 'allowRecordVitalsWithoutActiveEncounter', allowedRoles: [] },
-    { permissionKey: 'allowViewDiagnoses', allowedRoles: [] },
+  // Default permissions
+  const defaultPermissions: Array<{ permissionKey: string; allowedRoles: StaffRole[] }> = [
+    { permissionKey: 'allowOrderTest', allowedRoles: [StaffRole.DOCTOR, StaffRole.NURSES, StaffRole.ADMIN] },
+    { permissionKey: 'allowRecordVitalsWithoutActiveEncounter', allowedRoles: [StaffRole.DOCTOR, StaffRole.NURSES, StaffRole.ADMIN] },
+    { permissionKey: 'allowViewDiagnoses', allowedRoles: [StaffRole.DOCTOR, StaffRole.ADMIN] },
     { permissionKey: 'requireDoctorCosignOnPrescription', allowedRoles: [] },
     { permissionKey: 'allowViewOrderStatus', allowedRoles: [StaffRole.BILLING_OFFICER] },
+    { permissionKey: 'allowCreateRequests', allowedRoles: [StaffRole.DOCTOR, StaffRole.NURSES, StaffRole.LAB_SCIENTIST, StaffRole.IMAGING_TECH, StaffRole.PHARMACIST, StaffRole.RECEPTIONIST, StaffRole.BILLING_OFFICER, StaffRole.HIM_OFFICER, StaffRole.PROCUREMENT_OFFICER, StaffRole.ADMIN, StaffRole.MANAGER] },
+    { permissionKey: 'allowApproveRequests', allowedRoles: [StaffRole.ADMIN, StaffRole.MANAGER, StaffRole.BILLING_OFFICER] },
+    { permissionKey: 'allowManageInventory', allowedRoles: [StaffRole.PROCUREMENT_OFFICER, StaffRole.ADMIN, StaffRole.MANAGER] },
+    { permissionKey: 'allowViewAuditLogs', allowedRoles: [StaffRole.HIM_OFFICER, StaffRole.ADMIN, StaffRole.MANAGER] },
+    { permissionKey: 'allowExportRecords', allowedRoles: [StaffRole.HIM_OFFICER, StaffRole.ADMIN, StaffRole.DOCTOR] },
   ];
 
   for (const perm of defaultPermissions) {
     await prisma.tenantPermission.upsert({
-      where: { tenantId_permissionKey: { tenantId: tenant.id, permissionKey: perm.permissionKey } },
+      where: { tenantId_permissionKey: { tenantId: novaCare.id, permissionKey: perm.permissionKey } },
       update: {},
-      create: {
-        tenantId: tenant.id,
-        permissionKey: perm.permissionKey,
-        allowedRoles: perm.allowedRoles,
-        updatedBy: 'seed',
-      },
+      create: { tenantId: novaCare.id, permissionKey: perm.permissionKey, allowedRoles: perm.allowedRoles, updatedBy: 'seed' },
     });
   }
 
-  console.log('🔐 Default permissions seeded');
-
-  // =========================
-  // TEMPLATES
-  // =========================
-
-  const templates = await Promise.all([
-
-    prisma.template.upsert({
-      where: { name: 'CBC Template' },
+  // HMOs
+  for (const p of [
+    { name: 'NHIA', type: 'NHIA' as const },
+    { name: 'AXA Mansard', type: 'HMO' as const },
+  ]) {
+    await prisma.payer.upsert({
+      where: { tenantId_name: { tenantId: novaCare.id, name: p.name } },
       update: {},
-      create: {
-        name: 'CBC Template',
-        type: TemplateType.LAB,
-        department: Department.LABORATORY,
-        tenantId: tenant.id,
-        dataSchema: {
-          fields: [
-            { name: 'hemoglobin', unit: 'g/dL', range: '12-16' },
-            { name: 'wbc', unit: 'x10^9/L', range: '4-11' },
-            { name: 'platelets', unit: 'x10^9/L', range: '150-450' }
-          ]
-        }
-      }
-    }),
+      create: { tenantId: novaCare.id, name: p.name, type: p.type },
+    });
+  }
 
-    prisma.template.upsert({
-      where: { name: 'Malaria Template' },
+  // Expense categories
+  for (const name of ['Staff Salaries', 'Drugs & Supplies', 'Utilities', 'Maintenance', 'Miscellaneous']) {
+    await prisma.expenseCategory.upsert({
+      where: { id: `${novaCare.id}-${name}` } as any,
       update: {},
-      create: {
-        name: 'Malaria Template',
-        type: TemplateType.LAB,
-        department: Department.LABORATORY,
-        tenantId: tenant.id,
-        dataSchema: {
-          fields: [
-            { name: 'parasiteDetected', type: 'boolean' },
-            { name: 'parasiteDensity', unit: 'parasites/µL' }
-          ]
-        }
-      }
-    }),
+      create: { tenantId: novaCare.id, name },
+    }).catch(() => {});
+  }
 
-    prisma.template.upsert({
-      where: { name: 'Urinalysis Template' },
-      update: {},
-      create: {
-        name: 'Urinalysis Template',
-        type: TemplateType.LAB,
-        department: Department.LABORATORY,
-        tenantId: tenant.id,
-        dataSchema: {
-          fields: [
-            { name: 'color', type: 'string' },
-            { name: 'ph', type: 'number', range: '4.5-8' },
-            { name: 'protein', type: 'string' },
-            { name: 'glucose', type: 'string' }
-          ]
-        }
-      }
-    }),
-
-    prisma.template.upsert({
-      where: { name: 'X-Ray Template' },
-      update: {},
-      create: {
-        name: 'X-Ray Template',
-        type: TemplateType.IMAGING,
-        department: Department.RADIOLOGY,
-        tenantId: tenant.id,
-        dataSchema: {
-          fields: [
-            { name: 'finding', type: 'text' },
-            { name: 'impression', type: 'text' }
-          ]
-        }
-      }
-    }),
-
-    prisma.template.upsert({
-      where: { name: 'Ultrasound Template' },
-      update: {},
-      create: {
-        name: 'Ultrasound Template',
-        type: TemplateType.IMAGING,
-        department: Department.RADIOLOGY,
-        tenantId: tenant.id,
-        dataSchema: {
-          fields: [
-            { name: 'organ', type: 'string' },
-            { name: 'finding', type: 'text' },
-            { name: 'impression', type: 'text' }
-          ]
-        }
-      }
-    }),
-
-  ]);
-
-  // =========================
-  // SERVICES
-  // =========================
-
-  await Promise.all([
-
-    prisma.service.upsert({
-      where: { labCode: 'CBC' },
-      update: {},
-      create: {
-        name: 'Complete Blood Count',
-        labCode: 'CBC',
-        category: 'Hematology',
-        price: 5000,
-        tenantId: tenant.id,
-        templateId: templates[0].id,
-      }
-    }),
-
-    prisma.service.upsert({
-      where: { labCode: 'MP' },
-      update: {},
-      create: {
-        name: 'Malaria Parasite Test',
-        labCode: 'MP',
-        category: 'Parasitology',
-        price: 3000,
-        tenantId: tenant.id,
-        templateId: templates[1].id,
-      }
-    }),
-
-    prisma.service.upsert({
-      where: { labCode: 'UA' },
-      update: {},
-      create: {
-        name: 'Urinalysis',
-        labCode: 'UA',
-        category: 'Chemistry',
-        price: 4000,
-        tenantId: tenant.id,
-        templateId: templates[2].id,
-      }
-    }),
-
-    prisma.service.upsert({
-      where: { labCode: 'XRAY_CHEST' },
-      update: {},
-      create: {
-        name: 'Chest X-Ray',
-        labCode: 'XRAY_CHEST',
-        category: 'Imaging',
-        price: 10000,
-        tenantId: tenant.id,
-        templateId: templates[3].id,
-      }
-    }),
-
-    prisma.service.upsert({
-      where: { labCode: 'USS_ABD' },
-      update: {},
-      create: {
-        name: 'Abdominal Ultrasound',
-        labCode: 'USS_ABD',
-        category: 'Imaging',
-        price: 15000,
-        tenantId: tenant.id,
-        templateId: templates[4].id,
-      }
-    }),
-
-  ]);
-
-  // =========================
-  // STAFF ACCOUNTS
-  // =========================
-
-  const seedPassword = 'password123';
-
-  const staffAccounts = [
-    {
-      firstName: 'Daniel',
-      lastName:  'Uko',
-      email:     'admin@atlis.com',
-      role:      'ADMIN' as const,
-      department: Department.ADMINISTRATION,
-      phoneNumber: '+2349062345678',
-      tenantId:    tenant.id,
-      isHOD:     true,
-      canVerify: true,
-    },
-    {
-      firstName: 'Damilola',
-      lastName:  'Olaosebiomo',
-      email:     'doctor@atlis.com',
-      role:      'DOCTOR' as const,
-      department: Department.GENERAL,
-      phoneNumber: '+2349052345678',
-      tenantId:    tenant.id,
-      isHOD:     false,
-      canVerify: false,
-    },
-    {
-      firstName: 'Rotimi',
-      lastName:  'Brownson',
-      email:     'nurse@atlis.com',
-      role:      'NURSES' as const,
-      department: Department.GENERAL,
-      tenantId:    tenant.id,
-      phoneNumber: '+2349042345678',
-      isHOD:     false,
-      canVerify: false,
-    },
-    {
-      firstName: 'Lab',
-      lastName:  'Technician',
-      email:     'labtech@atlis.com',
-      role:      'LAB_SCIENTIST' as const,
-      department: Department.LABORATORY,
-       tenantId:    tenant.id,
-      phoneNumber: '+2349032345678',
-      isHOD:     false,
-      canVerify: true,
-    },
-    {
-      firstName: 'Radiologist',
-      lastName:  'One',
-      email:     'radiologist@atlis.com',
-      role:      'IMAGING_TECH' as const,
-      department: Department.RADIOLOGY,
-       tenantId:    tenant.id,
-      phoneNumber: '+2349022345678',
-      isHOD:     false,
-      canVerify: true,
-    },
-    {
-      firstName: 'Pharmacist',
-      lastName:  'One',
-      email:     'pharmacist@atlis.com',
-      role:      'PHARMACIST' as const,
-      department: Department.PHARMACY,
-       tenantId:    tenant.id,
-      phoneNumber: '+2348112345678',
-      isHOD:     false,
-      canVerify: false,
-    },
-    {
-      firstName: 'Receptionist',
-      lastName:  'One',
-      email:     'receptionist@atlis.com',
-      role:      'RECEPTIONIST' as const,
-      department: Department.ADMINISTRATION,
-       tenantId:    tenant.id,
-      phoneNumber: '+2347112345678',
-      isHOD:     false,
-      canVerify: false,
-    },
-    {
-      firstName: 'Billing',
-      lastName:  'Officer',
-      email:     'billing@atlis.com',
-      role:      'BILLING_OFFICER' as const,
-      department: Department.ADMINISTRATION,
-       tenantId:    tenant.id,
-      phoneNumber: '+2349112345678',
-      isHOD:     false,
-      canVerify: false,
-    },
-    {
-      firstName: 'HIM',
-      lastName:  'Officer',
-      email:     'him@atlis.com',
-      role:      'HIM_OFFICER' as const,
-      department: Department.ADMINISTRATION,
-       tenantId:    tenant.id,
-      phoneNumber: '+2347012345678',
-      isHOD:     true,
-      canVerify: false,
-    },
-    {
-      firstName: 'Manager',
-      lastName:  'One',
-      email:     'manager@atlis.com',
-      role:      'MANAGER' as const,
-      department: Department.ADMINISTRATION,
-       tenantId:    tenant.id,
-      phoneNumber: '+2349012345678',
-      isHOD:     true,
-      canVerify: true,
-    },
-    {
-      firstName: 'IT',
-      lastName:  'Support',
-      email:     'it@atlis.com',
-      role:      'IT_SUPPORT' as const,
-      department: Department.ADMINISTRATION,
-       tenantId:    tenant.id,
-      phoneNumber: '+2348012345678',
-      isHOD:     false,
-      canVerify: false,
-    },
+  // Staff
+  const novaStaff = [
+    { firstName: 'Adebola', lastName: 'Ogunleye', email: 'admin@novacare.com', role: 'ADMIN' as const, department: Department.ADMINISTRATION, phone: '+2348051111111', isHOD: true, canVerify: true },
+    { firstName: 'Folake', lastName: 'Adebayo', email: 'manager@novacare.com', role: 'MANAGER' as const, department: Department.ADMINISTRATION, phone: '+2348051111112', isHOD: true, canVerify: false },
   ];
 
-  console.log('👥 Creating staff accounts...');
-
-  for (const staff of staffAccounts) {
+  for (const s of novaStaff) {
     try {
       await staffService.createStaff({
-        firstName:   staff.firstName,
-        lastName:    staff.lastName,
-        email:       staff.email,
-        password:    seedPassword,
-        role:        staff.role,
-        department:  staff.department,
-        phoneNumber: staff.phoneNumber,
-         tenantId:    tenant.id,
-        isHOD:       staff.isHOD,
-        canVerify:   staff.canVerify,
+        firstName: s.firstName, lastName: s.lastName, email: s.email,
+        password: seedPassword, role: s.role, tenantId: novaCare.id,
+        department: s.department, phoneNumber: s.phone, isHOD: s.isHOD, canVerify: s.canVerify,
       });
-      console.log(`  ✅ ${staff.firstName} ${staff.lastName} (${staff.role})`);
+      console.log(`  ✅ ${s.firstName} ${s.lastName} (${s.role})`);
     } catch (err: any) {
-      if (err.message.includes('already exists')) {
-        console.log(`  ⏭️  ${staff.email} already exists — skipped`);
-      } else {
-        console.error(`  ❌ Failed to create ${staff.email}:`, err.message);
-      }
+      if (!err.message.includes('already exists')) console.error(`  ❌ ${s.email}: ${err.message}`);
     }
   }
 
-  console.log('✅ Seeding complete.');
+  // =========================
+  // TENANT 2: Eudora Medical Centre
+  // =========================
+
+  const eudora = await prisma.tenant.upsert({
+    where: { subdomain: 'eudora' },
+    update: {},
+    create: {
+      facilityName: 'Eudora Medical Centre',
+      subdomain: 'eudora',
+      planTier: PlanTier.TIER_3,
+      subscriptionStatus: SubscriptionStatus.ACTIVE,
+      licenseExpiresAt: new Date('2027-12-31'),
+      eveeEnabled: true,
+      themePrimaryColor: '#028fa3ff',
+      logoUrl: '/eudora-icon.svg',
+    },
+  });
+
+  console.log(`🏥 ${eudora.facilityName}`);
+
+  for (const perm of defaultPermissions) {
+    await prisma.tenantPermission.upsert({
+      where: { tenantId_permissionKey: { tenantId: eudora.id, permissionKey: perm.permissionKey } },
+      update: {},
+      create: { tenantId: eudora.id, permissionKey: perm.permissionKey, allowedRoles: perm.allowedRoles, updatedBy: 'seed' },
+    });
+  }
+
+  for (const p of [
+    { name: 'NHIA', type: 'NHIA' as const },
+    { name: 'AXA Mansard', type: 'HMO' as const },
+  ]) {
+    await prisma.payer.upsert({
+      where: { tenantId_name: { tenantId: eudora.id, name: p.name } },
+      update: {},
+      create: { tenantId: eudora.id, name: p.name, type: p.type },
+    });
+  }
+
+  for (const name of ['Staff Salaries', 'Drugs & Supplies', 'Utilities', 'Maintenance', 'Miscellaneous']) {
+    await prisma.expenseCategory.upsert({
+      where: { id: `${eudora.id}-${name}` } as any,
+      update: {},
+      create: { tenantId: eudora.id, name },
+    }).catch(() => {});
+  }
+
+  const eudoraStaff = [
+    { firstName: 'Babajide', lastName: 'Akintola', email: 'admin@eudora.com', role: 'ADMIN' as const, department: Department.ADMINISTRATION, phone: '+2348062222221', isHOD: true, canVerify: true },
+    { firstName: 'Simisola', lastName: 'Alabi', email: 'manager@eudora.com', role: 'MANAGER' as const, department: Department.ADMINISTRATION, phone: '+2348062222222', isHOD: true, canVerify: false },
+  ];
+
+  for (const s of eudoraStaff) {
+    try {
+      await staffService.createStaff({
+        firstName: s.firstName, lastName: s.lastName, email: s.email,
+        password: seedPassword, role: s.role, tenantId: eudora.id,
+        department: s.department, phoneNumber: s.phone, isHOD: s.isHOD, canVerify: s.canVerify,
+      });
+      console.log(`  ✅ ${s.firstName} ${s.lastName} (${s.role})`);
+    } catch (err: any) {
+      if (!err.message.includes('already exists')) console.error(`  ❌ ${s.email}: ${err.message}`);
+    }
+  }
+
+  console.log('\n✅ Beta test structure seeded!');
+  console.log('📋 Login accounts (password: password123):');
+  console.log('   Nova Care: admin@novacare.com | manager@novacare.com');
+  console.log('   Eudora:   admin@eudora.com   | manager@eudora.com');
 }
 
 main()
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+  .catch((e) => { console.error('❌ Seed failed:', e); process.exit(1) })
+  .finally(() => prisma.$disconnect());

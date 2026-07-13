@@ -163,6 +163,20 @@ async getAllStaff(tenantId: string, department?: Department) {
     },
    });
   },
+  
+  async getStaffActivity(staffId: string, tenantId: string) {
+    return prisma.auditLog.findMany({
+      where: { userId: staffId, tenantId },
+      orderBy: { createdAt: 'desc' },
+      take: 15,
+      select: {
+        id: true,
+        action: true,
+        entityType: true,
+        createdAt: true,
+      },
+    })
+  },
 
   async updateStaff(id: string, tenantId: string, data: UpdateStaffInput) {
     const existing = await prisma.staff.findFirst({ where: { id, tenantId } });

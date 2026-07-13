@@ -14,7 +14,7 @@ export async function patientRoutes(fastify: FastifyInstance) {
         handler:  patientController.getAllPatients
     });
     fastify.get('/patients/:id', {
-        preHandler: [authenticate, authorize(['IT_SUPPORT', 'ADMIN', 'MANAGER', 'BILLING_OFFICER', 'HIM_OFFICER', 'DOCTOR', 'NURSES', 'PHARMACIST'])],
+        preHandler: [authenticate, authorize(['IT_SUPPORT', 'ADMIN', 'MANAGER', 'BILLING_OFFICER', 'HIM_OFFICER', 'DOCTOR', 'NURSES', 'PHARMACIST', 'LAB_SCIENTIST', 'IMAGING_TECH'])],
         handler: patientController.getPatientById
     });
     fastify.put('/patients/:id', {

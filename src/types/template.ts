@@ -14,6 +14,7 @@ export type FieldType =
   | 'multiselect'
   | 'richtext'
   | 'calculated'
+  | 'image'
   | 'boolean';
 
 export type LayoutType = 'table' | 'sections' | 'freeform';

@@ -31,10 +31,19 @@ export const recordController = {
 
   // GET /api/records/patient/:patientId
   async getRecordsByPatient(request: FastifyRequest, reply: FastifyReply) {
+      try {
+        const { patientId } = request.params as { patientId: string };
+        const records = await recordService.getRecordsByPatient(patientId, request.tenantId);
+        return reply.status(200).send(records);
+      } catch (err: any) {
+        return reply.status(500).send({ error: err.message });
+      }
+    },
+
+    async getRecordCompleteness(request: FastifyRequest, reply: FastifyReply) {
     try {
-      const { patientId } = request.params as { patientId: string };
-      const records = await recordService.getRecordsByPatient(patientId, request.tenantId);
-      return reply.status(200).send(records);
+      const result = await recordService.getRecordCompleteness(request.tenantId);
+      return reply.send(result);
     } catch (err: any) {
       return reply.status(500).send({ error: err.message });
     }

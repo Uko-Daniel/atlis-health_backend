@@ -6,7 +6,7 @@ import type { FieldType, LayoutType, CriticalRange, TemplateField, TemplateGroup
 // ─── Validation ──────────────────────────────────────────────────────────────
 
 const VALID_FIELD_TYPES: FieldType[] = [
-  'numeric', 'text', 'select', 'multiselect', 'richtext', 'calculated', 'boolean',
+  'numeric', 'text', 'select', 'multiselect', 'richtext', 'calculated', 'boolean', 'image',
 ];
 
 const VALID_LAYOUTS: LayoutType[] = ['table', 'sections', 'freeform'];

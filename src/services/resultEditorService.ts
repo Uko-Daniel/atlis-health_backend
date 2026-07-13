@@ -218,6 +218,8 @@ export async function openSession(resultId: string, staffId: string): Promise<Se
   // Attempt to acquire lock (editLock util handles expiry + conflict)
   const lockResult = await acquireLock(resultId, staffId);
   if (!lockResult.success) throw new Error(lockResult.error ?? 'Could not acquire edit lock');
+    // Ensure lock timestamp is fresh — prevents race conditions
+  await refreshLock(resultId, staffId);
 
   // Existing session for this staff member — resume it
   if (result.editSession && result.editSession.staffId === staffId) {

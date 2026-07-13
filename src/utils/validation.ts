@@ -104,31 +104,68 @@ export function validateService(data: Partial<Service>) {
  * Converts your template "fields" array into a proper AJV JSON Schema
  */
 function convertTemplateToAjvSchema(templateDataSchema: any) {
-  if (!templateDataSchema?.fields || !Array.isArray(templateDataSchema.fields)) {
-    throw new Error('Invalid template schema: "fields" array missing');
+  // Handle new groups format
+  if (templateDataSchema?.groups && Array.isArray(templateDataSchema.groups)) {
+    const allFields: any[] = []
+    for (const group of templateDataSchema.groups) {
+      if (group.fields && Array.isArray(group.fields)) {
+        allFields.push(...group.fields)
+      }
+    }
+    
+    const properties: Record<string, any> = {}
+    const required: string[] = []
+
+    allFields.forEach((f: any) => {
+      if (!f.key) return
+      // Map field types to JSON schema types
+      let jsonType = 'string'
+      if (f.type === 'numeric' || f.type === 'calculated') jsonType = 'number'
+      else if (f.type === 'boolean') jsonType = 'boolean'
+      else if (f.type === 'select' || f.type === 'multiselect') jsonType = 'string'
+      
+      properties[f.key] = { type: jsonType }
+      if (f.required) required.push(f.key)
+
+      if (f.referenceRange?.general && (f.type === 'numeric' || f.type === 'calculated')) {
+        properties[f.key].minimum = f.referenceRange.general.min
+        properties[f.key].maximum = f.referenceRange.general.max
+      }
+    })
+
+    return {
+      type: 'object',
+      properties,
+      required,
+      additionalProperties: true, // Allow extra fields like images, interpretation
+    }
   }
 
-  const properties: Record<string, any> = {};
-  const required: string[] = [];
+  // Handle old fields format (backward compatibility)
+  if (templateDataSchema?.fields && Array.isArray(templateDataSchema.fields)) {
+    const properties: Record<string, any> = {}
+    const required: string[] = []
 
-  templateDataSchema.fields.forEach((f: any) => {
-    properties[f.name] = { type: f.type };
-    if (f.required) {
-      required.push(f.name);
-    }
+    templateDataSchema.fields.forEach((f: any) => {
+      properties[f.name] = { type: f.type }
+      if (f.required) required.push(f.name)
 
-    if (f.range && f.type === 'number') {
-      const [min, max] = f.range.split('-').map(Number);
-      properties[f.name].minimum = min;
-      properties[f.name].maximum = max;
+      if (f.range && f.type === 'number') {
+        const [min, max] = f.range.split('-').map(Number)
+        properties[f.name].minimum = min
+        properties[f.name].maximum = max
+      }
+    })
+
+    return {
+      type: 'object',
+      properties,
+      required,
+      additionalProperties: false,
     }
-  });
-  return {
-    type: 'object',
-    properties,
-    required,
-    additionalProperties: false,
-  };
+  }
+
+  throw new Error('Invalid template schema: "fields" array or "groups" array missing')
 }
 
 /**

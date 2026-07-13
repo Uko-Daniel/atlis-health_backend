@@ -16,6 +16,12 @@ import { billingRoutes } from './routes/billingRoutes';
 import { permissionRoutes } from './routes/permissionRoutes';
 import { googleRoutes } from './routes/googleRoutes';
 import { uploadRoutes } from './routes/uploadRoutes';
+import { requestRoutes } from './routes/requestRoutes';
+import { supplierRoutes } from './routes/supplierRoutes';
+import { inventoryRoutes } from './routes/inventoryRoutes';
+import { purchaseOrderRoutes } from './routes/purchaseOrderRoutes';
+import { auditLogRoutes } from './routes/auditLogRoutes';
+
 
 
 
@@ -31,12 +37,18 @@ export const app = async (fastify: FastifyInstance) => {
   fastify.register(templateRoutes,      { prefix: '/api/templates' });
   fastify.register(eveeRoutes,          { prefix: '/api/evee'      });
   fastify.register(recordRoutes,        { prefix: '/api/records'   });
-  fastify.register(signupRoutes, { prefix: '/api' })
-  fastify.register(tenantRoutes, { prefix: '/api' });
-  fastify.register(billingRoutes, { prefix: '/api' });
-  fastify.register(permissionRoutes, { prefix: '/api' });
-  fastify.register(googleRoutes, { prefix: '/api' });
-  fastify.register(uploadRoutes, { prefix: '/api' });
+  fastify.register(signupRoutes,        { prefix: '/api' })
+  fastify.register(tenantRoutes,        { prefix: '/api' });
+  fastify.register(billingRoutes,       { prefix: '/api' });
+  fastify.register(permissionRoutes,    { prefix: '/api' });
+  fastify.register(googleRoutes,        { prefix: '/api' });
+  fastify.register(uploadRoutes,        { prefix: '/api' });
+  fastify.register(requestRoutes,       { prefix: '/api' });
+  fastify.register(supplierRoutes, { prefix: '/api' });
+  fastify.register(inventoryRoutes, { prefix: '/api' });
+  fastify.register(purchaseOrderRoutes, { prefix: '/api' });
+  fastify.register(auditLogRoutes, { prefix: '/api' });
+
 }
 
 

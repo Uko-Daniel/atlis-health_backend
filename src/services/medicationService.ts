@@ -110,6 +110,25 @@ export const medicationService = {
     });
   },
 
+  async getActiveMedications(tenantId: string) {
+  return prisma.medication.findMany({
+    where: {
+      status: 'ACTIVE',
+      record: { patient: { tenantId } },
+    },
+    orderBy: { startDate: 'desc' },
+    include: {
+      record: {
+        include: {
+          patient: {
+            select: { id: true, firstName: true, lastName: true, dob: true },
+          },
+        },
+      },
+    },
+  })
+},
+
   async getMedicationsByRecord(recordId: string, tenantId: string, status?: MedStatus) {
     return prisma.medication.findMany({
       where: {
@@ -132,6 +151,7 @@ export const medicationService = {
       orderBy: { startDate: 'desc' },
     });
   },
+  
 
   async getMedicationById(id: string, tenantId: string) {
     return prisma.medication.findFirst({ where: { id, record: { patient: { tenantId } } } });

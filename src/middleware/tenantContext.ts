@@ -57,7 +57,7 @@ export async function resolveTenant(
   // 3. Fallback: health.atlis.com.ng or localhost → default "atlis" tenant
   if (!tenant) {
     tenant = await prisma.tenant.findFirst({
-      where: { subdomain: 'atlis' },
+      where: { subdomain: 'novacare' },
     });
   }
 

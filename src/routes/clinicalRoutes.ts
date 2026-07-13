@@ -209,6 +209,12 @@ async function medicationRoutes(fastify: FastifyInstance) {
     handler:    medicationController.createMedication,
   });
 
+  // GET /api/medications/active — all active prescriptions facility-wide
+  fastify.get('/active', {
+    preHandler: [authorize(['PHARMACIST', 'DOCTOR', 'ADMIN', 'MANAGER'])],
+    handler: medicationController.getActiveMedications,
+  })
+
   // Single medication
   fastify.get('/:id', {
     handler: medicationController.getMedicationById,

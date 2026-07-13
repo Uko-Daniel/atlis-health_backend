@@ -68,8 +68,12 @@ async function createResult(data: Partial<Result> & { recordId: string; departme
   if (!order) throw new Error('Order not found');
   if (!template) throw new Error('Template not found');
 
-  const valid = await validateResultJSON(data.templateId!, data.data);
-  if (!valid.valid) throw new Error(valid.errors?.join(', '));
+  // Skip validation for empty data — result starts empty and is filled in later. 
+  const isEmpty = !data.data || Object.keys(data.data).length === 0;
+  if (!isEmpty) {
+    const valid = await validateResultJSON(data.templateId!, data.data);
+    if (!valid.valid) throw new Error(valid.errors?.join(', '));
+  }
 
   const encrypted = encryptJSON(data.data);
 

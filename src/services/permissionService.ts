@@ -7,6 +7,11 @@ const PERMISSION_DEFAULTS: Record<string, StaffRole[]> = {
   allowViewDiagnoses: ['DOCTOR', 'ADMIN'],
   requireDoctorCosignOnPrescription: [],
   allowViewOrderStatus: ['BILLING_OFFICER'],
+  allowCreateRequests: ['DOCTOR', 'NURSES', 'LAB_SCIENTIST', 'IMAGING_TECH', 'PHARMACIST', 'RECEPTIONIST', 'BILLING_OFFICER', 'HIM_OFFICER', 'PROCUREMENT_OFFICER', 'ADMIN', 'MANAGER'],
+  allowApproveRequests: ['ADMIN', 'MANAGER', 'BILLING_OFFICER'],
+  allowManageInventory: ['PROCUREMENT_OFFICER', 'ADMIN', 'MANAGER'],
+  allowViewAuditLogs: ['HIM_OFFICER', 'ADMIN', 'MANAGER'],
+  allowExportRecords: ['HIM_OFFICER', 'ADMIN', 'DOCTOR'],
 };
 
 const PERMISSION_LABELS: Record<string, string> = {

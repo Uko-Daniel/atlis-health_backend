@@ -24,6 +24,11 @@ export async function staffRoutes(fastify: FastifyInstance) {
           handler: staffController.deleteStaff
   });
 
+  fastify.get('/staff/:id/activity', {
+        preHandler: [authenticate],
+        handler: staffController.getStaffActivity,
+        })
+
   fastify.get('/staff/:id', {
           preHandler: [authenticate, authorize(['IT_SUPPORT', 'ADMIN'])],
           handler: staffController.getStaffById

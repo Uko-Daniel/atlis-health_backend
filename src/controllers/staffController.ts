@@ -61,6 +61,16 @@ export const staffController = {
       return reply.status(500).send({ error: err.message });
     }
   },
+  
+  async getStaffActivity(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const { id } = request.params as { id: string }
+      const activity = await staffService.getStaffActivity(id, request.tenantId)
+      return reply.send(activity)
+    } catch (err: any) {
+      return reply.status(500).send({ error: err.message })
+    }
+  },
 
   async updateStaff(request: FastifyRequest, reply: FastifyReply) {
     try {
