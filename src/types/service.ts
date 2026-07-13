@@ -6,6 +6,7 @@ export interface Service {
   description?: string;
   price: number;
   templateId?: string;
+  tenantId: string;
   createdAt: Date;
   updatedAt: Date;
 }

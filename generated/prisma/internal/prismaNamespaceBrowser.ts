@@ -51,10 +51,16 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Tenant: 'Tenant',
+  TenantPermission: 'TenantPermission',
+  TenantSetting: 'TenantSetting',
+  BillingPeriod: 'BillingPeriod',
+  Payer: 'Payer',
+  Tariff: 'Tariff',
+  Claim: 'Claim',
   Patient: 'Patient',
   NextOfKin: 'NextOfKin',
   Visitor: 'Visitor',
-  HMO: 'HMO',
   Record: 'Record',
   Encounter: 'Encounter',
   Vital: 'Vital',
@@ -72,11 +78,19 @@ export const ModelName = {
   ResultEditSession: 'ResultEditSession',
   Staff: 'Staff',
   SignupRequest: 'SignupRequest',
-  InventoryItem: 'InventoryItem',
   Settings: 'Settings',
   AuditLog: 'AuditLog',
   EveeEvaluation: 'EveeEvaluation',
-  EveeAlert: 'EveeAlert'
+  EveeAlert: 'EveeAlert',
+  GoogleCredential: 'GoogleCredential',
+  Supplier: 'Supplier',
+  Request: 'Request',
+  PurchaseOrder: 'PurchaseOrder',
+  PurchaseOrderItem: 'PurchaseOrderItem',
+  InventoryItem: 'InventoryItem',
+  InventoryTransaction: 'InventoryTransaction',
+  ExpenseCategory: 'ExpenseCategory',
+  Expense: 'Expense'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -95,6 +109,115 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const TenantScalarFieldEnum = {
+  id: 'id',
+  facilityName: 'facilityName',
+  subdomain: 'subdomain',
+  customDomain: 'customDomain',
+  themePrimaryColor: 'themePrimaryColor',
+  logoUrl: 'logoUrl',
+  planTier: 'planTier',
+  subscriptionStatus: 'subscriptionStatus',
+  licenseExpiresAt: 'licenseExpiresAt',
+  gracePeriodEndsAt: 'gracePeriodEndsAt',
+  eveeEnabled: 'eveeEnabled',
+  videoConsultEnabled: 'videoConsultEnabled',
+  videoConsultMetered: 'videoConsultMetered',
+  customDomainEnabled: 'customDomainEnabled',
+  prioritySupport: 'prioritySupport',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof TenantScalarFieldEnum]
+
+
+export const TenantPermissionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  permissionKey: 'permissionKey',
+  allowedRoles: 'allowedRoles',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy'
+} as const
+
+export type TenantPermissionScalarFieldEnum = (typeof TenantPermissionScalarFieldEnum)[keyof typeof TenantPermissionScalarFieldEnum]
+
+
+export const TenantSettingScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  key: 'key',
+  value: 'value',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TenantSettingScalarFieldEnum = (typeof TenantSettingScalarFieldEnum)[keyof typeof TenantSettingScalarFieldEnum]
+
+
+export const BillingPeriodScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  periodStart: 'periodStart',
+  periodEnd: 'periodEnd',
+  activeUserCount: 'activeUserCount',
+  encounterCount: 'encounterCount',
+  videoMinutesUsed: 'videoMinutesUsed',
+  calculatedAmount: 'calculatedAmount',
+  status: 'status'
+} as const
+
+export type BillingPeriodScalarFieldEnum = (typeof BillingPeriodScalarFieldEnum)[keyof typeof BillingPeriodScalarFieldEnum]
+
+
+export const PayerScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  type: 'type',
+  contactInfo: 'contactInfo',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PayerScalarFieldEnum = (typeof PayerScalarFieldEnum)[keyof typeof PayerScalarFieldEnum]
+
+
+export const TariffScalarFieldEnum = {
+  id: 'id',
+  payerId: 'payerId',
+  serviceId: 'serviceId',
+  agreedPrice: 'agreedPrice',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TariffScalarFieldEnum = (typeof TariffScalarFieldEnum)[keyof typeof TariffScalarFieldEnum]
+
+
+export const ClaimScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  patientId: 'patientId',
+  payerId: 'payerId',
+  encounterId: 'encounterId',
+  orderId: 'orderId',
+  status: 'status',
+  amount: 'amount',
+  notes: 'notes',
+  submittedAt: 'submittedAt',
+  vettedAt: 'vettedAt',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClaimScalarFieldEnum = (typeof ClaimScalarFieldEnum)[keyof typeof ClaimScalarFieldEnum]
+
+
 export const PatientScalarFieldEnum = {
   id: 'id',
   firstName: 'firstName',
@@ -108,10 +231,11 @@ export const PatientScalarFieldEnum = {
   nationality: 'nationality',
   occupation: 'occupation',
   religion: 'religion',
-  hmoId: 'hmoId',
+  payerId: 'payerId',
   NIN: 'NIN',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  tenantId: 'tenantId'
 } as const
 
 export type PatientScalarFieldEnum = (typeof PatientScalarFieldEnum)[keyof typeof PatientScalarFieldEnum]
@@ -148,18 +272,6 @@ export const VisitorScalarFieldEnum = {
 export type VisitorScalarFieldEnum = (typeof VisitorScalarFieldEnum)[keyof typeof VisitorScalarFieldEnum]
 
 
-export const HMOScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  planType: 'planType',
-  contactInfo: 'contactInfo',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type HMOScalarFieldEnum = (typeof HMOScalarFieldEnum)[keyof typeof HMOScalarFieldEnum]
-
-
 export const RecordScalarFieldEnum = {
   id: 'id',
   patientId: 'patientId',
@@ -181,6 +293,7 @@ export const EncounterScalarFieldEnum = {
   encounteredAt: 'encounteredAt',
   startTime: 'startTime',
   stopTime: 'stopTime',
+  meetLink: 'meetLink',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -318,7 +431,8 @@ export const ServiceScalarFieldEnum = {
   price: 'price',
   templateId: 'templateId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  tenantId: 'tenantId'
 } as const
 
 export type ServiceScalarFieldEnum = (typeof ServiceScalarFieldEnum)[keyof typeof ServiceScalarFieldEnum]
@@ -335,7 +449,8 @@ export const TemplateScalarFieldEnum = {
   department: 'department',
   isActive: 'isActive',
   version: 'version',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  tenantId: 'tenantId'
 } as const
 
 export type TemplateScalarFieldEnum = (typeof TemplateScalarFieldEnum)[keyof typeof TemplateScalarFieldEnum]
@@ -415,7 +530,8 @@ export const StaffScalarFieldEnum = {
   canVerify: 'canVerify',
   status: 'status',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  tenantId: 'tenantId'
 } as const
 
 export type StaffScalarFieldEnum = (typeof StaffScalarFieldEnum)[keyof typeof StaffScalarFieldEnum]
@@ -428,6 +544,7 @@ export const SignupRequestScalarFieldEnum = {
   email: 'email',
   phone: 'phone',
   profession: 'profession',
+  role: 'role',
   department: 'department',
   facility: 'facility',
   licenseNumber: 'licenseNumber',
@@ -437,26 +554,12 @@ export const SignupRequestScalarFieldEnum = {
   reviewedAt: 'reviewedAt',
   reviewNotes: 'reviewNotes',
   createdStaffId: 'createdStaffId',
+  tenantId: 'tenantId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type SignupRequestScalarFieldEnum = (typeof SignupRequestScalarFieldEnum)[keyof typeof SignupRequestScalarFieldEnum]
-
-
-export const InventoryItemScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  description: 'description',
-  unit: 'unit',
-  quantity: 'quantity',
-  flagLevel: 'flagLevel',
-  usageRate: 'usageRate',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type InventoryItemScalarFieldEnum = (typeof InventoryItemScalarFieldEnum)[keyof typeof InventoryItemScalarFieldEnum]
 
 
 export const SettingsScalarFieldEnum = {
@@ -478,6 +581,7 @@ export const AuditLogScalarFieldEnum = {
   entityId: 'entityId',
   entityType: 'entityType',
   ipAddress: 'ipAddress',
+  tenantId: 'tenantId',
   createdAt: 'createdAt'
 } as const
 
@@ -515,6 +619,151 @@ export const EveeAlertScalarFieldEnum = {
 } as const
 
 export type EveeAlertScalarFieldEnum = (typeof EveeAlertScalarFieldEnum)[keyof typeof EveeAlertScalarFieldEnum]
+
+
+export const GoogleCredentialScalarFieldEnum = {
+  id: 'id',
+  staffId: 'staffId',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  tokenExpiry: 'tokenExpiry',
+  scope: 'scope',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GoogleCredentialScalarFieldEnum = (typeof GoogleCredentialScalarFieldEnum)[keyof typeof GoogleCredentialScalarFieldEnum]
+
+
+export const SupplierScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  contactPerson: 'contactPerson',
+  phone: 'phone',
+  email: 'email',
+  address: 'address',
+  products: 'products',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SupplierScalarFieldEnum = (typeof SupplierScalarFieldEnum)[keyof typeof SupplierScalarFieldEnum]
+
+
+export const RequestScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  type: 'type',
+  status: 'status',
+  title: 'title',
+  description: 'description',
+  amount: 'amount',
+  requestedBy: 'requestedBy',
+  approvedBy: 'approvedBy',
+  approvedAt: 'approvedAt',
+  rejectionReason: 'rejectionReason',
+  fulfilledAt: 'fulfilledAt',
+  referenceId: 'referenceId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RequestScalarFieldEnum = (typeof RequestScalarFieldEnum)[keyof typeof RequestScalarFieldEnum]
+
+
+export const PurchaseOrderScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  supplierId: 'supplierId',
+  requestId: 'requestId',
+  status: 'status',
+  totalAmount: 'totalAmount',
+  notes: 'notes',
+  orderedBy: 'orderedBy',
+  receivedAt: 'receivedAt',
+  invoiceUrl: 'invoiceUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PurchaseOrderScalarFieldEnum = (typeof PurchaseOrderScalarFieldEnum)[keyof typeof PurchaseOrderScalarFieldEnum]
+
+
+export const PurchaseOrderItemScalarFieldEnum = {
+  id: 'id',
+  purchaseOrderId: 'purchaseOrderId',
+  itemName: 'itemName',
+  quantity: 'quantity',
+  unitPrice: 'unitPrice',
+  totalPrice: 'totalPrice'
+} as const
+
+export type PurchaseOrderItemScalarFieldEnum = (typeof PurchaseOrderItemScalarFieldEnum)[keyof typeof PurchaseOrderItemScalarFieldEnum]
+
+
+export const InventoryItemScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description',
+  category: 'category',
+  unit: 'unit',
+  quantity: 'quantity',
+  flagLevel: 'flagLevel',
+  unitPrice: 'unitPrice',
+  supplierId: 'supplierId',
+  expiryDate: 'expiryDate',
+  lastRestocked: 'lastRestocked',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InventoryItemScalarFieldEnum = (typeof InventoryItemScalarFieldEnum)[keyof typeof InventoryItemScalarFieldEnum]
+
+
+export const InventoryTransactionScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  type: 'type',
+  quantity: 'quantity',
+  unitPrice: 'unitPrice',
+  reference: 'reference',
+  performedBy: 'performedBy',
+  createdAt: 'createdAt'
+} as const
+
+export type InventoryTransactionScalarFieldEnum = (typeof InventoryTransactionScalarFieldEnum)[keyof typeof InventoryTransactionScalarFieldEnum]
+
+
+export const ExpenseCategoryScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description',
+  createdAt: 'createdAt'
+} as const
+
+export type ExpenseCategoryScalarFieldEnum = (typeof ExpenseCategoryScalarFieldEnum)[keyof typeof ExpenseCategoryScalarFieldEnum]
+
+
+export const ExpenseScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  categoryId: 'categoryId',
+  description: 'description',
+  amount: 'amount',
+  paymentMethod: 'paymentMethod',
+  recipient: 'recipient',
+  purchaseOrderId: 'purchaseOrderId',
+  approvedBy: 'approvedBy',
+  recordedBy: 'recordedBy',
+  expenseDate: 'expenseDate',
+  createdAt: 'createdAt'
+} as const
+
+export type ExpenseScalarFieldEnum = (typeof ExpenseScalarFieldEnum)[keyof typeof ExpenseScalarFieldEnum]
 
 
 export const SortOrder = {

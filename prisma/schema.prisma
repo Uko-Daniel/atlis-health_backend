@@ -55,14 +55,16 @@ enum MedStatus {
 }
 
 enum StaffRole {
-  ADMIN           // Full system access
+  SUPER_ADMIN    // Global tenant access
+  ADMIN           // Full scoped tenent access
   DOCTOR          // Clinical oversight & prescribing
   NURSES          // Patient monitoring & med administration
-  LAB_TECH        // Data entry for lab results
-  RADIOLOGIST     // Specialized imaging results
+  LAB_SCIENTIST       
+  IMAGING_TECH     
   PHARMACIST      // Medication fulfillment & verification
   RECEPTIONIST    // Registration, scheduling & patient data
   BILLING_OFFICER // Payments & insurance
+  PROCUREMENT_OFFICER
   HIM_OFFICER     // Records auditing & data privacy
   MANAGER         // Operational oversight & inventory
   IT_SUPPORT      // System maintenance
@@ -144,7 +146,164 @@ enum MaritalStatus {
   SEPARATED
 }
 
+enum PayerType {
+  NHIA
+  HMO
+  SELF_PAY
+  CORPORATE
+}
+
+enum ClaimStatus {
+  DRAFT
+  SUBMITTED
+  VETTED
+  PAID
+  REJECTED
+}
+
 // ── CORE MODELS ───────────────────────────────────────────────
+
+model Tenant {
+  id                  String               @id @default(cuid())
+  facilityName        String
+  subdomain           String               @unique
+  customDomain        String?              @unique
+  themePrimaryColor   String?              @default("#5580F4")
+  logoUrl             String?
+  planTier            PlanTier             @default(TIER_1)
+  subscriptionStatus  SubscriptionStatus   @default(ACTIVE)
+  licenseExpiresAt    DateTime
+  gracePeriodEndsAt   DateTime?
+  eveeEnabled         Boolean              @default(false)
+  videoConsultEnabled Boolean              @default(false)
+  videoConsultMetered Boolean              @default(true)
+  customDomainEnabled Boolean              @default(false)
+  prioritySupport     Boolean              @default(false)
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+
+  patients          Patient[]
+  payers             Payer[]
+  claims            Claim[]
+  suppliers         Supplier[]
+  inventoryItems    InventoryItem[]
+  requests          Request[]
+  expenseCategories ExpenseCategory[]
+  expenses          Expense[]
+  purchaseOrders    PurchaseOrder[]
+  staff             Staff[]
+  permissions       TenantPermission[]
+  billingPeriods    BillingPeriod[]
+  services          Service[]
+  templates         Template[]
+  signupRequests    SignupRequest[]
+  settings          TenantSetting[]
+  audits            AuditLog[]
+
+  @@index([subdomain])
+  @@index([customDomain])
+}
+
+model TenantPermission {
+  id            String      @id @default(cuid())
+  tenantId      String
+  tenant        Tenant      @relation(fields: [tenantId], references: [id])
+  permissionKey String
+  allowedRoles  StaffRole[]
+  updatedAt     DateTime    @updatedAt
+  updatedBy     String
+
+  @@unique([tenantId, permissionKey])
+}
+
+model TenantSetting {
+  id          String   @id @default(cuid())
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  key         String
+  value       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([tenantId, key])
+}
+
+model BillingPeriod {
+  id                String        @id @default(cuid())
+  tenantId          String
+  tenant            Tenant        @relation(fields: [tenantId], references: [id])
+  periodStart       DateTime
+  periodEnd         DateTime
+  activeUserCount   Int
+  encounterCount    Int
+  videoMinutesUsed  Int           @default(0)
+  calculatedAmount  Decimal
+  status            BillingStatus @default(DRAFT)
+
+  @@index([tenantId])
+}
+
+// ── HMO / NHIA ────────────────────────────────────────────────
+
+model Payer {
+  id        String    @id @default(cuid())
+  tenantId  String
+  tenant    Tenant    @relation(fields: [tenantId], references: [id])
+  name      String    // "NHIA", "AXA Mansard", "Self-Pay"
+  type      PayerType
+  contactInfo String?
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  tariffs   Tariff[]
+  claims    Claim[]
+  patients  Patient[]  // patients covered by this payer
+
+  @@unique([tenantId, name])
+  @@index([tenantId])
+}
+
+model Tariff {
+  id          String   @id @default(cuid())
+  payerId     String
+  payer       Payer    @relation(fields: [payerId], references: [id])
+  serviceId   String
+  service     Service  @relation(fields: [serviceId], references: [id])
+  agreedPrice Decimal
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([payerId, serviceId])
+}
+
+model Claim {
+  id          String      @id @default(cuid())
+  tenantId    String
+  tenant      Tenant      @relation(fields: [tenantId], references: [id])
+  patientId   String
+  patient     Patient     @relation(fields: [patientId], references: [id])
+  payerId     String
+  payer       Payer       @relation(fields: [payerId], references: [id])
+  encounterId String?
+  encounter   Encounter?  @relation(fields: [encounterId], references: [id])
+  orderId     String?
+  order       Order?      @relation(fields: [orderId], references: [id])
+  status      ClaimStatus @default(DRAFT)
+  amount      Decimal
+  notes       String?
+  submittedAt DateTime?
+  vettedAt    DateTime?
+  paidAt      DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([tenantId])
+  @@index([patientId])
+  @@index([payerId])
+  @@index([status])
+}
 
 model Patient {
   id          String   @id @default(cuid())
@@ -160,26 +319,29 @@ model Patient {
   nationality String?
   occupation  String?
   religion    String?
-  hmo         HMO? @relation(fields: [hmoId], references: [id])
-  hmoId       String?
+  payer   Payer?  @relation(fields: [payerId], references: [id])
+  payerId String?
   NIN         String?  @unique
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  // Existing relations
   records      Record[]
   orders       Order[]
+  claims Claim[]
   results      Result[]
   patientUsers PatientUser[]
   admissions   Admission[]
   visitors     Visitor[]
 
-  // New relations
   allergies    Allergy[]
   encounters   Encounter[]
   eveeEvals    EveeEvaluation[]
   vitals       Vital[]
   diagnoses    Diagnosis[]
+  tenant       Tenant   @relation(fields: [tenantId], references: [id])
+  tenantId     String
+
+  @@index([tenantId])
 }
 
 model NextOfKin {
@@ -205,16 +367,6 @@ model Visitor {
   patientId   String
   arrivedAt   DateTime
   departedAt  DateTime
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model HMO {
-  id          String   @id @default(cuid())
-  name        String
-  planType    String
-  contactInfo String?
-  patients    Patient[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -252,6 +404,10 @@ model Encounter {
   encounteredAt  DateTime      @default(now())
   startTime      DateTime      @default(now())
   stopTime       DateTime?
+  meetLink    String?
+  
+  claims Claim[]
+
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 
@@ -427,6 +583,9 @@ model Service {
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
   orders      OrderService[]
+  tariffs Tariff[]
+  tenant       Tenant   @relation(fields: [tenantId], references: [id])
+  tenantId     String
 }
 
 model Template {
@@ -444,6 +603,8 @@ model Template {
   isActive   Boolean    @default(true) // Only active templates can be used for new orders
   version    Int        @default(1) 
   createdBy  String?
+  tenant       Tenant   @relation(fields: [tenantId], references: [id])
+  tenantId     String
 }
 
 model Order {
@@ -453,7 +614,9 @@ model Order {
   status    OrderStatus  @default(PENDING)
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
+
   services  OrderService[]
+  claims Claim[]
   results   Result[]
 
   @@index([patientId])
@@ -543,6 +706,8 @@ model Staff {
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  tenant       Tenant   @relation(fields: [tenantId], references: [id])
+  tenantId     String
 }
 
 model SignupRequest {
@@ -552,6 +717,7 @@ model SignupRequest {
   email         String
   phone         String
   profession    String        // e.g. "Medical Laboratory Scientist"
+  role          StaffRole
   department    Department
   facility      String?       // Name of the facility they're applying to
   licenseNumber String?       // Professional license/registration number
@@ -565,24 +731,14 @@ model SignupRequest {
   // If approved, link to the created Staff record
   createdStaffId String?      @unique
   createdStaff   Staff?       @relation(fields: [createdStaffId], references: [id])
+  tenant       Tenant   @relation(fields: [tenantId], references: [id])
+  tenantId     String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([status])
   @@index([email])
-}
-
-model InventoryItem {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  unit        String
-  quantity    Float
-  flagLevel   Float
-  usageRate   Float?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
 }
 
 model Settings {
@@ -601,6 +757,8 @@ model AuditLog {
   entityId   String
   entityType String   // e.g. "Result", "Patient"
   ipAddress  String?
+  tenant       Tenant   @relation(fields: [tenantId], references: [id])
+  tenantId     String   
   createdAt  DateTime @default(now())
 }
 
@@ -654,3 +812,205 @@ model EveeAlert {
   @@index([severity])
 }
 
+model GoogleCredential {
+  id           String   @id @default(cuid())
+  staffId      String   @unique
+  accessToken  String
+  refreshToken String
+  tokenExpiry  DateTime
+  scope        String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum PlanTier {
+  TIER_1    // 1-15 staff
+  TIER_2    // 16-50 staff
+  TIER_3    // 51-100 staff
+  TIER_4    // 100+ staff
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  GRACE_PERIOD
+  SUSPENDED
+  EXPIRED
+}
+
+enum BillingStatus {
+  DRAFT
+  FINALIZED
+  PAID
+  OVERDUE
+}
+
+
+// ── PROCUREMENT DEFINITIONS: SUPPLIER ────────────────────────────────────────────────
+
+model Supplier {
+  id          String   @id @default(cuid())
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  name        String          // "Emzor Pharmaceuticals", "ABC Medical Supplies"
+  contactPerson String?
+  phone       String?
+  email       String?
+  address     String?
+  products    String?         // comma-separated or JSON — what they supply
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  orders      PurchaseOrder[]
+  inventoryItems InventoryItem[]
+}
+
+// ── REQUEST PORTAL ──────────────────────────────────────────
+
+enum RequestType {
+  ITEM_REQUEST
+  FUND_DISBURSEMENT
+  RESULT_APPROVAL
+  TEMPORARY_ACCESS
+  MAINTENANCE_REQUEST
+  LEAVE_REQUEST
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  FULFILLED
+}
+
+model Request {
+  id            String        @id @default(cuid())
+  tenantId      String
+  tenant        Tenant        @relation(fields: [tenantId], references: [id])
+  type          RequestType
+  status        RequestStatus @default(PENDING)
+  title         String              // "Restock surgical gloves — running low"
+  description   String?             // Detailed reason
+  purchaseOrders PurchaseOrder[]
+  amount        Decimal?            // for FUND_DISBURSEMENT
+  requestedBy   String              // Staff ID
+  approvedBy    String?             // Staff ID (Billing Officer or Manager)
+  approvedAt    DateTime?
+  rejectionReason String?
+  fulfilledAt   DateTime?
+  referenceId   String?             // Linked entity ID (result, encounter, etc.)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([status])
+  @@index([type])
+}
+
+// ── PURCHASE ORDER ──────────────────────────────────────────
+
+model PurchaseOrder {
+  id            String   @id @default(cuid())
+  tenantId      String
+  tenant        Tenant   @relation(fields: [tenantId], references: [id])
+  supplierId    String
+  supplier      Supplier @relation(fields: [supplierId], references: [id])
+  requestId     String?
+  request       Request? @relation(fields: [requestId], references: [id])
+  status        OrderStatus @default(PENDING)
+  totalAmount   Decimal
+  expenses      Expense[]
+  notes         String?
+  orderedBy     String        // Staff ID (Procurement Officer)
+  receivedAt    DateTime?
+  invoiceUrl    String?       // Uploaded invoice image/PDF
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  items         PurchaseOrderItem[]
+
+  @@index([tenantId])
+  @@index([supplierId])
+}
+
+model PurchaseOrderItem {
+  id              String        @id @default(cuid())
+  purchaseOrderId String
+  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+  itemName        String
+  quantity        Float
+  unitPrice       Decimal
+  totalPrice      Decimal
+}
+
+// ── INVENTORY (updated) ─────────────────────────────────────
+
+model InventoryItem {
+  id            String   @id @default(cuid())
+  tenantId      String
+  tenant        Tenant   @relation(fields: [tenantId], references: [id])
+  name          String
+  description   String?
+  category      String?        // Pharmacy, Lab, Imaging, General
+  unit          String         // "boxes", "bottles", "pairs"
+  quantity      Float
+  flagLevel     Float          // alert when stock drops below this
+  unitPrice     Float?         // cost price per unit
+  supplierId    String?
+  supplier      Supplier? @relation(fields: [supplierId], references: [id])
+  expiryDate    DateTime?
+  lastRestocked DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  transactions  InventoryTransaction[]
+}
+
+model InventoryTransaction {
+  id          String   @id @default(cuid())
+  itemId      String
+  item        InventoryItem @relation(fields: [itemId], references: [id])
+  type        TransactionType
+  quantity    Float
+  unitPrice   Float?
+  reference   String?
+  performedBy String
+  createdAt   DateTime @default(now())
+}
+
+enum TransactionType {
+  STOCK_IN
+  STOCK_OUT
+  DISPENSED
+  EXPIRED
+  ADJUSTMENT
+}
+
+// ── EXPENSES ────────────────────────────────────────────────
+
+model ExpenseCategory {
+  id          String   @id @default(cuid())
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  name        String
+  expenses    Expense[] 
+  description String?
+  createdAt   DateTime @default(now())
+}
+
+model Expense {
+  id            String   @id @default(cuid())
+  tenantId      String
+  tenant        Tenant   @relation(fields: [tenantId], references: [id])
+  categoryId    String
+  category      ExpenseCategory @relation(fields: [categoryId], references: [id])
+  description   String
+  amount        Decimal
+  paymentMethod String?
+  recipient     String?
+  purchaseOrderId String?
+  purchaseOrder PurchaseOrder? @relation(fields: [purchaseOrderId], references: [id])
+  approvedBy    String?
+  recordedBy    String
+  expenseDate   DateTime @default(now())
+  createdAt     DateTime @default(now())
+}

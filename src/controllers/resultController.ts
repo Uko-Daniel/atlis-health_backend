@@ -13,6 +13,7 @@ export const resultController = {
       const result = await resultService.createResult({
         ...body,
         department: body.department ?? request.user.department,
+        tenantId: request.tenantId,
       });
       return reply.status(201).send(result);
     } catch (err: any) {
@@ -32,7 +33,7 @@ export const resultController = {
         ? undefined
         : department ?? undefined;
 
-      const result = await resultService.getResultById(id, deptFilter);
+      const result = await resultService.getResultById(id, request.tenantId, deptFilter);
       if (!result) return reply.status(404).send({ error: 'Result not found' });
       return reply.status(200).send(result);
     } catch (err: any) {
@@ -62,6 +63,7 @@ export const resultController = {
         releasedOnly: query.releasedOnly === 'true',
         page:         query.page  ? parseInt(query.page,  10) : 1,
         limit:        query.limit ? parseInt(query.limit, 10) : 20,
+        tenantId:      request.tenantId,
       };
 
       if (query.department !== undefined) params.department = query.department;
@@ -78,7 +80,7 @@ export const resultController = {
   async getResultsByOrder(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { orderId } = request.params as { orderId: string };
-      const results = await resultService.getResultsByOrder(orderId);
+      const results = await resultService.getResultsByOrder(orderId, request.tenantId);
       return reply.status(200).send(results);
     } catch (err: any) {
       return reply.status(500).send({ error: err.message });
@@ -112,6 +114,7 @@ export const resultController = {
       } = {
         page:   query.page  ? parseInt(query.page,  10) : 1,
         limit:  query.limit ? parseInt(query.limit, 10) : 30,
+        tenantId: request.tenantId,
       };
 
       if (query.status !== undefined) params.status = query.status;
@@ -129,7 +132,7 @@ export const resultController = {
     try {
       const { id }     = request.params as { id: string };
       const { status } = request.body   as { status: ResultStatus };
-      const result = await resultService.updateResultStatus(id, status);
+      const result = await resultService.updateResultStatus(id, status, request.tenantId);
       return reply.status(200).send(result);
     } catch (err: any) {
       const status = err.message.includes('not found') ? 404
@@ -146,7 +149,7 @@ export const resultController = {
         data:       unknown;
         templateId: string;
       };
-      const result = await resultService.updateResultData(id, data, templateId);
+      const result = await resultService.updateResultData(id, data, templateId, request.tenantId);
       return reply.status(200).send(result);
     } catch (err: any) {
       const status = err.message.includes('not found')   ? 404
@@ -162,6 +165,7 @@ export const resultController = {
       const result = await resultService.verifyResult({
         resultId:   id,
         verifierId: request.user.sub,
+        tenantId:   request.tenantId,
       });
       return reply.status(200).send(result);
     } catch (err: any) {
@@ -181,6 +185,7 @@ export const resultController = {
       const result = await resultService.finalizeResult({
         resultId:    id,
         finalizedBy: request.user.sub,
+        tenantId:    request.tenantId,
       });
       return reply.status(200).send(result);
     } catch (err: any) {
@@ -199,6 +204,7 @@ export const resultController = {
       const result = await resultService.releaseToPatient({
         resultId:   id,
         releasedBy: request.user.sub,
+        tenantId:   request.tenantId,
       });
       return reply.status(200).send(result);
     } catch (err: any) {
@@ -214,7 +220,7 @@ export const resultController = {
   async checkSignatureIntegrity(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id }  = request.params as { id: string };
-      const integrity = await resultService.checkSignatureIntegrity(id);
+      const integrity = await resultService.checkSignatureIntegrity(id, request.tenantId);
       return reply.status(200).send(integrity);
     } catch (err: any) {
       const status = err.message.includes('not found') ? 404 : 500;
@@ -235,7 +241,7 @@ export const resultController = {
         return reply.status(400).send({ error: 'No department associated with your account' });
       }
 
-      const results = await resultService.getCriticalPendingResults(targetDept);
+      const results = await resultService.getCriticalPendingResults(targetDept, request.tenantId);
       return reply.status(200).send(results);
     } catch (err: any) {
       return reply.status(500).send({ error: err.message });

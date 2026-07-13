@@ -165,10 +165,12 @@ export async function createTemplate(data: {
   department:  string;
   dataSchema:  unknown;
   createdBy:   string;
+  tenantId:     string;
 }) {
-  const { name, description, department, dataSchema, createdBy } = data;
+  const { name, description, department, dataSchema, createdBy, tenantId } = data;
 
   if (!name?.trim()) throw new Error('Template name is required');
+  if (!tenantId) throw new Error('tenantId is required');
 
   const dept = assertValidDepartment(department);
 
@@ -177,7 +179,7 @@ export async function createTemplate(data: {
 
   // Check for duplicate name within department
   const existing = await prisma.template.findFirst({
-    where: { name: name.trim(), department: dept, isActive: true },
+    where: { tenantId, name: name.trim(), department: dept, isActive: true },
   });
   if (existing) throw new Error(`A template named "${name}" already exists in ${dept}`);
 
@@ -191,6 +193,7 @@ export async function createTemplate(data: {
       version:     1,
       isActive:    true,
       createdBy,
+      tenantId,
     },
   });
 }
@@ -198,11 +201,12 @@ export async function createTemplate(data: {
 /**
  * Fetch a single template by ID.
  */
-export async function getTemplateById(id: string) {
+export async function getTemplateById(id: string, tenantId: string) {
   if (!id) throw new Error('Template ID is required');
+  if (!tenantId) throw new Error('tenantId is required');
 
-  const template = await prisma.template.findUnique({
-    where: { id },
+  const template = await prisma.template.findFirst({
+    where: { id, tenantId },
     include: { services: true },
   });
 
@@ -213,11 +217,12 @@ export async function getTemplateById(id: string) {
 /**
  * All active templates for a given department.
  */
-export async function getTemplatesByDepartment(department: string) {
+export async function getTemplatesByDepartment(department: string, tenantId: string) {
   const dept = assertValidDepartment(department);
+  if (!tenantId) throw new Error('tenantId is required');
 
   return prisma.template.findMany({
-    where: { department: dept, isActive: true },
+    where: { tenantId, department: dept, isActive: true },
     include: { services: true },
     orderBy: { name: 'asc' },
   });
@@ -227,14 +232,16 @@ export async function getTemplatesByDepartment(department: string) {
  * All templates — admin use only.
  */
 export async function getAllTemplates(params: {
+  tenantId:    string;
   page?:       number;
   limit?:      number;
   department?: string;
   activeOnly?: boolean;
 }) {
-  const { page = 1, limit = 20, department, activeOnly = true } = params;
+  const { tenantId, page = 1, limit = 20, department, activeOnly = true } = params;
+  if (!tenantId) throw new Error('tenantId is required');
 
-  const where: Prisma.TemplateWhereInput = {};
+  const where: Prisma.TemplateWhereInput = { tenantId };
   if (department) where.department = assertValidDepartment(department);
   if (activeOnly) where.isActive = true;
 
@@ -256,15 +263,18 @@ export async function getAllTemplates(params: {
  * Search templates by name or description within an optional department.
  */
 export async function searchTemplates(params: {
+  tenantId:     string;
   query:        string;
   department?:  string;
   activeOnly?:  boolean;
 }) {
-  const { query, department, activeOnly = true } = params;
+  const { tenantId, query, department, activeOnly = true } = params;
 
   if (!query?.trim()) throw new Error('Search query is required');
+  if (!tenantId) throw new Error('tenantId is required');
 
   const where: Prisma.TemplateWhereInput = {
+    tenantId,
     OR: [
       { name:        { contains: query.trim(), mode: 'insensitive' } },
       { description: { contains: query.trim(), mode: 'insensitive' } },
@@ -290,19 +300,21 @@ export async function cloneTemplate(data: {
   newName:     string;
   department?: string;
   clonedBy:    string;
+  tenantId:     string;
 }) {
-  const { sourceId, newName, department, clonedBy } = data;
+  const { sourceId, newName, department, clonedBy, tenantId } = data;
 
   if (!newName?.trim()) throw new Error('New template name is required');
+  if (!tenantId) throw new Error('tenantId is required');
 
-  const source = await prisma.template.findUnique({ where: { id: sourceId } });
+  const source = await prisma.template.findFirst({ where: { id: sourceId, tenantId } });
   if (!source) throw new Error('Source template not found');
 
   const dept = department ? assertValidDepartment(department) : source.department;
 
   // Duplicate name check in target department
   const existing = await prisma.template.findFirst({
-    where: { name: newName.trim(), department: dept, isActive: true },
+    where: { tenantId, name: newName.trim(), department: dept, isActive: true },
   });
   if (existing) throw new Error(`A template named "${newName}" already exists in ${dept}`);
 
@@ -316,6 +328,7 @@ export async function cloneTemplate(data: {
       version:     1,
       isActive:    true,
       createdBy:   clonedBy,
+      tenantId,
     },
   });
 }
@@ -328,6 +341,7 @@ export async function cloneTemplate(data: {
 export async function updateTemplate(
   id: string,
   staffId: string,
+  tenantId: string,
   updates: {
     name?:        string;
     description?: string;
@@ -335,9 +349,10 @@ export async function updateTemplate(
   }
 ) {
   if (!id) throw new Error('Template ID is required');
+  if (!tenantId) throw new Error('tenantId is required');
 
-  const template = await prisma.template.findUnique({
-    where: { id },
+  const template = await prisma.template.findFirst({
+    where: { id, tenantId },
     include: { _count: { select: { results: true } } },
   });
 
@@ -368,18 +383,19 @@ export async function updateTemplate(
 
   if (Object.keys(updateData).length === 0) throw new Error('No valid update fields provided');
 
-  return prisma.template.update({ where: { id }, data: updateData });
+  return prisma.template.update({ where: { id: template.id }, data: updateData });
 }
 
 /**
  * Deactivate (soft-delete) a template.
  * Hard deletion is blocked if results exist against it.
  */
-export async function deactivateTemplate(id: string, staffId: string) {
+export async function deactivateTemplate(id: string, staffId: string, tenantId: string) {
   if (!id) throw new Error('Template ID is required');
+  if (!tenantId) throw new Error('tenantId is required');
 
-  const template = await prisma.template.findUnique({
-    where: { id },
+  const template = await prisma.template.findFirst({
+    where: { id, tenantId },
     include: { _count: { select: { results: true } } },
   });
 
@@ -394,13 +410,28 @@ export async function deactivateTemplate(id: string, staffId: string) {
   });
 }
 
+export async function activateTemplate(id: string, staffId: string) {
+  if (!id) throw new Error('Template ID is required');
+
+  const template = await prisma.template.findUnique({ where: { id } });
+  if (!template) throw new Error('Template not found');
+  if (template.isActive) throw new Error('Template is already active');
+
+  return prisma.template.update({
+    where: { id },
+    data:  { isActive: true },
+  });
+}
+
 // ─── Seed Data ───────────────────────────────────────────────────────────────
 
 /**
  * Seed pre-built Nigerian clinical panel templates.
  * Safe to call multiple times — skips templates that already exist by name + department.
  */
-export async function seedDefaultTemplates(seededBy: string) {
+export async function seedDefaultTemplates(seededBy: string, tenantId: string) {
+  if (!tenantId) throw new Error('tenantId is required');
+
   const templates: Array<{
     name:        string;
     description: string;
@@ -858,7 +889,7 @@ export async function seedDefaultTemplates(seededBy: string) {
 
   for (const t of templates) {
     const exists = await prisma.template.findFirst({
-      where: { name: t.name, department: t.department },
+      where: { tenantId, name: t.name, department: t.department },
     });
 
     if (exists) {
@@ -876,6 +907,7 @@ export async function seedDefaultTemplates(seededBy: string) {
         version:     1,
         isActive:    true,
         createdBy:   seededBy,
+        tenantId,
       },
     });
 

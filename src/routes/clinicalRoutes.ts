@@ -21,7 +21,7 @@ async function allergyRoutes(fastify: FastifyInstance) {
 
   // Record a new allergy — doctors and nurses
   fastify.post('/', {
-    preHandler: [authorize(['DOCTOR', 'NURSES', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR', 'NURSES'])],
     handler:    allergyController.createAllergy,
   });
 
@@ -37,13 +37,13 @@ async function allergyRoutes(fastify: FastifyInstance) {
 
   // Update allergy record
   fastify.patch('/:id', {
-    preHandler: [authorize(['DOCTOR', 'NURSES', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR', 'NURSES'])],
     handler:    allergyController.updateAllergy,
   });
 
   // Soft deactivate — never hard delete
   fastify.patch('/:id/deactivate', {
-    preHandler: [authorize(['DOCTOR', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR'])],
     handler:    allergyController.deactivateAllergy,
   });
 }
@@ -62,7 +62,7 @@ async function encounterRoutes(fastify: FastifyInstance) {
 
   // Open a new encounter
   fastify.post('/', {
-    preHandler: [authorize(['DOCTOR', 'NURSES', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR', 'NURSES'])],
     handler:    encounterController.createEncounter,
   });
 
@@ -93,13 +93,13 @@ async function encounterRoutes(fastify: FastifyInstance) {
 
   // Update encounter notes / type / stopTime
   fastify.patch('/:id', {
-    preHandler: [authorize(['DOCTOR', 'NURSES', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR', 'NURSES'])],
     handler:    encounterController.updateEncounter,
   });
 
   // Close an encounter — sets stopTime
   fastify.patch('/:id/close', {
-    preHandler: [authorize(['DOCTOR', 'NURSES', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR', 'NURSES'])],
     handler:    encounterController.closeEncounter,
   });
 }
@@ -116,7 +116,7 @@ async function vitalRoutes(fastify: FastifyInstance) {
 
   // Record vitals — nurses and doctors
   fastify.post('/', {
-    preHandler: [authorize(['DOCTOR', 'NURSES', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR', 'NURSES'])],
     handler:    vitalController.createVital,
   });
 
@@ -155,7 +155,7 @@ async function diagnosisRoutes(fastify: FastifyInstance) {
 
   // Record a diagnosis — doctors only
   fastify.post('/', {
-    preHandler: [authorize(['DOCTOR', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR'])],
     handler:    diagnosisController.createDiagnosis,
   });
 
@@ -187,7 +187,7 @@ async function diagnosisRoutes(fastify: FastifyInstance) {
 
   // Update diagnosis status / notes
   fastify.patch('/:id', {
-    preHandler: [authorize(['DOCTOR', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR'])],
     handler:    diagnosisController.updateDiagnosis,
   });
 }
@@ -205,7 +205,7 @@ async function medicationRoutes(fastify: FastifyInstance) {
 
   // Prescribe a medication
   fastify.post('/', {
-    preHandler: [authorize(['DOCTOR', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR'])],
     handler:    medicationController.createMedication,
   });
 
@@ -228,13 +228,13 @@ async function medicationRoutes(fastify: FastifyInstance) {
 
   // Update medication status
   fastify.patch('/:id/status', {
-    preHandler: [authorize(['DOCTOR', 'NURSES', 'PHARMACIST', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR', 'NURSES', 'PHARMACIST'])],
     handler:    medicationController.updateMedicationStatus,
   });
 
   // Discontinue with mandatory reason
   fastify.patch('/:id/discontinue', {
-    preHandler: [authorize(['DOCTOR', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR', 'NURSES', 'PHARMACIST'])],
     handler:    medicationController.discontinueMedication,
   });
 }

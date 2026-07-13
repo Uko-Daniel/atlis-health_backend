@@ -11,8 +11,8 @@ import { type StaffRole } from '../../generated/prisma/enums';
 const ROLE_HIERARCHY: StaffRole[] = [
   'RECEPTIONIST',
   'BILLING_OFFICER',
-  'LAB_TECH',
-  'RADIOLOGIST',
+  'LAB_SCIENTIST',
+  'IMAGING_TECH',
   'NURSES',
   'PHARMACIST',
   'HIM_OFFICER',
@@ -20,6 +20,7 @@ const ROLE_HIERARCHY: StaffRole[] = [
   'MANAGER',
   'IT_SUPPORT',
   'ADMIN',
+  'SUPER_ADMIN'
 ];
 
 // ── HELPERS ───────────────────────────────────────────────────
@@ -106,7 +107,7 @@ export async function authorizeVerifier(
   const { role, canVerify } = request.user;
 
   if (role !== 'ADMIN' && !canVerify) {
-    forbidden(reply, 'You do not have result verification privileges');
+    forbidden(reply, 'You cannot verify results. Ask a staff member with verification privileges to do it for you');
   }
 }
 
@@ -122,6 +123,6 @@ export async function blockResultAccess(
   const blockedRoles: StaffRole[] = ['RECEPTIONIST', 'BILLING_OFFICER'];
 
   if (blockedRoles.includes(request.user.role)) {
-    forbidden(reply, 'Clinical result data is not accessible to your role');
+    forbidden(reply, 'You cannot access clinical results');
   }
 }

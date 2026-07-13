@@ -37,13 +37,13 @@ function calculateMAP(systolic?: number, diastolic?: number): number | null {
 
 export const vitalService = {
 
-  async createVital(data: CreateVitalInput) {
+  async createVital(data: CreateVitalInput & { tenantId: string }) {
     const { valid, errors } = validateVitalInput(data, false);
     if (!valid) throw new Error(errors.join(', '));
 
     // Verify encounter exists and belongs to patient
     const encounter = await prisma.encounter.findFirst({
-      where: { id: data.encounterId, patientId: data.patientId },
+      where: { id: data.encounterId, patientId: data.patientId, patient: { tenantId: data.tenantId } },
     });
     if (!encounter) throw new Error('Encounter not found or does not belong to patient');
 
@@ -74,31 +74,31 @@ export const vitalService = {
     });
   },
 
-  async getVitalsByEncounter(encounterId: string) {
+  async getVitalsByEncounter(encounterId: string, tenantId: string) {
     return prisma.vital.findMany({
-      where:   { encounterId },
+      where:   { encounterId, patient: { tenantId } },
       orderBy: { recordedAt: 'desc' },
     });
   },
 
   // Most recent vital set per patient — what EVEE uses
-  async getLatestVitals(patientId: string) {
+  async getLatestVitals(patientId: string, tenantId: string) {
     return prisma.vital.findFirst({
-      where:   { patientId },
+      where:   { patientId, patient: { tenantId } },
       orderBy: { recordedAt: 'desc' },
     });
   },
 
   // Vital trend — last N readings for a patient (useful for deterioration scoring)
-  async getVitalTrend(patientId: string, limit = 10) {
+  async getVitalTrend(patientId: string, tenantId: string, limit = 10) {
     return prisma.vital.findMany({
-      where:   { patientId },
+      where:   { patientId, patient: { tenantId } },
       orderBy: { recordedAt: 'desc' },
       take:    limit,
     });
   },
 
-  async getVitalById(id: string) {
-    return prisma.vital.findUnique({ where: { id } });
+  async getVitalById(id: string, tenantId: string) {
+    return prisma.vital.findFirst({ where: { id, patient: { tenantId } } });
   },
 };

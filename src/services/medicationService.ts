@@ -69,15 +69,17 @@ export const medicationService = {
 
   // Creates a medication against a record.
   // encounterId is optional — omit for external/historical prescriptions.
-  async createMedication(data: CreateMedicationInput) {
+  async createMedication(data: CreateMedicationInput & { tenantId: string }) {
     const { valid, errors } = validateMedication(data, false);
     if (!valid) throw new Error(errors.join(', '));
 
     // Verify record exists
     const record = await prisma.record.findUnique({
       where: { id: data.recordId },
+      include: { patient: true },
     });
     if (!record) throw new Error('Record not found');
+    if (record.patient.tenantId !== data.tenantId) throw new Error('Record not found');
 
     // If encounterId provided, verify it belongs to same patient as record
     if (data.encounterId) {
@@ -108,10 +110,11 @@ export const medicationService = {
     });
   },
 
-  async getMedicationsByRecord(recordId: string, status?: MedStatus) {
+  async getMedicationsByRecord(recordId: string, tenantId: string, status?: MedStatus) {
     return prisma.medication.findMany({
       where: {
         recordId,
+        record: { patient: { tenantId } },
         ...(status && { status }),
       },
       orderBy: { startDate: 'desc' },
@@ -120,25 +123,25 @@ export const medicationService = {
 
   // All active medications for a patient across all records
   // This is what EVEE uses for drug interaction checks
-  async getActiveMedicationsByPatient(patientId: string) {
+  async getActiveMedicationsByPatient(patientId: string, tenantId: string) {
     return prisma.medication.findMany({
       where: {
-        record:  { patientId },
+        record:  { patientId, patient: { tenantId } },
         status:  'ACTIVE',
       },
       orderBy: { startDate: 'desc' },
     });
   },
 
-  async getMedicationById(id: string) {
-    return prisma.medication.findUnique({ where: { id } });
+  async getMedicationById(id: string, tenantId: string) {
+    return prisma.medication.findFirst({ where: { id, record: { patient: { tenantId } } } });
   },
 
-  async updateMedication(id: string, data: UpdateMedicationInput) {
+  async updateMedication(id: string, tenantId: string, data: UpdateMedicationInput) {
     const { valid, errors } = validateMedication(data, true);
     if (!valid) throw new Error(errors.join(', '));
 
-    const existing = await prisma.medication.findUnique({ where: { id } });
+    const existing = await prisma.medication.findFirst({ where: { id, record: { patient: { tenantId } } } });
     if (!existing) throw new Error('Medication not found');
 
     if (existing.status === 'DISCONTINUED') {
@@ -156,13 +159,13 @@ export const medicationService = {
     });
   },
 
-  async updateMedicationStatus(id: string, status: MedStatus) {
+  async updateMedicationStatus(id: string, tenantId: string, status: MedStatus) {
     const validStatuses: MedStatus[] = ['ACTIVE', 'COMPLETED', 'DISCONTINUED'];
     if (!validStatuses.includes(status)) {
       throw new Error(`Invalid status: ${status}`);
     }
 
-    const existing = await prisma.medication.findUnique({ where: { id } });
+    const existing = await prisma.medication.findFirst({ where: { id, record: { patient: { tenantId } } } });
     if (!existing) throw new Error('Medication not found');
 
     return prisma.medication.update({
@@ -174,13 +177,14 @@ export const medicationService = {
   // Discontinue with a reason — clinical safety record
   async discontinueMedication(
     id:     string,
+    tenantId: string,
     reason: string,
   ) {
     if (!reason?.trim()) {
       throw new Error('Discontinuation reason is required');
     }
 
-    const existing = await prisma.medication.findUnique({ where: { id } });
+    const existing = await prisma.medication.findFirst({ where: { id, record: { patient: { tenantId } } } });
     if (!existing) throw new Error('Medication not found');
 
     if (existing.status === 'DISCONTINUED') {
@@ -200,10 +204,10 @@ export const medicationService = {
   },
 
   // Medication history search — used for EVEE temporal reasoning
-  async searchMedicationHistory(patientId: string, drugName: string) {
+  async searchMedicationHistory(patientId: string, tenantId: string, drugName: string) {
     return prisma.medication.findMany({
       where: {
-        record: { patientId },
+        record: { patientId, patient: { tenantId } },
         name:   { contains: drugName, mode: 'insensitive' },
       },
       orderBy: { startDate: 'desc' },

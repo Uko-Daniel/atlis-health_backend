@@ -20,7 +20,7 @@ export async function resultRoutes(fastify: FastifyInstance) {
   // POST /api/results
   // Lab techs and radiologists create results against an order
   fastify.post('/', {
-    preHandler: [authorize(['LAB_TECH', 'RADIOLOGIST', 'ADMIN'])],
+    preHandler: [authorize(['LAB_SCIENTIST', 'IMAGING_TECH'])],
     handler:    resultController.createResult,
   });
 
@@ -28,14 +28,14 @@ export async function resultRoutes(fastify: FastifyInstance) {
   // GET /api/results/department
   // Must be registered before /:id to avoid route conflict
   fastify.get('/department', {
-    preHandler: [authorize(['LAB_TECH', 'RADIOLOGIST', 'DOCTOR', 'ADMIN'])],
+    preHandler: [authorize(['LAB_SCIENTIST', 'IMAGING_TECH', 'DOCTOR'])],
     handler:    resultController.getResultsByDepartment,
   });
 
   // ── CRITICAL PENDING ──────────────────────────────────────
   // GET /api/results/department/critical
   fastify.get('/department/critical', {
-    preHandler: [authorize(['LAB_TECH', 'RADIOLOGIST', 'DOCTOR', 'ADMIN'])],
+    preHandler: [authorize(['LAB_SCIENTIST', 'IMAGING_TECH', 'DOCTOR'])],
     handler:    resultController.getCriticalPendingResults,
   });
 
@@ -43,14 +43,14 @@ export async function resultRoutes(fastify: FastifyInstance) {
   // GET /api/results/patient/:patientId
   // ?department= &releasedOnly= &page= &limit=
   fastify.get('/patient/:patientId', {
-    preHandler: [authorize(['DOCTOR', 'LAB_TECH', 'RADIOLOGIST', 'ADMIN', 'HIM_OFFICER'])],
+    preHandler: [authorize(['DOCTOR', 'LAB_SCIENTIST', 'IMAGING_TECH', 'HIM_OFFICER'])],
     handler:    resultController.getResultsByPatient,
   });
 
   // ── BY ORDER ──────────────────────────────────────────────
   // GET /api/results/order/:orderId
   fastify.get('/order/:orderId', {
-    preHandler: [authorize(['DOCTOR', 'LAB_TECH', 'RADIOLOGIST', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR', 'LAB_SCIENTIST', 'IMAGING_TECH', 'HIM_OFFICER'])],
     handler:    resultController.getResultsByOrder,
   });
 
@@ -66,7 +66,7 @@ export async function resultRoutes(fastify: FastifyInstance) {
   // PATCH /api/results/:id/status
   fastify.patch('/:id/status', {
     preHandler: [
-      authorize(['LAB_TECH', 'RADIOLOGIST', 'ADMIN']),
+      authorize(['LAB_SCIENTIST', 'IMAGING_TECH']),
       guardResultDepartment,
     ],
     handler: resultController.updateResultStatus,
@@ -77,7 +77,7 @@ export async function resultRoutes(fastify: FastifyInstance) {
   // Re-submits result data — voids any previous signature
   fastify.patch('/:id/data', {
     preHandler: [
-      authorize(['LAB_TECH', 'RADIOLOGIST', 'ADMIN']),
+      authorize(['LAB_SCIENTIST', 'IMAGING_TECH']),
       guardResultDepartment,
     ],
     handler: resultController.updateResultData,
@@ -109,7 +109,7 @@ export async function resultRoutes(fastify: FastifyInstance) {
   // PATCH /api/results/:id/release
   // Explicit patient release — ADMIN, DOCTOR, or dept HOD
   fastify.patch('/:id/release', {
-    preHandler: [authorize(['DOCTOR', 'ADMIN', 'HIM_OFFICER'])],
+    preHandler: [authorize(['DOCTOR', 'HIM_OFFICER'])],
     handler:    resultController.releaseToPatient,
   });
 
@@ -117,7 +117,7 @@ export async function resultRoutes(fastify: FastifyInstance) {
   // GET /api/results/:id/integrity
   // Verify result hasn't been tampered with since signing
   fastify.get('/:id/integrity', {
-    preHandler: [authorize(['DOCTOR', 'ADMIN', 'HIM_OFFICER'])],
+    preHandler: [authorize(['DOCTOR', 'ADMIN', 'IT_SUPPORT', 'HIM_OFFICER'])],
     handler:    resultController.checkSignatureIntegrity,
   });
 }

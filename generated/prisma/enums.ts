@@ -63,14 +63,16 @@ export type MedStatus = (typeof MedStatus)[keyof typeof MedStatus]
 
 
 export const StaffRole = {
+  SUPER_ADMIN: 'SUPER_ADMIN',
   ADMIN: 'ADMIN',
   DOCTOR: 'DOCTOR',
   NURSES: 'NURSES',
-  LAB_TECH: 'LAB_TECH',
-  RADIOLOGIST: 'RADIOLOGIST',
+  LAB_SCIENTIST: 'LAB_SCIENTIST',
+  IMAGING_TECH: 'IMAGING_TECH',
   PHARMACIST: 'PHARMACIST',
   RECEPTIONIST: 'RECEPTIONIST',
   BILLING_OFFICER: 'BILLING_OFFICER',
+  PROCUREMENT_OFFICER: 'PROCUREMENT_OFFICER',
   HIM_OFFICER: 'HIM_OFFICER',
   MANAGER: 'MANAGER',
   IT_SUPPORT: 'IT_SUPPORT'
@@ -183,3 +185,87 @@ export const MaritalStatus = {
 } as const
 
 export type MaritalStatus = (typeof MaritalStatus)[keyof typeof MaritalStatus]
+
+
+export const PayerType = {
+  NHIA: 'NHIA',
+  HMO: 'HMO',
+  SELF_PAY: 'SELF_PAY',
+  CORPORATE: 'CORPORATE'
+} as const
+
+export type PayerType = (typeof PayerType)[keyof typeof PayerType]
+
+
+export const ClaimStatus = {
+  DRAFT: 'DRAFT',
+  SUBMITTED: 'SUBMITTED',
+  VETTED: 'VETTED',
+  PAID: 'PAID',
+  REJECTED: 'REJECTED'
+} as const
+
+export type ClaimStatus = (typeof ClaimStatus)[keyof typeof ClaimStatus]
+
+
+export const PlanTier = {
+  TIER_1: 'TIER_1',
+  TIER_2: 'TIER_2',
+  TIER_3: 'TIER_3',
+  TIER_4: 'TIER_4'
+} as const
+
+export type PlanTier = (typeof PlanTier)[keyof typeof PlanTier]
+
+
+export const SubscriptionStatus = {
+  ACTIVE: 'ACTIVE',
+  GRACE_PERIOD: 'GRACE_PERIOD',
+  SUSPENDED: 'SUSPENDED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
+
+
+export const BillingStatus = {
+  DRAFT: 'DRAFT',
+  FINALIZED: 'FINALIZED',
+  PAID: 'PAID',
+  OVERDUE: 'OVERDUE'
+} as const
+
+export type BillingStatus = (typeof BillingStatus)[keyof typeof BillingStatus]
+
+
+export const RequestType = {
+  ITEM_REQUEST: 'ITEM_REQUEST',
+  FUND_DISBURSEMENT: 'FUND_DISBURSEMENT',
+  RESULT_APPROVAL: 'RESULT_APPROVAL',
+  TEMPORARY_ACCESS: 'TEMPORARY_ACCESS',
+  MAINTENANCE_REQUEST: 'MAINTENANCE_REQUEST',
+  LEAVE_REQUEST: 'LEAVE_REQUEST'
+} as const
+
+export type RequestType = (typeof RequestType)[keyof typeof RequestType]
+
+
+export const RequestStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  FULFILLED: 'FULFILLED'
+} as const
+
+export type RequestStatus = (typeof RequestStatus)[keyof typeof RequestStatus]
+
+
+export const TransactionType = {
+  STOCK_IN: 'STOCK_IN',
+  STOCK_OUT: 'STOCK_OUT',
+  DISPENSED: 'DISPENSED',
+  EXPIRED: 'EXPIRED',
+  ADJUSTMENT: 'ADJUSTMENT'
+} as const
+
+export type TransactionType = (typeof TransactionType)[keyof typeof TransactionType]

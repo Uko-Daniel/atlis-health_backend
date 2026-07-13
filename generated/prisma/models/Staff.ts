@@ -38,6 +38,7 @@ export type StaffMinAggregateOutputType = {
   status: $Enums.AccountStatus | null
   createdAt: Date | null
   updatedAt: Date | null
+  tenantId: string | null
 }
 
 export type StaffMaxAggregateOutputType = {
@@ -54,6 +55,7 @@ export type StaffMaxAggregateOutputType = {
   status: $Enums.AccountStatus | null
   createdAt: Date | null
   updatedAt: Date | null
+  tenantId: string | null
 }
 
 export type StaffCountAggregateOutputType = {
@@ -70,6 +72,7 @@ export type StaffCountAggregateOutputType = {
   status: number
   createdAt: number
   updatedAt: number
+  tenantId: number
   _all: number
 }
 
@@ -88,6 +91,7 @@ export type StaffMinAggregateInputType = {
   status?: true
   createdAt?: true
   updatedAt?: true
+  tenantId?: true
 }
 
 export type StaffMaxAggregateInputType = {
@@ -104,6 +108,7 @@ export type StaffMaxAggregateInputType = {
   status?: true
   createdAt?: true
   updatedAt?: true
+  tenantId?: true
 }
 
 export type StaffCountAggregateInputType = {
@@ -120,6 +125,7 @@ export type StaffCountAggregateInputType = {
   status?: true
   createdAt?: true
   updatedAt?: true
+  tenantId?: true
   _all?: true
 }
 
@@ -209,6 +215,7 @@ export type StaffGroupByOutputType = {
   status: $Enums.AccountStatus
   createdAt: Date
   updatedAt: Date
+  tenantId: string
   _count: StaffCountAggregateOutputType | null
   _min: StaffMinAggregateOutputType | null
   _max: StaffMaxAggregateOutputType | null
@@ -246,7 +253,9 @@ export type StaffWhereInput = {
   status?: Prisma.EnumAccountStatusFilter<"Staff"> | $Enums.AccountStatus
   createdAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
+  tenantId?: Prisma.StringFilter<"Staff"> | string
   SignUpRequest?: Prisma.XOR<Prisma.SignupRequestNullableScalarRelationFilter, Prisma.SignupRequestWhereInput> | null
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }
 
 export type StaffOrderByWithRelationInput = {
@@ -263,7 +272,9 @@ export type StaffOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   SignUpRequest?: Prisma.SignupRequestOrderByWithRelationInput
+  tenant?: Prisma.TenantOrderByWithRelationInput
 }
 
 export type StaffWhereUniqueInput = Prisma.AtLeast<{
@@ -283,7 +294,9 @@ export type StaffWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumAccountStatusFilter<"Staff"> | $Enums.AccountStatus
   createdAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
+  tenantId?: Prisma.StringFilter<"Staff"> | string
   SignUpRequest?: Prisma.XOR<Prisma.SignupRequestNullableScalarRelationFilter, Prisma.SignupRequestWhereInput> | null
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }, "id" | "email">
 
 export type StaffOrderByWithAggregationInput = {
@@ -300,6 +313,7 @@ export type StaffOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   _count?: Prisma.StaffCountOrderByAggregateInput
   _max?: Prisma.StaffMaxOrderByAggregateInput
   _min?: Prisma.StaffMinOrderByAggregateInput
@@ -322,6 +336,7 @@ export type StaffScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumAccountStatusWithAggregatesFilter<"Staff"> | $Enums.AccountStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Staff"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Staff"> | Date | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"Staff"> | string
 }
 
 export type StaffCreateInput = {
@@ -339,6 +354,7 @@ export type StaffCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   SignUpRequest?: Prisma.SignupRequestCreateNestedOneWithoutCreatedStaffInput
+  tenant: Prisma.TenantCreateNestedOneWithoutStaffInput
 }
 
 export type StaffUncheckedCreateInput = {
@@ -355,6 +371,7 @@ export type StaffUncheckedCreateInput = {
   status?: $Enums.AccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenantId: string
   SignUpRequest?: Prisma.SignupRequestUncheckedCreateNestedOneWithoutCreatedStaffInput
 }
 
@@ -373,6 +390,7 @@ export type StaffUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   SignUpRequest?: Prisma.SignupRequestUpdateOneWithoutCreatedStaffNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStaffNestedInput
 }
 
 export type StaffUncheckedUpdateInput = {
@@ -389,6 +407,7 @@ export type StaffUncheckedUpdateInput = {
   status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   SignUpRequest?: Prisma.SignupRequestUncheckedUpdateOneWithoutCreatedStaffNestedInput
 }
 
@@ -406,6 +425,7 @@ export type StaffCreateManyInput = {
   status?: $Enums.AccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenantId: string
 }
 
 export type StaffUpdateManyMutationInput = {
@@ -438,6 +458,17 @@ export type StaffUncheckedUpdateManyInput = {
   status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type StaffListRelationFilter = {
+  every?: Prisma.StaffWhereInput
+  some?: Prisma.StaffWhereInput
+  none?: Prisma.StaffWhereInput
+}
+
+export type StaffOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type StaffCountOrderByAggregateInput = {
@@ -454,6 +485,7 @@ export type StaffCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
 }
 
 export type StaffMaxOrderByAggregateInput = {
@@ -470,6 +502,7 @@ export type StaffMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
 }
 
 export type StaffMinOrderByAggregateInput = {
@@ -486,11 +519,54 @@ export type StaffMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
 }
 
 export type StaffNullableScalarRelationFilter = {
   is?: Prisma.StaffWhereInput | null
   isNot?: Prisma.StaffWhereInput | null
+}
+
+export type StaffCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutTenantInput, Prisma.StaffUncheckedCreateWithoutTenantInput> | Prisma.StaffCreateWithoutTenantInput[] | Prisma.StaffUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutTenantInput | Prisma.StaffCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.StaffCreateManyTenantInputEnvelope
+  connect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+}
+
+export type StaffUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutTenantInput, Prisma.StaffUncheckedCreateWithoutTenantInput> | Prisma.StaffCreateWithoutTenantInput[] | Prisma.StaffUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutTenantInput | Prisma.StaffCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.StaffCreateManyTenantInputEnvelope
+  connect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+}
+
+export type StaffUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutTenantInput, Prisma.StaffUncheckedCreateWithoutTenantInput> | Prisma.StaffCreateWithoutTenantInput[] | Prisma.StaffUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutTenantInput | Prisma.StaffCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.StaffUpsertWithWhereUniqueWithoutTenantInput | Prisma.StaffUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.StaffCreateManyTenantInputEnvelope
+  set?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+  disconnect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+  delete?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+  connect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+  update?: Prisma.StaffUpdateWithWhereUniqueWithoutTenantInput | Prisma.StaffUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.StaffUpdateManyWithWhereWithoutTenantInput | Prisma.StaffUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.StaffScalarWhereInput | Prisma.StaffScalarWhereInput[]
+}
+
+export type StaffUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutTenantInput, Prisma.StaffUncheckedCreateWithoutTenantInput> | Prisma.StaffCreateWithoutTenantInput[] | Prisma.StaffUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutTenantInput | Prisma.StaffCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.StaffUpsertWithWhereUniqueWithoutTenantInput | Prisma.StaffUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.StaffCreateManyTenantInputEnvelope
+  set?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+  disconnect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+  delete?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+  connect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+  update?: Prisma.StaffUpdateWithWhereUniqueWithoutTenantInput | Prisma.StaffUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.StaffUpdateManyWithWhereWithoutTenantInput | Prisma.StaffUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.StaffScalarWhereInput | Prisma.StaffScalarWhereInput[]
 }
 
 export type EnumStaffRoleFieldUpdateOperationsInput = {
@@ -521,6 +597,86 @@ export type StaffUpdateOneWithoutSignUpRequestNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StaffUpdateToOneWithWhereWithoutSignUpRequestInput, Prisma.StaffUpdateWithoutSignUpRequestInput>, Prisma.StaffUncheckedUpdateWithoutSignUpRequestInput>
 }
 
+export type StaffCreateWithoutTenantInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  role: $Enums.StaffRole
+  email: string
+  password: string
+  phoneNumber?: string | null
+  department?: $Enums.Department | null
+  isHOD?: boolean
+  canVerify?: boolean
+  status?: $Enums.AccountStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  SignUpRequest?: Prisma.SignupRequestCreateNestedOneWithoutCreatedStaffInput
+}
+
+export type StaffUncheckedCreateWithoutTenantInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  role: $Enums.StaffRole
+  email: string
+  password: string
+  phoneNumber?: string | null
+  department?: $Enums.Department | null
+  isHOD?: boolean
+  canVerify?: boolean
+  status?: $Enums.AccountStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  SignUpRequest?: Prisma.SignupRequestUncheckedCreateNestedOneWithoutCreatedStaffInput
+}
+
+export type StaffCreateOrConnectWithoutTenantInput = {
+  where: Prisma.StaffWhereUniqueInput
+  create: Prisma.XOR<Prisma.StaffCreateWithoutTenantInput, Prisma.StaffUncheckedCreateWithoutTenantInput>
+}
+
+export type StaffCreateManyTenantInputEnvelope = {
+  data: Prisma.StaffCreateManyTenantInput | Prisma.StaffCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type StaffUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.StaffWhereUniqueInput
+  update: Prisma.XOR<Prisma.StaffUpdateWithoutTenantInput, Prisma.StaffUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.StaffCreateWithoutTenantInput, Prisma.StaffUncheckedCreateWithoutTenantInput>
+}
+
+export type StaffUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.StaffWhereUniqueInput
+  data: Prisma.XOR<Prisma.StaffUpdateWithoutTenantInput, Prisma.StaffUncheckedUpdateWithoutTenantInput>
+}
+
+export type StaffUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.StaffScalarWhereInput
+  data: Prisma.XOR<Prisma.StaffUpdateManyMutationInput, Prisma.StaffUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type StaffScalarWhereInput = {
+  AND?: Prisma.StaffScalarWhereInput | Prisma.StaffScalarWhereInput[]
+  OR?: Prisma.StaffScalarWhereInput[]
+  NOT?: Prisma.StaffScalarWhereInput | Prisma.StaffScalarWhereInput[]
+  id?: Prisma.StringFilter<"Staff"> | string
+  firstName?: Prisma.StringFilter<"Staff"> | string
+  lastName?: Prisma.StringFilter<"Staff"> | string
+  role?: Prisma.EnumStaffRoleFilter<"Staff"> | $Enums.StaffRole
+  email?: Prisma.StringFilter<"Staff"> | string
+  password?: Prisma.StringFilter<"Staff"> | string
+  phoneNumber?: Prisma.StringNullableFilter<"Staff"> | string | null
+  department?: Prisma.EnumDepartmentNullableFilter<"Staff"> | $Enums.Department | null
+  isHOD?: Prisma.BoolFilter<"Staff"> | boolean
+  canVerify?: Prisma.BoolFilter<"Staff"> | boolean
+  status?: Prisma.EnumAccountStatusFilter<"Staff"> | $Enums.AccountStatus
+  createdAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
+  tenantId?: Prisma.StringFilter<"Staff"> | string
+}
+
 export type StaffCreateWithoutSignUpRequestInput = {
   id?: string
   firstName: string
@@ -535,6 +691,7 @@ export type StaffCreateWithoutSignUpRequestInput = {
   status?: $Enums.AccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutStaffInput
 }
 
 export type StaffUncheckedCreateWithoutSignUpRequestInput = {
@@ -551,6 +708,7 @@ export type StaffUncheckedCreateWithoutSignUpRequestInput = {
   status?: $Enums.AccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenantId: string
 }
 
 export type StaffCreateOrConnectWithoutSignUpRequestInput = {
@@ -583,9 +741,77 @@ export type StaffUpdateWithoutSignUpRequestInput = {
   status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStaffNestedInput
 }
 
 export type StaffUncheckedUpdateWithoutSignUpRequestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
+  isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type StaffCreateManyTenantInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  role: $Enums.StaffRole
+  email: string
+  password: string
+  phoneNumber?: string | null
+  department?: $Enums.Department | null
+  isHOD?: boolean
+  canVerify?: boolean
+  status?: $Enums.AccountStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type StaffUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
+  isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  SignUpRequest?: Prisma.SignupRequestUpdateOneWithoutCreatedStaffNestedInput
+}
+
+export type StaffUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
+  isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  SignUpRequest?: Prisma.SignupRequestUncheckedUpdateOneWithoutCreatedStaffNestedInput
+}
+
+export type StaffUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -617,7 +843,9 @@ export type StaffSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenantId?: boolean
   SignUpRequest?: boolean | Prisma.Staff$SignUpRequestArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["staff"]>
 
 export type StaffSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -634,6 +862,8 @@ export type StaffSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenantId?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["staff"]>
 
 export type StaffSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -650,6 +880,8 @@ export type StaffSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenantId?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["staff"]>
 
 export type StaffSelectScalar = {
@@ -666,19 +898,26 @@ export type StaffSelectScalar = {
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenantId?: boolean
 }
 
-export type StaffOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "role" | "email" | "password" | "phoneNumber" | "department" | "isHOD" | "canVerify" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["staff"]>
+export type StaffOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "role" | "email" | "password" | "phoneNumber" | "department" | "isHOD" | "canVerify" | "status" | "createdAt" | "updatedAt" | "tenantId", ExtArgs["result"]["staff"]>
 export type StaffInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   SignUpRequest?: boolean | Prisma.Staff$SignUpRequestArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
-export type StaffIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type StaffIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type StaffIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+}
+export type StaffIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+}
 
 export type $StaffPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Staff"
   objects: {
     SignUpRequest: Prisma.$SignupRequestPayload<ExtArgs> | null
+    tenant: Prisma.$TenantPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -694,6 +933,7 @@ export type $StaffPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     status: $Enums.AccountStatus
     createdAt: Date
     updatedAt: Date
+    tenantId: string
   }, ExtArgs["result"]["staff"]>
   composites: {}
 }
@@ -1089,6 +1329,7 @@ readonly fields: StaffFieldRefs;
 export interface Prisma__StaffClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   SignUpRequest<T extends Prisma.Staff$SignUpRequestArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Staff$SignUpRequestArgs<ExtArgs>>): Prisma.Prisma__SignupRequestClient<runtime.Types.Result.GetResult<Prisma.$SignupRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1131,6 +1372,7 @@ export interface StaffFieldRefs {
   readonly status: Prisma.FieldRef<"Staff", 'AccountStatus'>
   readonly createdAt: Prisma.FieldRef<"Staff", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Staff", 'DateTime'>
+  readonly tenantId: Prisma.FieldRef<"Staff", 'String'>
 }
     
 
@@ -1385,6 +1627,10 @@ export type StaffCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    */
   data: Prisma.StaffCreateManyInput | Prisma.StaffCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StaffIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1455,6 +1701,10 @@ export type StaffUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many Staff to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StaffIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

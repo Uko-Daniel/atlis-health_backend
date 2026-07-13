@@ -1,6 +1,13 @@
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { Department, PrismaClient, TemplateType } from "../generated/prisma/client";
+import {
+  Department,
+  PrismaClient,
+  TemplateType,
+  PlanTier,
+  SubscriptionStatus,
+  StaffRole,
+} from "../generated/prisma/client";
 import { staffService } from "../src/services/staffService";
 
 const connectionString = process.env.DATABASE_URL;
@@ -16,7 +23,57 @@ const adapter = new PrismaPg({
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  console.log('🌱 Seeding templates, services, and staff accounts...');
+  console.log('🌱 Seeding tenant, templates, services, and staff accounts...');
+
+  // =========================
+  // DEFAULT TENANT
+  // =========================
+
+  const tenant = await prisma.tenant.upsert({
+    where: { subdomain: 'atlis' },
+    update: {},
+    create: {
+      facilityName: 'Atlis Health',
+      subdomain: 'atlis',
+      planTier: PlanTier.TIER_4,
+      subscriptionStatus: SubscriptionStatus.ACTIVE,
+      licenseExpiresAt: new Date('2027-12-31'),
+      eveeEnabled: true,
+      prioritySupport: true,
+    },
+  });
+
+  console.log(`🏥 Tenant: ${tenant.facilityName} (${tenant.id})`);
+
+  // =========================
+  // TENANT PERMISSIONS (defaults)
+  // =========================
+
+  const defaultPermissions: Array<{
+    permissionKey: string;
+    allowedRoles: StaffRole[];
+  }> = [
+    { permissionKey: 'allowOrderTest', allowedRoles: [] },
+    { permissionKey: 'allowRecordVitalsWithoutActiveEncounter', allowedRoles: [] },
+    { permissionKey: 'allowViewDiagnoses', allowedRoles: [] },
+    { permissionKey: 'requireDoctorCosignOnPrescription', allowedRoles: [] },
+    { permissionKey: 'allowViewOrderStatus', allowedRoles: [StaffRole.BILLING_OFFICER] },
+  ];
+
+  for (const perm of defaultPermissions) {
+    await prisma.tenantPermission.upsert({
+      where: { tenantId_permissionKey: { tenantId: tenant.id, permissionKey: perm.permissionKey } },
+      update: {},
+      create: {
+        tenantId: tenant.id,
+        permissionKey: perm.permissionKey,
+        allowedRoles: perm.allowedRoles,
+        updatedBy: 'seed',
+      },
+    });
+  }
+
+  console.log('🔐 Default permissions seeded');
 
   // =========================
   // TEMPLATES
@@ -24,7 +81,6 @@ async function main() {
 
   const templates = await Promise.all([
 
-    // CBC TEMPLATE
     prisma.template.upsert({
       where: { name: 'CBC Template' },
       update: {},
@@ -32,6 +88,7 @@ async function main() {
         name: 'CBC Template',
         type: TemplateType.LAB,
         department: Department.LABORATORY,
+        tenantId: tenant.id,
         dataSchema: {
           fields: [
             { name: 'hemoglobin', unit: 'g/dL', range: '12-16' },
@@ -42,7 +99,6 @@ async function main() {
       }
     }),
 
-    // MALARIA TEMPLATE
     prisma.template.upsert({
       where: { name: 'Malaria Template' },
       update: {},
@@ -50,6 +106,7 @@ async function main() {
         name: 'Malaria Template',
         type: TemplateType.LAB,
         department: Department.LABORATORY,
+        tenantId: tenant.id,
         dataSchema: {
           fields: [
             { name: 'parasiteDetected', type: 'boolean' },
@@ -59,7 +116,6 @@ async function main() {
       }
     }),
 
-    // URINALYSIS TEMPLATE
     prisma.template.upsert({
       where: { name: 'Urinalysis Template' },
       update: {},
@@ -67,6 +123,7 @@ async function main() {
         name: 'Urinalysis Template',
         type: TemplateType.LAB,
         department: Department.LABORATORY,
+        tenantId: tenant.id,
         dataSchema: {
           fields: [
             { name: 'color', type: 'string' },
@@ -78,7 +135,6 @@ async function main() {
       }
     }),
 
-    // X-RAY TEMPLATE
     prisma.template.upsert({
       where: { name: 'X-Ray Template' },
       update: {},
@@ -86,6 +142,7 @@ async function main() {
         name: 'X-Ray Template',
         type: TemplateType.IMAGING,
         department: Department.RADIOLOGY,
+        tenantId: tenant.id,
         dataSchema: {
           fields: [
             { name: 'finding', type: 'text' },
@@ -95,7 +152,6 @@ async function main() {
       }
     }),
 
-    // ULTRASOUND TEMPLATE
     prisma.template.upsert({
       where: { name: 'Ultrasound Template' },
       update: {},
@@ -103,6 +159,7 @@ async function main() {
         name: 'Ultrasound Template',
         type: TemplateType.IMAGING,
         department: Department.RADIOLOGY,
+        tenantId: tenant.id,
         dataSchema: {
           fields: [
             { name: 'organ', type: 'string' },
@@ -129,6 +186,7 @@ async function main() {
         labCode: 'CBC',
         category: 'Hematology',
         price: 5000,
+        tenantId: tenant.id,
         templateId: templates[0].id,
       }
     }),
@@ -141,6 +199,7 @@ async function main() {
         labCode: 'MP',
         category: 'Parasitology',
         price: 3000,
+        tenantId: tenant.id,
         templateId: templates[1].id,
       }
     }),
@@ -153,6 +212,7 @@ async function main() {
         labCode: 'UA',
         category: 'Chemistry',
         price: 4000,
+        tenantId: tenant.id,
         templateId: templates[2].id,
       }
     }),
@@ -165,6 +225,7 @@ async function main() {
         labCode: 'XRAY_CHEST',
         category: 'Imaging',
         price: 10000,
+        tenantId: tenant.id,
         templateId: templates[3].id,
       }
     }),
@@ -177,6 +238,7 @@ async function main() {
         labCode: 'USS_ABD',
         category: 'Imaging',
         price: 15000,
+        tenantId: tenant.id,
         templateId: templates[4].id,
       }
     }),
@@ -187,7 +249,7 @@ async function main() {
   // STAFF ACCOUNTS
   // =========================
 
-  const seedPassword = 'password123'; // Change in production
+  const seedPassword = 'password123';
 
   const staffAccounts = [
     {
@@ -197,6 +259,7 @@ async function main() {
       role:      'ADMIN' as const,
       department: Department.ADMINISTRATION,
       phoneNumber: '+2349062345678',
+      tenantId:    tenant.id,
       isHOD:     true,
       canVerify: true,
     },
@@ -207,6 +270,7 @@ async function main() {
       role:      'DOCTOR' as const,
       department: Department.GENERAL,
       phoneNumber: '+2349052345678',
+      tenantId:    tenant.id,
       isHOD:     false,
       canVerify: false,
     },
@@ -216,6 +280,7 @@ async function main() {
       email:     'nurse@atlis.com',
       role:      'NURSES' as const,
       department: Department.GENERAL,
+      tenantId:    tenant.id,
       phoneNumber: '+2349042345678',
       isHOD:     false,
       canVerify: false,
@@ -224,8 +289,9 @@ async function main() {
       firstName: 'Lab',
       lastName:  'Technician',
       email:     'labtech@atlis.com',
-      role:      'LAB_TECH' as const,
+      role:      'LAB_SCIENTIST' as const,
       department: Department.LABORATORY,
+       tenantId:    tenant.id,
       phoneNumber: '+2349032345678',
       isHOD:     false,
       canVerify: true,
@@ -234,8 +300,9 @@ async function main() {
       firstName: 'Radiologist',
       lastName:  'One',
       email:     'radiologist@atlis.com',
-      role:      'RADIOLOGIST' as const,
+      role:      'IMAGING_TECH' as const,
       department: Department.RADIOLOGY,
+       tenantId:    tenant.id,
       phoneNumber: '+2349022345678',
       isHOD:     false,
       canVerify: true,
@@ -246,6 +313,7 @@ async function main() {
       email:     'pharmacist@atlis.com',
       role:      'PHARMACIST' as const,
       department: Department.PHARMACY,
+       tenantId:    tenant.id,
       phoneNumber: '+2348112345678',
       isHOD:     false,
       canVerify: false,
@@ -256,6 +324,7 @@ async function main() {
       email:     'receptionist@atlis.com',
       role:      'RECEPTIONIST' as const,
       department: Department.ADMINISTRATION,
+       tenantId:    tenant.id,
       phoneNumber: '+2347112345678',
       isHOD:     false,
       canVerify: false,
@@ -266,6 +335,7 @@ async function main() {
       email:     'billing@atlis.com',
       role:      'BILLING_OFFICER' as const,
       department: Department.ADMINISTRATION,
+       tenantId:    tenant.id,
       phoneNumber: '+2349112345678',
       isHOD:     false,
       canVerify: false,
@@ -276,6 +346,7 @@ async function main() {
       email:     'him@atlis.com',
       role:      'HIM_OFFICER' as const,
       department: Department.ADMINISTRATION,
+       tenantId:    tenant.id,
       phoneNumber: '+2347012345678',
       isHOD:     true,
       canVerify: false,
@@ -286,6 +357,7 @@ async function main() {
       email:     'manager@atlis.com',
       role:      'MANAGER' as const,
       department: Department.ADMINISTRATION,
+       tenantId:    tenant.id,
       phoneNumber: '+2349012345678',
       isHOD:     true,
       canVerify: true,
@@ -296,6 +368,7 @@ async function main() {
       email:     'it@atlis.com',
       role:      'IT_SUPPORT' as const,
       department: Department.ADMINISTRATION,
+       tenantId:    tenant.id,
       phoneNumber: '+2348012345678',
       isHOD:     false,
       canVerify: false,
@@ -314,6 +387,7 @@ async function main() {
         role:        staff.role,
         department:  staff.department,
         phoneNumber: staff.phoneNumber,
+         tenantId:    tenant.id,
         isHOD:       staff.isHOD,
         canVerify:   staff.canVerify,
       });

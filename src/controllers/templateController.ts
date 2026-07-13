@@ -13,6 +13,7 @@ export const templateController = {
         department:  body.department ?? request.user.department,
         dataSchema:  body.dataSchema,
         createdBy:   request.user.sub,
+        tenantId: request.tenantId,
       });
       return reply.status(201).send(template);
     } catch (err: any) {
@@ -27,7 +28,7 @@ export const templateController = {
   async getTemplateById(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id } = request.params as { id: string };
-      const template = await templateService.getTemplateById(id);
+      const template = await templateService.getTemplateById(id, request.tenantId);
       return reply.status(200).send(template);
     } catch (err: any) {
       const status = err.message.includes('not found') ? 404 : 500;
@@ -39,7 +40,7 @@ export const templateController = {
   async getTemplatesByDepartment(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { department } = request.params as { department: string };
-      const templates = await templateService.getTemplatesByDepartment(department);
+      const templates = await templateService.getTemplatesByDepartment(department, request.tenantId);
       return reply.status(200).send(templates);
     } catch (err: any) {
       const status = err.message.includes('Invalid department') ? 400 : 500;
@@ -58,6 +59,7 @@ export const templateController = {
       };
 
       const params: {
+        tenantId:     string;
         page:        number;
         limit:       number;
         activeOnly:  boolean;
@@ -66,6 +68,7 @@ export const templateController = {
         page:       query.page  ? parseInt(query.page,  10) : 1,
         limit:      query.limit ? parseInt(query.limit, 10) : 20,
         activeOnly: query.activeOnly !== 'false',
+        tenantId:    request.tenantId,
       };
       if (query.department) params.department = query.department;
 
@@ -88,12 +91,14 @@ export const templateController = {
       if (!query.q) return reply.status(400).send({ error: 'Query param "q" is required' });
 
       const params: {
+        tenantId:    string;
         query:       string;
         activeOnly:  boolean;
         department?: string;
       } = {
         query:      query.q,
         activeOnly: query.activeOnly !== 'false',
+        tenantId:   request.tenantId,
       };
       if (query.department) params.department = query.department;
 
@@ -118,10 +123,12 @@ export const templateController = {
         newName:    string;
         department?: string;
         clonedBy:   string;
+        tenantId:    string;
       } = {
         sourceId:   id,
         newName:    body.newName,
         clonedBy:   request.user.sub,
+        tenantId:   request.tenantId,
       };
       if (body.department) cloneData.department = body.department;
 
@@ -142,6 +149,7 @@ export const templateController = {
       const template = await templateService.updateTemplate(
         id,
         request.user.sub,
+        request.tenantId,
         request.body as any,
       );
       return reply.status(200).send(template);
@@ -158,7 +166,7 @@ export const templateController = {
   async deactivateTemplate(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id } = request.params as { id: string };
-      const template = await templateService.deactivateTemplate(id, request.user.sub);
+      const template = await templateService.deactivateTemplate(id, request.user.sub, request.tenantId);
       return reply.status(200).send(template);
     } catch (err: any) {
       const status = err.message.includes('not found')        ? 404
@@ -167,10 +175,22 @@ export const templateController = {
     }
   },
 
+  async activateTemplate(request: FastifyRequest, reply: FastifyReply) {
+  try {
+    const { id } = request.params as { id: string };
+    const template = await templateService.activateTemplate(id, request.user.sub);
+    return reply.status(200).send(template);
+  } catch (err: any) {
+    const status = err.message.includes('not found') ? 404
+                 : err.message.includes('already active') ? 409 : 400;
+    return reply.status(status).send({ error: err.message });
+  }
+},
+
   // POST /api/templates/seed
   async seedDefaultTemplates(request: FastifyRequest, reply: FastifyReply) {
     try {
-      const result = await templateService.seedDefaultTemplates(request.user.sub);
+      const result = await templateService.seedDefaultTemplates(request.user.sub, request.tenantId);
       return reply.status(200).send(result);
     } catch (err: any) {
       return reply.status(500).send({ error: err.message });

@@ -28,11 +28,11 @@ function validateAllergyInput(data: Partial<CreateAllergyInput>, partial = false
 
 export const allergyService = {
 
-  async createAllergy(data: CreateAllergyInput) {
+  async createAllergy(data: CreateAllergyInput & { tenantId: string }) {
     const { valid, errors } = validateAllergyInput(data, false);
     if (!valid) throw new Error(errors.join(', '));
 
-    const patient = await prisma.patient.findUnique({ where: { id: data.patientId } });
+    const patient = await prisma.patient.findFirst({ where: { id: data.patientId, tenantId: data.tenantId } });
     if (!patient) throw new Error('Patient not found');
 
     return prisma.allergy.create({
@@ -51,30 +51,30 @@ export const allergyService = {
     });
   },
 
-  async getAllergiesByPatient(patientId: string) {
+  async getAllergiesByPatient(patientId: string, tenantId: string) {
     return prisma.allergy.findMany({
-      where:   { patientId },
+      where:   { patientId, patient: { tenantId } },
       orderBy: { createdAt: 'desc' },
     });
   },
 
   // EVEE uses this — active allergies only, for rule evaluation
-  async getActiveAllergiesByPatient(patientId: string) {
+  async getActiveAllergiesByPatient(patientId: string, tenantId: string) {
     return prisma.allergy.findMany({
-      where:   { patientId, status: 'ACTIVE' },
+      where:   { patientId, status: 'ACTIVE', patient: { tenantId } },
       orderBy: { createdAt: 'desc' },
     });
   },
 
-  async getAllergyById(id: string) {
-    return prisma.allergy.findUnique({ where: { id } });
+  async getAllergyById(id: string, tenantId: string) {
+    return prisma.allergy.findFirst({ where: { id, patient: { tenantId } } });
   },
 
-  async updateAllergy(id: string, data: UpdateAllergyInput) {
+  async updateAllergy(id: string, tenantId: string, data: UpdateAllergyInput) {
     const { valid, errors } = validateAllergyInput(data, true);
     if (!valid) throw new Error(errors.join(', '));
 
-    const existing = await prisma.allergy.findUnique({ where: { id } });
+    const existing = await prisma.allergy.findFirst({ where: { id, patient: { tenantId } } });
     if (!existing) throw new Error('Allergy not found');
 
     return prisma.allergy.update({
@@ -92,8 +92,8 @@ export const allergyService = {
   },
 
   // Soft deactivate — never hard delete clinical allergy records
-  async deactivateAllergy(id: string) {
-    const existing = await prisma.allergy.findUnique({ where: { id } });
+  async deactivateAllergy(id: string, tenantId: string) {
+    const existing = await prisma.allergy.findFirst({ where: { id, patient: { tenantId } } });
     if (!existing) throw new Error('Allergy not found');
 
     return prisma.allergy.update({

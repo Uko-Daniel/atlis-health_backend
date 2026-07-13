@@ -184,6 +184,7 @@ export type OrderWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Order"> | Date | string
   patient?: Prisma.XOR<Prisma.PatientScalarRelationFilter, Prisma.PatientWhereInput>
   services?: Prisma.OrderServiceListRelationFilter
+  claims?: Prisma.ClaimListRelationFilter
   results?: Prisma.ResultListRelationFilter
 }
 
@@ -195,6 +196,7 @@ export type OrderOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   patient?: Prisma.PatientOrderByWithRelationInput
   services?: Prisma.OrderServiceOrderByRelationAggregateInput
+  claims?: Prisma.ClaimOrderByRelationAggregateInput
   results?: Prisma.ResultOrderByRelationAggregateInput
 }
 
@@ -209,6 +211,7 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Order"> | Date | string
   patient?: Prisma.XOR<Prisma.PatientScalarRelationFilter, Prisma.PatientWhereInput>
   services?: Prisma.OrderServiceListRelationFilter
+  claims?: Prisma.ClaimListRelationFilter
   results?: Prisma.ResultListRelationFilter
 }, "id">
 
@@ -241,6 +244,7 @@ export type OrderCreateInput = {
   updatedAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutOrdersInput
   services?: Prisma.OrderServiceCreateNestedManyWithoutOrderInput
+  claims?: Prisma.ClaimCreateNestedManyWithoutOrderInput
   results?: Prisma.ResultCreateNestedManyWithoutOrderInput
 }
 
@@ -251,6 +255,7 @@ export type OrderUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   services?: Prisma.OrderServiceUncheckedCreateNestedManyWithoutOrderInput
+  claims?: Prisma.ClaimUncheckedCreateNestedManyWithoutOrderInput
   results?: Prisma.ResultUncheckedCreateNestedManyWithoutOrderInput
 }
 
@@ -261,6 +266,7 @@ export type OrderUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutOrdersNestedInput
   services?: Prisma.OrderServiceUpdateManyWithoutOrderNestedInput
+  claims?: Prisma.ClaimUpdateManyWithoutOrderNestedInput
   results?: Prisma.ResultUpdateManyWithoutOrderNestedInput
 }
 
@@ -271,6 +277,7 @@ export type OrderUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   services?: Prisma.OrderServiceUncheckedUpdateManyWithoutOrderNestedInput
+  claims?: Prisma.ClaimUncheckedUpdateManyWithoutOrderNestedInput
   results?: Prisma.ResultUncheckedUpdateManyWithoutOrderNestedInput
 }
 
@@ -295,6 +302,11 @@ export type OrderUncheckedUpdateManyInput = {
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type OrderNullableScalarRelationFilter = {
+  is?: Prisma.OrderWhereInput | null
+  isNot?: Prisma.OrderWhereInput | null
 }
 
 export type OrderListRelationFilter = {
@@ -334,6 +346,22 @@ export type OrderMinOrderByAggregateInput = {
 export type OrderScalarRelationFilter = {
   is?: Prisma.OrderWhereInput
   isNot?: Prisma.OrderWhereInput
+}
+
+export type OrderCreateNestedOneWithoutClaimsInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutClaimsInput, Prisma.OrderUncheckedCreateWithoutClaimsInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutClaimsInput
+  connect?: Prisma.OrderWhereUniqueInput
+}
+
+export type OrderUpdateOneWithoutClaimsNestedInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutClaimsInput, Prisma.OrderUncheckedCreateWithoutClaimsInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutClaimsInput
+  upsert?: Prisma.OrderUpsertWithoutClaimsInput
+  disconnect?: Prisma.OrderWhereInput | boolean
+  delete?: Prisma.OrderWhereInput | boolean
+  connect?: Prisma.OrderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutClaimsInput, Prisma.OrderUpdateWithoutClaimsInput>, Prisma.OrderUncheckedUpdateWithoutClaimsInput>
 }
 
 export type OrderCreateNestedManyWithoutPatientInput = {
@@ -410,12 +438,69 @@ export type OrderUpdateOneRequiredWithoutResultsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutResultsInput, Prisma.OrderUpdateWithoutResultsInput>, Prisma.OrderUncheckedUpdateWithoutResultsInput>
 }
 
+export type OrderCreateWithoutClaimsInput = {
+  id?: string
+  status?: $Enums.OrderStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patient: Prisma.PatientCreateNestedOneWithoutOrdersInput
+  services?: Prisma.OrderServiceCreateNestedManyWithoutOrderInput
+  results?: Prisma.ResultCreateNestedManyWithoutOrderInput
+}
+
+export type OrderUncheckedCreateWithoutClaimsInput = {
+  id?: string
+  patientId: string
+  status?: $Enums.OrderStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  services?: Prisma.OrderServiceUncheckedCreateNestedManyWithoutOrderInput
+  results?: Prisma.ResultUncheckedCreateNestedManyWithoutOrderInput
+}
+
+export type OrderCreateOrConnectWithoutClaimsInput = {
+  where: Prisma.OrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrderCreateWithoutClaimsInput, Prisma.OrderUncheckedCreateWithoutClaimsInput>
+}
+
+export type OrderUpsertWithoutClaimsInput = {
+  update: Prisma.XOR<Prisma.OrderUpdateWithoutClaimsInput, Prisma.OrderUncheckedUpdateWithoutClaimsInput>
+  create: Prisma.XOR<Prisma.OrderCreateWithoutClaimsInput, Prisma.OrderUncheckedCreateWithoutClaimsInput>
+  where?: Prisma.OrderWhereInput
+}
+
+export type OrderUpdateToOneWithWhereWithoutClaimsInput = {
+  where?: Prisma.OrderWhereInput
+  data: Prisma.XOR<Prisma.OrderUpdateWithoutClaimsInput, Prisma.OrderUncheckedUpdateWithoutClaimsInput>
+}
+
+export type OrderUpdateWithoutClaimsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patient?: Prisma.PatientUpdateOneRequiredWithoutOrdersNestedInput
+  services?: Prisma.OrderServiceUpdateManyWithoutOrderNestedInput
+  results?: Prisma.ResultUpdateManyWithoutOrderNestedInput
+}
+
+export type OrderUncheckedUpdateWithoutClaimsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  services?: Prisma.OrderServiceUncheckedUpdateManyWithoutOrderNestedInput
+  results?: Prisma.ResultUncheckedUpdateManyWithoutOrderNestedInput
+}
+
 export type OrderCreateWithoutPatientInput = {
   id?: string
   status?: $Enums.OrderStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   services?: Prisma.OrderServiceCreateNestedManyWithoutOrderInput
+  claims?: Prisma.ClaimCreateNestedManyWithoutOrderInput
   results?: Prisma.ResultCreateNestedManyWithoutOrderInput
 }
 
@@ -425,6 +510,7 @@ export type OrderUncheckedCreateWithoutPatientInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   services?: Prisma.OrderServiceUncheckedCreateNestedManyWithoutOrderInput
+  claims?: Prisma.ClaimUncheckedCreateNestedManyWithoutOrderInput
   results?: Prisma.ResultUncheckedCreateNestedManyWithoutOrderInput
 }
 
@@ -471,6 +557,7 @@ export type OrderCreateWithoutServicesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutOrdersInput
+  claims?: Prisma.ClaimCreateNestedManyWithoutOrderInput
   results?: Prisma.ResultCreateNestedManyWithoutOrderInput
 }
 
@@ -480,6 +567,7 @@ export type OrderUncheckedCreateWithoutServicesInput = {
   status?: $Enums.OrderStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  claims?: Prisma.ClaimUncheckedCreateNestedManyWithoutOrderInput
   results?: Prisma.ResultUncheckedCreateNestedManyWithoutOrderInput
 }
 
@@ -505,6 +593,7 @@ export type OrderUpdateWithoutServicesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutOrdersNestedInput
+  claims?: Prisma.ClaimUpdateManyWithoutOrderNestedInput
   results?: Prisma.ResultUpdateManyWithoutOrderNestedInput
 }
 
@@ -514,6 +603,7 @@ export type OrderUncheckedUpdateWithoutServicesInput = {
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  claims?: Prisma.ClaimUncheckedUpdateManyWithoutOrderNestedInput
   results?: Prisma.ResultUncheckedUpdateManyWithoutOrderNestedInput
 }
 
@@ -524,6 +614,7 @@ export type OrderCreateWithoutResultsInput = {
   updatedAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutOrdersInput
   services?: Prisma.OrderServiceCreateNestedManyWithoutOrderInput
+  claims?: Prisma.ClaimCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutResultsInput = {
@@ -533,6 +624,7 @@ export type OrderUncheckedCreateWithoutResultsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   services?: Prisma.OrderServiceUncheckedCreateNestedManyWithoutOrderInput
+  claims?: Prisma.ClaimUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutResultsInput = {
@@ -558,6 +650,7 @@ export type OrderUpdateWithoutResultsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutOrdersNestedInput
   services?: Prisma.OrderServiceUpdateManyWithoutOrderNestedInput
+  claims?: Prisma.ClaimUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutResultsInput = {
@@ -567,6 +660,7 @@ export type OrderUncheckedUpdateWithoutResultsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   services?: Prisma.OrderServiceUncheckedUpdateManyWithoutOrderNestedInput
+  claims?: Prisma.ClaimUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateManyPatientInput = {
@@ -582,6 +676,7 @@ export type OrderUpdateWithoutPatientInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   services?: Prisma.OrderServiceUpdateManyWithoutOrderNestedInput
+  claims?: Prisma.ClaimUpdateManyWithoutOrderNestedInput
   results?: Prisma.ResultUpdateManyWithoutOrderNestedInput
 }
 
@@ -591,6 +686,7 @@ export type OrderUncheckedUpdateWithoutPatientInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   services?: Prisma.OrderServiceUncheckedUpdateManyWithoutOrderNestedInput
+  claims?: Prisma.ClaimUncheckedUpdateManyWithoutOrderNestedInput
   results?: Prisma.ResultUncheckedUpdateManyWithoutOrderNestedInput
 }
 
@@ -608,11 +704,13 @@ export type OrderUncheckedUpdateManyWithoutPatientInput = {
 
 export type OrderCountOutputType = {
   services: number
+  claims: number
   results: number
 }
 
 export type OrderCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   services?: boolean | OrderCountOutputTypeCountServicesArgs
+  claims?: boolean | OrderCountOutputTypeCountClaimsArgs
   results?: boolean | OrderCountOutputTypeCountResultsArgs
 }
 
@@ -636,6 +734,13 @@ export type OrderCountOutputTypeCountServicesArgs<ExtArgs extends runtime.Types.
 /**
  * OrderCountOutputType without action
  */
+export type OrderCountOutputTypeCountClaimsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ClaimWhereInput
+}
+
+/**
+ * OrderCountOutputType without action
+ */
 export type OrderCountOutputTypeCountResultsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ResultWhereInput
 }
@@ -649,6 +754,7 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   updatedAt?: boolean
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
   services?: boolean | Prisma.Order$servicesArgs<ExtArgs>
+  claims?: boolean | Prisma.Order$claimsArgs<ExtArgs>
   results?: boolean | Prisma.Order$resultsArgs<ExtArgs>
   _count?: boolean | Prisma.OrderCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["order"]>
@@ -683,6 +789,7 @@ export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
 export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
   services?: boolean | Prisma.Order$servicesArgs<ExtArgs>
+  claims?: boolean | Prisma.Order$claimsArgs<ExtArgs>
   results?: boolean | Prisma.Order$resultsArgs<ExtArgs>
   _count?: boolean | Prisma.OrderCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -698,6 +805,7 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objects: {
     patient: Prisma.$PatientPayload<ExtArgs>
     services: Prisma.$OrderServicePayload<ExtArgs>[]
+    claims: Prisma.$ClaimPayload<ExtArgs>[]
     results: Prisma.$ResultPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1102,6 +1210,7 @@ export interface Prisma__OrderClient<T, Null = never, ExtArgs extends runtime.Ty
   readonly [Symbol.toStringTag]: "PrismaPromise"
   patient<T extends Prisma.PatientDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PatientDefaultArgs<ExtArgs>>): Prisma.Prisma__PatientClient<runtime.Types.Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   services<T extends Prisma.Order$servicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$servicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  claims<T extends Prisma.Order$claimsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$claimsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClaimPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   results<T extends Prisma.Order$resultsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$resultsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1559,6 +1668,30 @@ export type Order$servicesArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.OrderServiceScalarFieldEnum | Prisma.OrderServiceScalarFieldEnum[]
+}
+
+/**
+ * Order.claims
+ */
+export type Order$claimsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Claim
+   */
+  select?: Prisma.ClaimSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Claim
+   */
+  omit?: Prisma.ClaimOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClaimInclude<ExtArgs> | null
+  where?: Prisma.ClaimWhereInput
+  orderBy?: Prisma.ClaimOrderByWithRelationInput | Prisma.ClaimOrderByWithRelationInput[]
+  cursor?: Prisma.ClaimWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ClaimScalarFieldEnum | Prisma.ClaimScalarFieldEnum[]
 }
 
 /**

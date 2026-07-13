@@ -1,15 +1,47 @@
 import { type FastifyInstance } from 'fastify';
 import { serviceController } from '../controllers/orderServiceController';
+import { authenticate } from '../middleware/authenticate';
+import { authorize } from '../middleware/authorize';
 
 export async function serviceRoutes(fastify: FastifyInstance) {
-  fastify.post('/services', serviceController.createService);
-  fastify.put('/services/:id', serviceController.updateService);
-  fastify.delete('/services/:id', serviceController.deleteService);
 
-  fastify.get('/services/:id', serviceController.getServiceById);
-  fastify.get('/services', serviceController.getAllServices);
-  fastify.get('/services/search', serviceController.searchServices);
-  fastify.get('/services/by-template', serviceController.updateService);
-  fastify.get('/services/by-category', serviceController.deleteService);
-  fastify.get('/services/sorted/price', serviceController.getServicesByCategory);
+  fastify.addHook('preHandler', authenticate);
+
+
+  fastify.post('/services',{
+            preHandler: [authenticate, authorize(['IT_SUPPORT', 'ADMIN', 'MANAGER'])],
+            handler: serviceController.createService});
+  fastify.put('/services/:id', {
+            preHandler: [authenticate, authorize(['IT_SUPPORT', 'ADMIN', 'MANAGER'])],
+            handler: serviceController.updateService
+  });
+  fastify.delete('/services/:id', {
+            preHandler: [authenticate, authorize(['IT_SUPPORT', 'ADMIN', 'MANAGER'])],
+            handler: serviceController.deleteService
+  });
+
+  fastify.get('/services/:id', {
+            preHandler: [authenticate, authorize(['IT_SUPPORT', 'ADMIN', 'MANAGER'])],
+            handler: serviceController.getServiceById
+  });
+  fastify.get('/services', {
+            preHandler: [authenticate, authorize(['IT_SUPPORT', 'ADMIN', 'MANAGER'])],
+            handler: serviceController.getAllServices
+  });
+  fastify.get('/services/search', {
+            preHandler: [authenticate, authorize(['IT_SUPPORT', 'ADMIN', 'MANAGER'])],
+            handler: serviceController.searchServices
+  });
+  fastify.get('/services/by-template', {
+            preHandler: [authenticate, authorize(['IT_SUPPORT', 'ADMIN', 'MANAGER'])],
+            handler: serviceController.updateService
+  });
+  fastify.get('/services/by-category', {
+            preHandler: [authenticate, authorize(['IT_SUPPORT', 'ADMIN', 'MANAGER'])],
+            handler: serviceController.deleteService
+  });
+  fastify.get('/services/sorted/price', {
+            preHandler: [authenticate, authorize(['IT_SUPPORT', 'ADMIN', 'MANAGER'])],
+            handler: serviceController.getServicesByCategory
+  });
 }

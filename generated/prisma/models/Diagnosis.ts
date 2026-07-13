@@ -583,10 +583,6 @@ export type EnumDiagnosisStatusFieldUpdateOperationsInput = {
   set?: $Enums.DiagnosisStatus
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type DiagnosisCreateWithoutPatientInput = {
   id?: string
   name: string

@@ -7,7 +7,7 @@ import { resultEditorController } from '../controllers/resultEditorController';
 
 // ── RESULT EDITOR ROUTES ──────────────────────────────────────
 // All routes require authentication.
-// Only LAB_TECH, RADIOLOGIST, and ADMIN can open editor sessions.
+// Only LAB_SCIENTIST, IMAGING_TECH, and ADMIN can open editor sessions.
 // guardResultDepartment ensures techs can only edit their own dept's results.
 
 export async function resultEditorRoutes(fastify: FastifyInstance) {
@@ -18,7 +18,7 @@ export async function resultEditorRoutes(fastify: FastifyInstance) {
   // No dept guard needed — formula metadata is not patient data
   // Must be registered before /:resultId routes to avoid conflict
   fastify.get('/formula/:formulaKey', {
-    preHandler: [authorize(['LAB_TECH', 'RADIOLOGIST', 'DOCTOR', 'ADMIN'])],
+    preHandler: [authorize(['LAB_SCIENTIST', 'IMAGING_TECH', 'DOCTOR'])],
     handler:    resultEditorController.getFormulaMetadata,
   });
 
@@ -28,7 +28,7 @@ export async function resultEditorRoutes(fastify: FastifyInstance) {
   // Opens or resumes an edit session — acquires lock
   fastify.post('/:resultId/session', {
     preHandler: [
-      authorize(['LAB_TECH', 'RADIOLOGIST', 'ADMIN']),
+      authorize(['LAB_SCIENTIST', 'IMAGING_TECH', 'DOCTOR']),
       guardResultDepartment,
     ],
     handler: resultEditorController.openSession,
@@ -38,7 +38,7 @@ export async function resultEditorRoutes(fastify: FastifyInstance) {
   // Check for an existing session / resumable draft on page load
   fastify.get('/:resultId/session', {
     preHandler: [
-      authorize(['LAB_TECH', 'RADIOLOGIST', 'ADMIN']),
+      authorize(['LAB_SCIENTIST', 'IMAGING_TECH']),
       guardResultDepartment,
     ],
     handler: resultEditorController.getSession,
@@ -48,7 +48,7 @@ export async function resultEditorRoutes(fastify: FastifyInstance) {
   // Close session cleanly — releases lock, preserves draft
   fastify.delete('/:resultId/session', {
     preHandler: [
-      authorize(['LAB_TECH', 'RADIOLOGIST', 'ADMIN']),
+      authorize(['LAB_SCIENTIST', 'IMAGING_TECH']),
       guardResultDepartment,
     ],
     handler: resultEditorController.closeSession,
@@ -61,7 +61,7 @@ export async function resultEditorRoutes(fastify: FastifyInstance) {
   fastify.post('/:resultId/draft', {
     ...editorRateLimitConfig,
     preHandler: [
-      authorize(['LAB_TECH', 'RADIOLOGIST', 'ADMIN']),
+      authorize(['LAB_SCIENTIST', 'IMAGING_TECH']),
       guardResultDepartment,
     ],
     handler: resultEditorController.autoSaveDraft,
@@ -74,7 +74,7 @@ export async function resultEditorRoutes(fastify: FastifyInstance) {
   fastify.post('/:resultId/heartbeat', {
     ...editorRateLimitConfig,
     preHandler: [
-      authorize(['LAB_TECH', 'RADIOLOGIST', 'ADMIN']),
+      authorize(['LAB_SCIENTIST', 'IMAGING_TECH']),
       guardResultDepartment,
     ],
     handler: resultEditorController.heartbeat,
@@ -88,7 +88,7 @@ export async function resultEditorRoutes(fastify: FastifyInstance) {
   fastify.post('/:resultId/flag', {
     ...editorRateLimitConfig,
     preHandler: [
-      authorize(['LAB_TECH', 'RADIOLOGIST', 'ADMIN']),
+      authorize(['LAB_SCIENTIST', 'IMAGING_TECH']),
       guardResultDepartment,
     ],
     handler: resultEditorController.flagField,
@@ -99,7 +99,7 @@ export async function resultEditorRoutes(fastify: FastifyInstance) {
   fastify.post('/:resultId/calculate', {
     ...editorRateLimitConfig,
     preHandler: [
-      authorize(['LAB_TECH', 'RADIOLOGIST', 'ADMIN']),
+      authorize(['LAB_SCIENTIST', 'IMAGING_TECH']),
       guardResultDepartment,
     ],
     handler: resultEditorController.calculateFields,
@@ -112,7 +112,7 @@ export async function resultEditorRoutes(fastify: FastifyInstance) {
   // clears session, releases lock. Returns 422 if required fields missing.
   fastify.post('/:resultId/submit', {
     preHandler: [
-      authorize(['LAB_TECH', 'RADIOLOGIST', 'ADMIN']),
+      authorize(['LAB_SCIENTIST', 'IMAGING_TECH']),
       guardResultDepartment,
     ],
     handler: resultEditorController.submitResult,

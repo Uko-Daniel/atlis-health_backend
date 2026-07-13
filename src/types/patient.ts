@@ -6,6 +6,7 @@ export interface Patient {
     gender: 'MALE' | 'FEMALE' | 'OTHER';
     phoneNumber: string | null;
     email: string | null;
+    tenantId: string;
     createdAt: Date;
     updatedAt: Date;
 }

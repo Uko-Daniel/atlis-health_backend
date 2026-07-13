@@ -9,12 +9,15 @@ export interface CreateEncounterInput {
   notes?:          string;
   encounteredAt?:  string;  // ISO datetime — defaults to now
   startTime?:     string;  // ISO datetime — defaults to now
-  stopTime?:      string;  // ISO datetime — optional, can be set later for ongoing encounters
+  stopTime?:      string;
+  meetLink?:      string;  // ISO datetime — optional, can be set later for ongoing encounters
 }
 
 export interface UpdateEncounterInput {
   chiefComplaint?: string;
   notes?:          string;
   type?:           EncounterType;
-  stopTime?:      string;  // ISO datetime — optional, can be set later for ongoing encounters
+  startTime?:     string;  // ISO datetime — defaults to now
+  stopTime?:      string;
+  meetLink?:      string; // ISO datetime — optional, can be set later for ongoing encounters
 }

@@ -8,12 +8,13 @@ export async function recordRoutes(fastify: FastifyInstance) {
 
   // POST /api/records
   fastify.post('/', {
-    preHandler: [authorize(['DOCTOR', 'NURSES', 'ADMIN', 'RECEPTIONIST', 'LAB_TECH', 'RADIOLOGIST'])],
+    preHandler: [authorize(['DOCTOR', 'NURSES', 'ADMIN', 'RECEPTIONIST', 'LAB_SCIENTIST', 'IMAGING_TECH'])],
     handler:    recordController.createRecord,
   });
   
   // GET /api/records/patient/:patientId
   fastify.get('/patient/:patientId', {
+    preHandler: [authorize(['DOCTOR', 'NURSES', 'HIM_OFFICER'])],
     handler: recordController.getRecordsByPatient,
   });
 
@@ -24,6 +25,7 @@ export async function recordRoutes(fastify: FastifyInstance) {
 
   // GET /api/records/:id
   fastify.get('/:id', {
+    preHandler: [authorize(['DOCTOR', 'NURSES', 'HIM_OFFICER', 'RECEPTIONIST'])],
     handler: recordController.getRecordById,
   });
 }

@@ -31,8 +31,8 @@ export * from "./enums"
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Patients
- * const patients = await prisma.patient.findMany()
+ * // Fetch zero or more Tenants
+ * const tenants = await prisma.tenant.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -41,6 +41,41 @@ export const PrismaClient = $Class.getPrismaClientClass()
 export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts extends Prisma.PrismaClientOptions["omit"] = Prisma.PrismaClientOptions["omit"], ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = $Class.PrismaClient<LogOpts, OmitOpts, ExtArgs>
 export { Prisma }
 
+/**
+ * Model Tenant
+ * 
+ */
+export type Tenant = Prisma.TenantModel
+/**
+ * Model TenantPermission
+ * 
+ */
+export type TenantPermission = Prisma.TenantPermissionModel
+/**
+ * Model TenantSetting
+ * 
+ */
+export type TenantSetting = Prisma.TenantSettingModel
+/**
+ * Model BillingPeriod
+ * 
+ */
+export type BillingPeriod = Prisma.BillingPeriodModel
+/**
+ * Model Payer
+ * 
+ */
+export type Payer = Prisma.PayerModel
+/**
+ * Model Tariff
+ * 
+ */
+export type Tariff = Prisma.TariffModel
+/**
+ * Model Claim
+ * 
+ */
+export type Claim = Prisma.ClaimModel
 /**
  * Model Patient
  * 
@@ -56,11 +91,6 @@ export type NextOfKin = Prisma.NextOfKinModel
  * 
  */
 export type Visitor = Prisma.VisitorModel
-/**
- * Model HMO
- * 
- */
-export type HMO = Prisma.HMOModel
 /**
  * Model Record
  * 
@@ -147,11 +177,6 @@ export type Staff = Prisma.StaffModel
  */
 export type SignupRequest = Prisma.SignupRequestModel
 /**
- * Model InventoryItem
- * 
- */
-export type InventoryItem = Prisma.InventoryItemModel
-/**
  * Model Settings
  * 
  */
@@ -171,3 +196,48 @@ export type EveeEvaluation = Prisma.EveeEvaluationModel
  * 
  */
 export type EveeAlert = Prisma.EveeAlertModel
+/**
+ * Model GoogleCredential
+ * 
+ */
+export type GoogleCredential = Prisma.GoogleCredentialModel
+/**
+ * Model Supplier
+ * 
+ */
+export type Supplier = Prisma.SupplierModel
+/**
+ * Model Request
+ * 
+ */
+export type Request = Prisma.RequestModel
+/**
+ * Model PurchaseOrder
+ * 
+ */
+export type PurchaseOrder = Prisma.PurchaseOrderModel
+/**
+ * Model PurchaseOrderItem
+ * 
+ */
+export type PurchaseOrderItem = Prisma.PurchaseOrderItemModel
+/**
+ * Model InventoryItem
+ * 
+ */
+export type InventoryItem = Prisma.InventoryItemModel
+/**
+ * Model InventoryTransaction
+ * 
+ */
+export type InventoryTransaction = Prisma.InventoryTransactionModel
+/**
+ * Model ExpenseCategory
+ * 
+ */
+export type ExpenseCategory = Prisma.ExpenseCategoryModel
+/**
+ * Model Expense
+ * 
+ */
+export type Expense = Prisma.ExpenseModel

@@ -11,7 +11,11 @@ import { templateRoutes } from "./routes/templateRoutes";
 import { eveeRoutes } from "./routes/eveeRoutes";
 import {recordRoutes} from "./routes/recordRoutes";
 import { signupRoutes } from "./routes/signupRoutes";
-
+import { tenantRoutes } from './routes/tenantRoutes';
+import { billingRoutes } from './routes/billingRoutes';
+import { permissionRoutes } from './routes/permissionRoutes';
+import { googleRoutes } from './routes/googleRoutes';
+import { uploadRoutes } from './routes/uploadRoutes';
 
 
 
@@ -28,6 +32,11 @@ export const app = async (fastify: FastifyInstance) => {
   fastify.register(eveeRoutes,          { prefix: '/api/evee'      });
   fastify.register(recordRoutes,        { prefix: '/api/records'   });
   fastify.register(signupRoutes, { prefix: '/api' })
+  fastify.register(tenantRoutes, { prefix: '/api' });
+  fastify.register(billingRoutes, { prefix: '/api' });
+  fastify.register(permissionRoutes, { prefix: '/api' });
+  fastify.register(googleRoutes, { prefix: '/api' });
+  fastify.register(uploadRoutes, { prefix: '/api' });
 }
 
 

@@ -14,6 +14,7 @@ export const allergyController = {
       const allergy = await allergyService.createAllergy({
         ...(request.body as any),
         recordedBy: request.user.sub,
+        tenantId: request.tenantId,
       });
       return reply.status(201).send(allergy);
     } catch (err: any) {
@@ -25,7 +26,7 @@ export const allergyController = {
   async getAllergiesByPatient(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { patientId } = request.params as { patientId: string };
-      const allergies = await allergyService.getAllergiesByPatient(patientId);
+      const allergies = await allergyService.getAllergiesByPatient(patientId, request.tenantId);
       return reply.status(200).send(allergies);
     } catch (err: any) {
       return reply.status(500).send({ error: err.message });
@@ -35,7 +36,7 @@ export const allergyController = {
   async getAllergyById(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id }   = request.params as { id: string };
-      const allergy  = await allergyService.getAllergyById(id);
+      const allergy  = await allergyService.getAllergyById(id, request.tenantId);
       if (!allergy) return reply.status(404).send({ error: 'Allergy not found' });
       return reply.status(200).send(allergy);
     } catch (err: any) {
@@ -46,7 +47,7 @@ export const allergyController = {
   async updateAllergy(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id }  = request.params as { id: string };
-      const allergy = await allergyService.updateAllergy(id, request.body as any);
+      const allergy = await allergyService.updateAllergy(id, request.tenantId, request.body as any);
       return reply.status(200).send(allergy);
     } catch (err: any) {
       const status = err.message.includes('not found') ? 404 : 400;
@@ -57,7 +58,7 @@ export const allergyController = {
   async deactivateAllergy(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id }  = request.params as { id: string };
-      const allergy = await allergyService.deactivateAllergy(id);
+      const allergy = await allergyService.deactivateAllergy(id, request.tenantId);
       return reply.status(200).send(allergy);
     } catch (err: any) {
       const status = err.message.includes('not found') ? 404 : 400;
@@ -75,6 +76,7 @@ export const encounterController = {
       const encounter = await encounterService.createEncounter({
         ...(request.body as any),
         attendingStaff: request.user.sub,
+        tenantId: request.tenantId,
       });
       return reply.status(201).send(encounter);
     } catch (err: any) {
@@ -94,6 +96,7 @@ export const encounterController = {
         type:  query.type  as any,
         limit: Number(query.limit) || 20,
         page:  Number(query.page)  || 1,
+        tenantId: request.tenantId,
       })
       return reply.status(200).send(encounters)
     } catch (err: any) {
@@ -104,7 +107,7 @@ export const encounterController = {
   async getEncounterById(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id }      = request.params as { id: string };
-      const encounter   = await encounterService.getEncounterById(id);
+      const encounter   = await encounterService.getEncounterById(id, request.tenantId);
       if (!encounter) return reply.status(404).send({ error: 'Encounter not found' });
       return reply.status(200).send(encounter);
     } catch (err: any) {
@@ -117,7 +120,7 @@ export const encounterController = {
       const { patientId } = request.params as { patientId: string };
       const query         = request.query as { limit?: number; type?: any };
       const encounters    = await encounterService.getEncountersByPatient(
-        patientId, { ...(query.limit !== undefined && { limit: query.limit }), ...(query.type !== undefined && { type: query.type }) }
+        patientId, request.tenantId, { ...(query.limit !== undefined && { limit: query.limit }), ...(query.type !== undefined && { type: query.type }) }
       );
       return reply.status(200).send(encounters);
     } catch (err: any) {
@@ -128,7 +131,7 @@ export const encounterController = {
   async getEncountersByRecord(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { recordId } = request.params as { recordId: string };
-      const encounters   = await encounterService.getEncountersByRecord(recordId);
+      const encounters   = await encounterService.getEncountersByRecord(recordId, request.tenantId);
       return reply.status(200).send(encounters);
     } catch (err: any) {
       return reply.status(500).send({ error: err.message });
@@ -138,7 +141,7 @@ export const encounterController = {
   async getLatestEncounter(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { patientId } = request.params as { patientId: string };
-      const encounter     = await encounterService.getLatestEncounter(patientId);
+      const encounter     = await encounterService.getLatestEncounter(patientId, request.tenantId);
       if (!encounter) return reply.status(404).send({ error: 'No encounters found' });
       return reply.status(200).send(encounter);
     } catch (err: any) {
@@ -149,7 +152,7 @@ export const encounterController = {
   async updateEncounter(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id }    = request.params as { id: string };
-      const encounter = await encounterService.updateEncounter(id, request.body as any);
+      const encounter = await encounterService.updateEncounter(id, request.tenantId, request.body as any);
       return reply.status(200).send(encounter);
     } catch (err: any) {
       const status = err.message.includes('not found') ? 404 : 400;
@@ -161,7 +164,7 @@ export const encounterController = {
     try {
       const { id }       = request.params as { id: string };
       const { stopTime } = request.body   as { stopTime?: string };
-      const encounter    = await encounterService.closeEncounter(id, stopTime);
+      const encounter    = await encounterService.closeEncounter(id, request.tenantId, stopTime);
       return reply.status(200).send(encounter);
     } catch (err: any) {
       const status = err.message.includes('not found')  ? 404
@@ -180,6 +183,7 @@ export const vitalController = {
       const vital = await vitalService.createVital({
         ...(request.body as any),
         recordedBy: request.user.sub,
+        tenantId: request.tenantId,
       });
       return reply.status(201).send(vital);
     } catch (err: any) {
@@ -192,7 +196,7 @@ export const vitalController = {
   async getVitalsByEncounter(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { encounterId } = request.params as { encounterId: string };
-      const vitals = await vitalService.getVitalsByEncounter(encounterId);
+      const vitals = await vitalService.getVitalsByEncounter(encounterId, request.tenantId);
       return reply.status(200).send(vitals);
     } catch (err: any) {
       return reply.status(500).send({ error: err.message });
@@ -202,7 +206,7 @@ export const vitalController = {
   async getLatestVitals(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { patientId } = request.params as { patientId: string };
-      const vital = await vitalService.getLatestVitals(patientId);
+      const vital = await vitalService.getLatestVitals(patientId, request.tenantId);
       if (!vital) return reply.status(404).send({ error: 'No vitals recorded' });
       return reply.status(200).send(vital);
     } catch (err: any) {
@@ -215,7 +219,7 @@ export const vitalController = {
       const { patientId } = request.params as { patientId: string };
       const query = request.query as { limit?: string };
       const limit = query.limit ? parseInt(query.limit, 10) : undefined;
-      const vitals = await vitalService.getVitalTrend(patientId, limit);
+      const vitals = await vitalService.getVitalTrend(patientId, request.tenantId, limit);
       return reply.status(200).send(vitals);
     } catch (err: any) {
       return reply.status(500).send({ error: err.message });
@@ -225,7 +229,7 @@ export const vitalController = {
   async getVitalById(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id } = request.params as { id: string };
-      const vital  = await vitalService.getVitalById(id);
+      const vital  = await vitalService.getVitalById(id, request.tenantId);
       if (!vital) return reply.status(404).send({ error: 'Vital record not found' });
       return reply.status(200).send(vital);
     } catch (err: any) {
@@ -243,6 +247,7 @@ export const diagnosisController = {
       const diagnosis = await diagnosisService.createDiagnosis({
         ...(request.body as any),
         diagnosedBy: request.user.sub,
+        tenantId: request.tenantId,
       });
       return reply.status(201).send(diagnosis);
     } catch (err: any) {
@@ -254,7 +259,7 @@ export const diagnosisController = {
   async getDiagnosesByPatient(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { patientId } = request.params as { patientId: string };
-      const diagnoses = await diagnosisService.getDiagnosesByPatient(patientId);
+      const diagnoses = await diagnosisService.getDiagnosesByPatient(patientId, request.tenantId);
       return reply.status(200).send(diagnoses);
     } catch (err: any) {
       return reply.status(500).send({ error: err.message });
@@ -264,7 +269,7 @@ export const diagnosisController = {
   async getActiveDiagnoses(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { patientId } = request.params as { patientId: string };
-      const diagnoses = await diagnosisService.getActiveDiagnosesByPatient(patientId);
+      const diagnoses = await diagnosisService.getActiveDiagnosesByPatient(patientId, request.tenantId);
       return reply.status(200).send(diagnoses);
     } catch (err: any) {
       return reply.status(500).send({ error: err.message });
@@ -274,7 +279,7 @@ export const diagnosisController = {
   async getDiagnosesByEncounter(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { encounterId } = request.params as { encounterId: string };
-      const diagnoses = await diagnosisService.getDiagnosesByEncounter(encounterId);
+      const diagnoses = await diagnosisService.getDiagnosesByEncounter(encounterId, request.tenantId);
       return reply.status(200).send(diagnoses);
     } catch (err: any) {
       return reply.status(500).send({ error: err.message });
@@ -284,7 +289,7 @@ export const diagnosisController = {
   async getDiagnosisById(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id }    = request.params as { id: string };
-      const diagnosis = await diagnosisService.getDiagnosisById(id);
+      const diagnosis = await diagnosisService.getDiagnosisById(id, request.tenantId);
       if (!diagnosis) return reply.status(404).send({ error: 'Diagnosis not found' });
       return reply.status(200).send(diagnosis);
     } catch (err: any) {
@@ -295,7 +300,7 @@ export const diagnosisController = {
   async updateDiagnosis(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id }    = request.params as { id: string };
-      const diagnosis = await diagnosisService.updateDiagnosis(id, request.body as any);
+      const diagnosis = await diagnosisService.updateDiagnosis(id, request.tenantId, request.body as any);
       return reply.status(200).send(diagnosis);
     } catch (err: any) {
       const status = err.message.includes('not found') ? 404 : 400;
@@ -308,7 +313,7 @@ export const diagnosisController = {
       const { patientId } = request.params as { patientId: string };
       const { code }      = request.query  as { code: string };
       if (!code) return reply.status(400).send({ error: 'ICD code query param required' });
-      const diagnoses = await diagnosisService.findDiagnosisByICDCode(patientId, code);
+      const diagnoses = await diagnosisService.findDiagnosisByICDCode(patientId, request.tenantId, code);
       return reply.status(200).send(diagnoses);
     } catch (err: any) {
       return reply.status(500).send({ error: err.message });
@@ -325,6 +330,7 @@ export const medicationController = {
       const medication = await medicationService.createMedication({
         ...(request.body as any),
         prescribedBy: request.user.sub,
+        tenantId: request.tenantId,
       });
       return reply.status(201).send(medication);
     } catch (err: any) {
@@ -337,7 +343,7 @@ export const medicationController = {
     try {
       const { recordId } = request.params as { recordId: string };
       const { status }   = request.query  as { status?: any };
-      const medications  = await medicationService.getMedicationsByRecord(recordId, status);
+      const medications  = await medicationService.getMedicationsByRecord(recordId, request.tenantId, status);
       return reply.status(200).send(medications);
     } catch (err: any) {
       return reply.status(500).send({ error: err.message });
@@ -347,7 +353,7 @@ export const medicationController = {
   async getActiveMedicationsByPatient(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { patientId } = request.params as { patientId: string };
-      const medications   = await medicationService.getActiveMedicationsByPatient(patientId);
+      const medications   = await medicationService.getActiveMedicationsByPatient(patientId, request.tenantId);
       return reply.status(200).send(medications);
     } catch (err: any) {
       return reply.status(500).send({ error: err.message });
@@ -357,7 +363,7 @@ export const medicationController = {
   async getMedicationById(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id }      = request.params as { id: string };
-      const medication  = await medicationService.getMedicationById(id);
+      const medication  = await medicationService.getMedicationById(id, request.tenantId);
       if (!medication) return reply.status(404).send({ error: 'Medication not found' });
       return reply.status(200).send(medication);
     } catch (err: any) {
@@ -369,7 +375,7 @@ export const medicationController = {
     try {
       const { id }     = request.params as { id: string };
       const { status } = request.body   as { status: any };
-      const medication = await medicationService.updateMedicationStatus(id, status);
+      const medication = await medicationService.updateMedicationStatus(id, request.tenantId, status);
       return reply.status(200).send(medication);
     } catch (err: any) {
       const status = err.message.includes('not found') ? 404 : 400;
@@ -381,7 +387,7 @@ export const medicationController = {
     try {
       const { id }     = request.params as { id: string };
       const { reason } = request.body   as { reason: string };
-      const medication = await medicationService.discontinueMedication(id, reason);
+      const medication = await medicationService.discontinueMedication(id, request.tenantId, reason);
       return reply.status(200).send(medication);
     } catch (err: any) {
       const status = err.message.includes('not found') ? 404 : 400;

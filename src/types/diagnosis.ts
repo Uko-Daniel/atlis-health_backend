@@ -1,4 +1,4 @@
-export type DiagnosisStatus = 'ACTIVE' | 'RESOLVED' | 'CHRONIC';
+export type DiagnosisStatus = 'ACTIVE' | 'RESOLVED' | 'CHRONIC' | 'SUSPECTED';
 
 export interface CreateDiagnosisInput {
   patientId:       string;

@@ -34,7 +34,7 @@ export function guardDepartment(department: Department) {
   ): Promise<void> {
     const { role, department: userDept } = request.user;
 
-    if (role === 'ADMIN') return; // Admin bypasses all dept checks
+    if (role === 'SUPER_ADMIN') return; // Super Admin bypasses all dept checks
 
     if (userDept !== department) {
       forbidden(
@@ -58,11 +58,6 @@ export async function guardResultDepartment(
   reply:   FastifyReply,
 ): Promise<void> {
   const { role, department: userDept } = request.user;
-
-  if (role === 'ADMIN') return;
-
-  // Doctors can read results across departments — they cannot edit
-  if (role === 'DOCTOR') return;
 
   const { id, resultId } = request.params as {
     id?:       string;
@@ -114,8 +109,6 @@ export async function guardTemplateDepartment(
   reply:   FastifyReply,
 ): Promise<void> {
   const { role, department: userDept } = request.user;
-
-  if (role === 'ADMIN') return;
 
   const { id } = request.params as { id: string };
 

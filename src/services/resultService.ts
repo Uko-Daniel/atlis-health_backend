@@ -49,11 +49,24 @@ function generateSignatureHash(params: {
  * Create a result. recordId and department are now required.
  * Data is encrypted before storage.
  */
-async function createResult(data: Partial<Result> & { recordId: string; department: string }) {
+async function createResult(data: Partial<Result> & { recordId: string; department: string; tenantId: string }) {
   if (!data.recordId)   throw new Error('recordId is required');
   if (!data.department) throw new Error('department is required');
+  if (!data.tenantId)   throw new Error('tenantId is required');
 
   const dept = assertValidDepartment(data.department);
+
+  const [patient, record, order, template] = await Promise.all([
+    prisma.patient.findFirst({ where: { id: data.patientId!, tenantId: data.tenantId } }),
+    prisma.record.findFirst({ where: { id: data.recordId, patientId: data.patientId!, patient: { tenantId: data.tenantId } } }),
+    prisma.order.findFirst({ where: { id: data.orderId!, patientId: data.patientId!, patient: { tenantId: data.tenantId } } }),
+    prisma.template.findFirst({ where: { id: data.templateId!, tenantId: data.tenantId } }),
+  ]);
+
+  if (!patient) throw new Error('Patient not found');
+  if (!record) throw new Error('Record not found');
+  if (!order) throw new Error('Order not found');
+  if (!template) throw new Error('Template not found');
 
   const valid = await validateResultJSON(data.templateId!, data.data);
   if (!valid.valid) throw new Error(valid.errors?.join(', '));
@@ -79,11 +92,11 @@ async function createResult(data: Partial<Result> & { recordId: string; departme
  * Department-scoped — staff can only retrieve results from their own department
  * unless they are ADMIN.
  */
-async function getResultById(id: string, staffDepartment?: string) {
+async function getResultById(id: string, tenantId: string, staffDepartment?: string) {
   if (!id) throw new Error('Result ID is required');
 
-  const result = await prisma.result.findUnique({
-    where:   { id },
+  const result = await prisma.result.findFirst({
+    where:   { id, patient: { tenantId } },
     include: {
       patient:  { select: { id: true, firstName: true, lastName: true } },
       template: true,
@@ -112,6 +125,7 @@ async function getResultById(id: string, staffDepartment?: string) {
  * Released-only flag: patient-facing views should only see released results.
  */
 async function getResultsByPatient(patientId: string, params?: {
+  tenantId:     string;
   department?:  string;
   releasedOnly?: boolean;
   page?:        number;
@@ -119,9 +133,10 @@ async function getResultsByPatient(patientId: string, params?: {
 }) {
   if (!patientId) throw new Error('patientId is required');
 
-  const { department, releasedOnly = false, page = 1, limit = 20 } = params ?? {};
+  const { tenantId, department, releasedOnly = false, page = 1, limit = 20 } = params ?? {};
+  if (!tenantId) throw new Error('tenantId is required');
 
-  const where: Prisma.ResultWhereInput = { patientId };
+  const where: Prisma.ResultWhereInput = { patientId, patient: { tenantId } };
 
   if (department)   where.department  = assertValidDepartment(department);
   if (releasedOnly) where.releasedAt  = { not: null };
@@ -152,11 +167,11 @@ async function getResultsByPatient(patientId: string, params?: {
 /**
  * All results for a specific order.
  */
-async function getResultsByOrder(orderId: string) {
+async function getResultsByOrder(orderId: string, tenantId: string) {
   if (!orderId) throw new Error('orderId is required');
 
   const results = await prisma.result.findMany({
-    where:   { orderId },
+    where:   { orderId, patient: { tenantId } },
     orderBy: { createdAt: 'desc' },
     include: {
       patient:  { select: { id: true, firstName: true, lastName: true } },
@@ -173,14 +188,16 @@ async function getResultsByOrder(orderId: string) {
  * This is the primary view for lab techs and radiologists when they log in.
  */
 async function getResultsByDepartment(department: string, params?: {
+  tenantId: string;
   status?: ResultStatus;
   page?:   number;
   limit?:  number;
 }) {
   const dept   = assertValidDepartment(department);
-  const { status, page = 1, limit = 30 } = params ?? {};
+  const { tenantId, status, page = 1, limit = 30 } = params ?? {};
+  if (!tenantId) throw new Error('tenantId is required');
 
-  const where: Prisma.ResultWhereInput = { department: dept };
+  const where: Prisma.ResultWhereInput = { department: dept, patient: { tenantId } };
   if (status) where.status = status;
 
   const [results, total] = await Promise.all([
@@ -211,12 +228,12 @@ async function getResultsByDepartment(department: string, params?: {
  * Update result status only — lightweight state transition.
  * Validates against allowed transitions.
  */
-async function updateResultStatus(id: string, status: ResultStatus) {
+async function updateResultStatus(id: string, status: ResultStatus, tenantId: string) {
   if (!Object.values(ResultStatus).includes(status)) {
     throw new Error('Invalid status');
   }
 
-  const result = await prisma.result.findUnique({ where: { id } });
+  const result = await prisma.result.findFirst({ where: { id, patient: { tenantId } } });
   if (!result) throw new Error('Result not found');
 
   // Guard invalid transitions
@@ -231,12 +248,15 @@ async function updateResultStatus(id: string, status: ResultStatus) {
  * Re-submit result data — version increments, any prior signature is voided.
  * Used when a tech corrects a result that hasn't been verified yet.
  */
-async function updateResultData(id: string, data: unknown, templateId: string) {
+async function updateResultData(id: string, data: unknown, templateId: string, tenantId: string) {
   const valid = await validateResultJSON(templateId, data);
   if (!valid.valid) throw new Error(valid.errors?.join(', '));
 
-  const existing = await prisma.result.findUnique({ where: { id } });
+  const existing = await prisma.result.findFirst({ where: { id, patient: { tenantId } } });
   if (!existing) throw new Error('Result not found');
+
+  const template = await prisma.template.findFirst({ where: { id: templateId, tenantId } });
+  if (!template) throw new Error('Template not found');
 
   if (existing.status === ResultStatus.FINALIZED) {
     throw new Error('Cannot edit a finalized result — create a new result if an amendment is needed');
@@ -276,14 +296,15 @@ async function updateResultData(id: string, data: unknown, templateId: string) {
 async function verifyResult(params: {
   resultId:   string;
   verifierId: string; // Staff ID of the person signing
+  tenantId:   string;
 }) {
-  const { resultId, verifierId } = params;
+  const { resultId, verifierId, tenantId } = params;
 
   if (!resultId || !verifierId) throw new Error('resultId and verifierId are required');
 
   const [result, verifier] = await Promise.all([
-    prisma.result.findUnique({ where: { id: resultId } }),
-    prisma.staff.findUnique({ where: { id: verifierId } }),
+    prisma.result.findFirst({ where: { id: resultId, patient: { tenantId } } }),
+    prisma.staff.findFirst({ where: { id: verifierId, tenantId } }),
   ]);
 
   if (!result)   throw new Error('Result not found');
@@ -349,12 +370,13 @@ async function verifyResult(params: {
 async function finalizeResult(params: {
   resultId:    string;
   finalizedBy: string;
+  tenantId:    string;
 }) {
-  const { resultId, finalizedBy } = params;
+  const { resultId, finalizedBy, tenantId } = params;
 
   const [result, staff] = await Promise.all([
-    prisma.result.findUnique({ where: { id: resultId } }),
-    prisma.staff.findUnique({ where: { id: finalizedBy } }),
+    prisma.result.findFirst({ where: { id: resultId, patient: { tenantId } } }),
+    prisma.staff.findFirst({ where: { id: finalizedBy, tenantId } }),
   ]);
 
   if (!result) throw new Error('Result not found');
@@ -394,12 +416,13 @@ async function finalizeResult(params: {
 async function releaseToPatient(params: {
   resultId:   string;
   releasedBy: string;
+  tenantId:   string;
 }) {
-  const { resultId, releasedBy } = params;
+  const { resultId, releasedBy, tenantId } = params;
 
   const [result, staff] = await Promise.all([
-    prisma.result.findUnique({ where: { id: resultId } }),
-    prisma.staff.findUnique({ where: { id: releasedBy } }),
+    prisma.result.findFirst({ where: { id: resultId, patient: { tenantId } } }),
+    prisma.staff.findFirst({ where: { id: releasedBy, tenantId } }),
   ]);
 
   if (!result) throw new Error('Result not found');
@@ -440,13 +463,13 @@ async function releaseToPatient(params: {
  *   { intact: true  }            — hash matches, data unmodified since signing
  *   { intact: false, reason }    — hash mismatch or missing, data may be compromised
  */
-async function checkSignatureIntegrity(resultId: string): Promise<{
+async function checkSignatureIntegrity(resultId: string, tenantId: string): Promise<{
   intact:  boolean;
   reason?: string;
 }> {
   if (!resultId) throw new Error('resultId is required');
 
-  const result = await prisma.result.findUnique({ where: { id: resultId } });
+  const result = await prisma.result.findFirst({ where: { id: resultId, patient: { tenantId } } });
   if (!result) throw new Error('Result not found');
 
   // Unverified results have no signature — not a tamper, just unsigned
@@ -479,7 +502,7 @@ async function checkSignatureIntegrity(resultId: string): Promise<{
  * Fetch all unacknowledged CRITICAL results across a department.
  * Used for the department dashboard to surface results needing urgent attention.
  */
-async function getCriticalPendingResults(department: string) {
+async function getCriticalPendingResults(department: string, tenantId: string) {
   const dept = assertValidDepartment(department);
 
   // A "critical pending" result is one that is PENDING or VERIFIED
@@ -489,6 +512,7 @@ async function getCriticalPendingResults(department: string) {
   const results = await prisma.result.findMany({
     where: {
       department: dept,
+      patient: { tenantId },
       status: { in: [ResultStatus.PENDING, ResultStatus.VERIFIED] },
     },
     orderBy: { createdAt: 'asc' },

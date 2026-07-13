@@ -12,7 +12,7 @@ export async function templateRoutes(fastify: FastifyInstance) {
   // ── SEED DEFAULTS ─────────────────────────────────────────
   // POST /api/templates/seed
   fastify.post('/seed', {
-    preHandler: [authorize(['ADMIN'])],
+    preHandler: [authorize(['IT_SUPPORT', 'ADMIN'])],
     handler:    templateController.seedDefaultTemplates,
   });
 
@@ -38,7 +38,7 @@ export async function templateRoutes(fastify: FastifyInstance) {
   // POST /api/templates
   fastify.post('/', {
     preHandler: [authorize([
-      'LAB_TECH', 'RADIOLOGIST', 'DOCTOR', 'PHARMACIST', 'ADMIN',
+      'LAB_SCIENTIST', 'IMAGING_TECH', 'DOCTOR', 'PHARMACIST', 'ADMIN', 'IT_SUPPORT'
     ])],
     handler: templateController.createTemplate,
   });
@@ -53,7 +53,7 @@ export async function templateRoutes(fastify: FastifyInstance) {
   // POST /api/templates/:id/clone
   fastify.post('/:id/clone', {
     preHandler: [
-      authorize(['LAB_TECH', 'RADIOLOGIST', 'DOCTOR', 'PHARMACIST', 'ADMIN']),
+      authorize(['LAB_SCIENTIST', 'IMAGING_TECH', 'DOCTOR', 'PHARMACIST', 'ADMIN', 'IT_SUPPORT']),
       guardTemplateDepartment,
     ],
     handler: templateController.cloneTemplate,
@@ -64,21 +64,27 @@ export async function templateRoutes(fastify: FastifyInstance) {
   // Blocked at the service layer if results already exist — clone instead
   fastify.patch('/:id', {
     preHandler: [
-      authorize(['LAB_TECH', 'RADIOLOGIST', 'DOCTOR', 'PHARMACIST', 'ADMIN']),
+      authorize(['LAB_SCIENTIST', 'IMAGING_TECH', 'DOCTOR', 'PHARMACIST', 'ADMIN', 'IT_SUPPORT']),
       guardTemplateDepartment,
     ],
     handler: templateController.updateTemplate,
   });
 
-  // ── DEACTIVATE ────────────────────────────────────────────
-  // PATCH /api/templates/:id/deactivate
-  // Note: no activateTemplate exists in the service — deactivation is one-way.
-  // If reactivation is needed, add activateTemplate to templateService first.
+  // ── DEACTIVATE & ACTIVATE ────────────────────────────────────────────
   fastify.patch('/:id/deactivate', {
     preHandler: [
-      authorize(['LAB_TECH', 'RADIOLOGIST', 'DOCTOR', 'PHARMACIST', 'ADMIN']),
+      authorize(['LAB_SCIENTIST', 'IMAGING_TECH', 'DOCTOR', 'PHARMACIST', 'ADMIN', 'IT_SUPPORT']),
       guardTemplateDepartment,
     ],
     handler: templateController.deactivateTemplate,
+  });
+
+  // PATCH /api/templates/:id/activate
+  fastify.patch('/:id/activate', {
+    preHandler: [
+      authorize(['LAB_SCIENTIST', 'IMAGING_TECH', 'DOCTOR', 'PHARMACIST', 'ADMIN', 'IT_SUPPORT']),
+      guardTemplateDepartment,
+    ],
+    handler: templateController.activateTemplate,
   });
 }

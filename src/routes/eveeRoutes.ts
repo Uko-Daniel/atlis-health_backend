@@ -17,21 +17,21 @@ export async function eveeRoutes(fastify: FastifyInstance) {
   // Doctors only — runs the full CDSS evaluation
   fastify.post('/evaluate/:patientId', {
     ...eveeRateLimitConfig,
-    preHandler: [authorize(['DOCTOR', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR'])],
     handler:    eveeController.evaluate,
   });
 
   // ── EVALUATION HISTORY ────────────────────────────────────
   // GET /api/evee/evaluations/patient/:patientId
   fastify.get('/evaluations/patient/:patientId', {
-    preHandler: [authorize(['DOCTOR', 'NURSES', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR', 'NURSES'])],
     handler:    eveeController.getEvaluationsByPatient,
   });
 
   // ── SINGLE EVALUATION ─────────────────────────────────────
   // GET /api/evee/evaluations/:id
   fastify.get('/evaluations/:id', {
-    preHandler: [authorize(['DOCTOR', 'NURSES', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR', 'NURSES', 'PHARMACIST'])],
     handler:    eveeController.getEvaluationById,
   });
 
@@ -39,14 +39,14 @@ export async function eveeRoutes(fastify: FastifyInstance) {
   // PATCH /api/evee/alerts/:id/override
   // Doctors only — dismissing a clinical alert requires medical authority
   fastify.patch('/alerts/:id/override', {
-    preHandler: [authorize(['DOCTOR', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR'])],
     handler:    eveeController.overrideAlert,
   });
 
   // ── OPEN CRITICAL ALERTS ──────────────────────────────────
   // GET /api/evee/alerts/critical/:patientId
   fastify.get('/alerts/critical/:patientId', {
-    preHandler: [authorize(['DOCTOR', 'NURSES', 'ADMIN'])],
+    preHandler: [authorize(['DOCTOR', 'NURSES', 'PHARMACIST'])],
     handler:    eveeController.getOpenCriticalAlerts,
   });
 }

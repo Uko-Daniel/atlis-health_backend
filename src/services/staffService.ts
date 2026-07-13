@@ -13,6 +13,7 @@ export interface CreateStaffInput {
   email:       string;
   password:    string;
   role:        StaffRole;
+  tenantId:    string; 
   department?: Department;
   phoneNumber?: string;
   isHOD?:      boolean;
@@ -40,7 +41,7 @@ export interface LoginInput {
 // ── VALIDATION ────────────────────────────────────────────────
 
 const VALID_ROLES: StaffRole[] = [
-  'ADMIN','DOCTOR','NURSES','LAB_TECH','RADIOLOGIST',
+  'ADMIN','DOCTOR','NURSES','LAB_SCIENTIST','IMAGING_TECH',
   'PHARMACIST','RECEPTIONIST','BILLING_OFFICER',
   'HIM_OFFICER','MANAGER','IT_SUPPORT',
 ];
@@ -68,7 +69,7 @@ function validateCreateStaff(data: CreateStaffInput) {
 // These roles must have a department assigned
 
 const DEPT_REQUIRED_ROLES: StaffRole[] = [
-  'LAB_TECH','RADIOLOGIST','DOCTOR','NURSES','PHARMACIST',
+  'LAB_SCIENTIST','IMAGING_TECH','DOCTOR','NURSES','PHARMACIST',
 ];
 
 // ── SERVICE ───────────────────────────────────────────────────
@@ -102,6 +103,7 @@ export const staffService = {
         phoneNumber: data.phoneNumber ?? null,
         isHOD:       data.isHOD      ?? false,
         canVerify:   data.canVerify   ?? false,
+        tenant:        { connect: { id: data.tenantId } },
       },
       // Never return password
       select: {
@@ -113,9 +115,12 @@ export const staffService = {
     });
   },
 
-  async login(data: LoginInput) {
-    const staff = await prisma.staff.findUnique({
-      where: { email: data.email.toLowerCase().trim() },
+  async login(data: LoginInput, tenantId?: string) {
+    const staff = await prisma.staff.findFirst({
+      where: {
+        email: data.email.toLowerCase().trim(),
+        ...(tenantId && { tenantId }),
+      },
     });
 
     if (!staff) {
@@ -131,9 +136,9 @@ export const staffService = {
     return safeStaff;
   },
 
-  async getStaffById(id: string) {
-    return prisma.staff.findUnique({
-      where: { id },
+  async getStaffById(id: string, tenantId?: string) {
+    return prisma.staff.findFirst({
+      where: { id, ...(tenantId && { tenantId }) },
       select: {
         id: true, firstName: true, lastName: true,
         email: true, role: true, department: true,
@@ -143,9 +148,12 @@ export const staffService = {
     });
   },
 
-async getAllStaff(department?: Department) {
+async getAllStaff(tenantId: string, department?: Department) {
   return prisma.staff.findMany({
-    ...(department ? { where: { department } } : {}),
+    where: {
+      tenantId,
+      ...(department && { department }),
+    },
     orderBy: [{ department: 'asc' as const }, { lastName: 'asc' as const }],
     select: {
       id: true, firstName: true, lastName: true,
@@ -156,8 +164,8 @@ async getAllStaff(department?: Department) {
    });
   },
 
-  async updateStaff(id: string, data: UpdateStaffInput) {
-    const existing = await prisma.staff.findUnique({ where: { id } });
+  async updateStaff(id: string, tenantId: string, data: UpdateStaffInput) {
+    const existing = await prisma.staff.findFirst({ where: { id, tenantId } });
     if (!existing) throw new Error('Staff member not found');
 
     return prisma.staff.update({
@@ -178,8 +186,8 @@ async getAllStaff(department?: Department) {
   },
 
   // Only ADMIN can update permissions
-  async updatePermissions(id: string, data: UpdatePermissionsInput) {
-    const existing = await prisma.staff.findUnique({ where: { id } });
+  async updatePermissions(id: string, tenantId: string, data: UpdatePermissionsInput) {
+    const existing = await prisma.staff.findFirst({ where: { id, tenantId } });
     if (!existing) throw new Error('Staff member not found');
 
     if (data.role && !VALID_ROLES.includes(data.role)) {
@@ -201,12 +209,12 @@ async getAllStaff(department?: Department) {
     });
   },
 
-  async changePassword(id: string, currentPassword: string, newPassword: string) {
+  async changePassword(id: string, currentPassword: string, newPassword: string, tenantId?: string) {
     if (newPassword.length < 8) {
       throw new Error('New password must be at least 8 characters');
     }
 
-    const staff = await prisma.staff.findUnique({ where: { id } });
+    const staff = await prisma.staff.findFirst({ where: { id, ...(tenantId && { tenantId }) } });
     if (!staff) throw new Error('Staff member not found');
 
     const valid = await argon2.verify(staff.password, currentPassword);
@@ -223,12 +231,12 @@ async getAllStaff(department?: Department) {
   // Soft approach — in a real hospital you rarely hard-delete staff
   // because audit logs reference their ID. Mark inactive via role
   // change or handle via HR process. Hard delete only for test accounts.
-  async deleteStaff(id: string) {
-    const existing = await prisma.staff.findUnique({ where: { id } });
+  async deleteStaff(id: string, tenantId: string) {
+    const existing = await prisma.staff.findFirst({ where: { id, tenantId } });
     if (!existing) throw new Error('Staff member not found');
 
     const hasAuditLogs = await prisma.auditLog.findFirst({
-      where: { userId: id },
+      where: { userId: id, tenantId },
     });
 
     if (hasAuditLogs) {

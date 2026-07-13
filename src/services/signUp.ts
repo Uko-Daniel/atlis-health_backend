@@ -3,12 +3,8 @@ import { staffService } from './staffService'
 import type { CreateSignupRequestInput, SignupRequestListParams } from '../types/signUp'
 
 export const signupService = {
-  /**
-   * Create a new sign-up request from a prospective staff member.
-   * Public — no authentication required.
-   */
+
   async create(input: CreateSignupRequestInput) {
-    // Check for existing pending request with same email
     const existing = await prisma.signupRequest.findFirst({
       where: {
         email:  input.email.toLowerCase().trim(),
@@ -20,7 +16,6 @@ export const signupService = {
       throw new Error('A pending request already exists for this email address.')
     }
 
-    // Check if email is already in use by an active staff member
     const existingStaff = await prisma.staff.findUnique({
       where: { email: input.email.toLowerCase().trim() },
     })
@@ -36,7 +31,9 @@ export const signupService = {
         email:         input.email.toLowerCase().trim(),
         phone:         input.phone.trim(),
         profession:    input.profession.trim(),
+        role:          input.role,
         department:    input.department,
+        tenantId:      input.tenantId,
         facility:      input.facility ?? null,
         licenseNumber: input.licenseNumber ?? null,
         message:       input.message ?? null,
@@ -53,14 +50,13 @@ export const signupService = {
     })
   },
 
-  /**
-   * List sign-up requests for admin review.
-   */
   async list(params: SignupRequestListParams = {}) {
-    const { status, page = 1, limit = 20 } = params
+    const { status, tenantId, page = 1, limit = 20 } = params
     const skip = (page - 1) * limit
 
-    const where = status ? { status } : {}
+    const where: any = {}
+    if (tenantId) where.tenantId = tenantId
+    if (status) where.status = status
 
     const [data, total] = await Promise.all([
       prisma.signupRequest.findMany({
@@ -75,6 +71,7 @@ export const signupService = {
           email:         true,
           phone:         true,
           profession:    true,
+          role:          true,
           department:    true,
           facility:      true,
           licenseNumber: true,
@@ -92,9 +89,6 @@ export const signupService = {
     return { data, total, page, limit }
   },
 
-  /**
-   * Get a single sign-up request by ID.
-   */
   async getById(id: string) {
     return prisma.signupRequest.findUnique({
       where: { id },
@@ -105,6 +99,7 @@ export const signupService = {
         email:         true,
         phone:         true,
         profession:    true,
+        role:          true,
         department:    true,
         facility:      true,
         licenseNumber: true,
@@ -119,13 +114,22 @@ export const signupService = {
     })
   },
 
-  /**
-   * Approve a sign-up request.
-   * Delegates to staffService.createStaff so password is properly hashed
-   * and all validation/department rules are enforced.
-   */
   async approve(id: string, reviewerStaffId: string, reviewNotes?: string) {
-    const request = await prisma.signupRequest.findUnique({ where: { id } })
+    const request = await prisma.signupRequest.findUnique({
+      where: { id },
+      select: {
+        id:         true,
+        firstName:  true,
+        lastName:   true,
+        email:      true,
+        phone:      true,
+        profession: true,
+        role:       true,
+        department: true,
+        tenantId:   true,
+        status:     true,
+      },
+    })
 
     if (!request) {
       throw new Error('Sign-up request not found.')
@@ -135,23 +139,21 @@ export const signupService = {
       throw new Error(`This request has already been ${request.status.toLowerCase()}.`)
     }
 
-    // Generate a secure temporary password — user resets on first login
     const tempPassword = crypto.randomUUID()
 
-    // Use staffService so argon2 hashing, validation, and dept rules run
     const staff = await staffService.createStaff({
       firstName:   request.firstName,
       lastName:    request.lastName,
       email:       request.email,
       password:    tempPassword,
-      role:        'DOCTOR',
+      role:        request.role,
       department:  request.department,
+      tenantId:    request.tenantId,
       phoneNumber: request.phone,
       isHOD:       false,
       canVerify:   false,
     })
 
-    // Update the signup request
     const updated = await prisma.signupRequest.update({
       where: { id },
       data: {
@@ -175,9 +177,6 @@ export const signupService = {
     return updated
   },
 
-  /**
-   * Reject a sign-up request.
-   */
   async reject(id: string, reviewerStaffId: string, reviewNotes?: string) {
     const request = await prisma.signupRequest.findUnique({ where: { id } })
 

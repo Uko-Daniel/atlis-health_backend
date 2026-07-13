@@ -7,17 +7,18 @@ import { OrderStatus as Status } from '../../generated/prisma/enums';
 
 export const orderService = {
 
-    async createOrder(patientId: string, serviceIds: string[]) {
+    async createOrder(patientId: string, serviceIds: string[], tenantId: string) {
         const { valid, errors } = validateOrder({ patientId, serviceIds });
         if (!valid) throw new Error(errors?.join(', '));
+        if (!tenantId) throw new Error('tenantId is required');
 
         // Ensure patient exists
-        const patient = await prisma.patient.findUnique({ where: { id: patientId } });
+        const patient = await prisma.patient.findFirst({ where: { id: patientId, tenantId } });
         if (!patient) throw new Error('Patient not found');
 
         // Ensure all services exist
         const services = await prisma.service.findMany({
-            where: { id: { in: serviceIds } },
+            where: { id: { in: serviceIds }, tenantId },
         });
 
         if (services.length !== serviceIds.length) {
@@ -44,9 +45,9 @@ export const orderService = {
         });
     },
 
-    async getOrdersByPatient(patientId: string) {
+    async getOrdersByPatient(patientId: string, tenantId: string) {
         return prisma.order.findMany({
-            where: { patientId },
+            where: { patientId, patient: { tenantId } },
             orderBy: { createdAt: 'desc' },
             include: {
                 services: {
@@ -58,9 +59,31 @@ export const orderService = {
         });
     },
 
-    async getOrderById(orderId: string) {
-        return prisma.order.findUnique({
-            where: { id: orderId },
+    async getAllOrders(tenantId: string, status?: OrderStatus, page = 1, limit = 50) {
+    const where: any = { patient: { tenantId } };
+    if (status) where.status = status;
+
+    const total = await prisma.order.count({ where });
+    const { skip, take } = getSkipTake(page, limit);
+
+    const orders = await prisma.order.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take,
+        include: {
+        patient: { select: { id: true, firstName: true, lastName: true } },
+        services: { include: { service: { select: { name: true, category: true, price: true } } } },
+        _count: { select: { results: true } },
+        },
+    });
+
+    return paginate(orders, total, page, limit);
+    },
+
+    async getOrderById(orderId: string, tenantId: string) {
+        return prisma.order.findFirst({
+            where: { id: orderId, patient: { tenantId } },
             include: {
                 patient: true,
                 services: {
@@ -73,11 +96,11 @@ export const orderService = {
         });
     },
 
-    async getOrdersByStatus(status: OrderStatus, page = 1, limit = 50) {
+    async getOrdersByStatus(status: OrderStatus, tenantId: string, page = 1, limit = 50) {
     page = Number(page);
     limit = Number(limit);
 
-    const where = { status };
+    const where = { status, patient: { tenantId } };
 
     const total = await prisma.order.count({ where });
 
@@ -101,8 +124,13 @@ export const orderService = {
     return paginate(orders, total, page, limit);
 },
 
-    async updateOrderStatus(orderId: string, status: OrderStatus) {
+    async updateOrderStatus(orderId: string, status: OrderStatus, tenantId: string) {
         const validStatus = validateEnum(status, Status, 'Order status')
+        const existing = await prisma.order.findFirst({
+            where: { id: orderId, patient: { tenantId } },
+        });
+        if (!existing) throw new Error('Order not found');
+
         return prisma.order.update({
             where: { id: orderId },
             data: { status: validStatus },

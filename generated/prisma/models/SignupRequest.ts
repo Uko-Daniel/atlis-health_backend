@@ -31,6 +31,7 @@ export type SignupRequestMinAggregateOutputType = {
   email: string | null
   phone: string | null
   profession: string | null
+  role: $Enums.StaffRole | null
   department: $Enums.Department | null
   facility: string | null
   licenseNumber: string | null
@@ -40,6 +41,7 @@ export type SignupRequestMinAggregateOutputType = {
   reviewedAt: Date | null
   reviewNotes: string | null
   createdStaffId: string | null
+  tenantId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -51,6 +53,7 @@ export type SignupRequestMaxAggregateOutputType = {
   email: string | null
   phone: string | null
   profession: string | null
+  role: $Enums.StaffRole | null
   department: $Enums.Department | null
   facility: string | null
   licenseNumber: string | null
@@ -60,6 +63,7 @@ export type SignupRequestMaxAggregateOutputType = {
   reviewedAt: Date | null
   reviewNotes: string | null
   createdStaffId: string | null
+  tenantId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -71,6 +75,7 @@ export type SignupRequestCountAggregateOutputType = {
   email: number
   phone: number
   profession: number
+  role: number
   department: number
   facility: number
   licenseNumber: number
@@ -80,6 +85,7 @@ export type SignupRequestCountAggregateOutputType = {
   reviewedAt: number
   reviewNotes: number
   createdStaffId: number
+  tenantId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -93,6 +99,7 @@ export type SignupRequestMinAggregateInputType = {
   email?: true
   phone?: true
   profession?: true
+  role?: true
   department?: true
   facility?: true
   licenseNumber?: true
@@ -102,6 +109,7 @@ export type SignupRequestMinAggregateInputType = {
   reviewedAt?: true
   reviewNotes?: true
   createdStaffId?: true
+  tenantId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -113,6 +121,7 @@ export type SignupRequestMaxAggregateInputType = {
   email?: true
   phone?: true
   profession?: true
+  role?: true
   department?: true
   facility?: true
   licenseNumber?: true
@@ -122,6 +131,7 @@ export type SignupRequestMaxAggregateInputType = {
   reviewedAt?: true
   reviewNotes?: true
   createdStaffId?: true
+  tenantId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -133,6 +143,7 @@ export type SignupRequestCountAggregateInputType = {
   email?: true
   phone?: true
   profession?: true
+  role?: true
   department?: true
   facility?: true
   licenseNumber?: true
@@ -142,6 +153,7 @@ export type SignupRequestCountAggregateInputType = {
   reviewedAt?: true
   reviewNotes?: true
   createdStaffId?: true
+  tenantId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -226,6 +238,7 @@ export type SignupRequestGroupByOutputType = {
   email: string
   phone: string
   profession: string
+  role: $Enums.StaffRole
   department: $Enums.Department
   facility: string | null
   licenseNumber: string | null
@@ -235,6 +248,7 @@ export type SignupRequestGroupByOutputType = {
   reviewedAt: Date | null
   reviewNotes: string | null
   createdStaffId: string | null
+  tenantId: string
   createdAt: Date
   updatedAt: Date
   _count: SignupRequestCountAggregateOutputType | null
@@ -267,6 +281,7 @@ export type SignupRequestWhereInput = {
   email?: Prisma.StringFilter<"SignupRequest"> | string
   phone?: Prisma.StringFilter<"SignupRequest"> | string
   profession?: Prisma.StringFilter<"SignupRequest"> | string
+  role?: Prisma.EnumStaffRoleFilter<"SignupRequest"> | $Enums.StaffRole
   department?: Prisma.EnumDepartmentFilter<"SignupRequest"> | $Enums.Department
   facility?: Prisma.StringNullableFilter<"SignupRequest"> | string | null
   licenseNumber?: Prisma.StringNullableFilter<"SignupRequest"> | string | null
@@ -276,9 +291,11 @@ export type SignupRequestWhereInput = {
   reviewedAt?: Prisma.DateTimeNullableFilter<"SignupRequest"> | Date | string | null
   reviewNotes?: Prisma.StringNullableFilter<"SignupRequest"> | string | null
   createdStaffId?: Prisma.StringNullableFilter<"SignupRequest"> | string | null
+  tenantId?: Prisma.StringFilter<"SignupRequest"> | string
   createdAt?: Prisma.DateTimeFilter<"SignupRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SignupRequest"> | Date | string
   createdStaff?: Prisma.XOR<Prisma.StaffNullableScalarRelationFilter, Prisma.StaffWhereInput> | null
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }
 
 export type SignupRequestOrderByWithRelationInput = {
@@ -288,6 +305,7 @@ export type SignupRequestOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   profession?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   department?: Prisma.SortOrder
   facility?: Prisma.SortOrderInput | Prisma.SortOrder
   licenseNumber?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -297,9 +315,11 @@ export type SignupRequestOrderByWithRelationInput = {
   reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdStaffId?: Prisma.SortOrderInput | Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdStaff?: Prisma.StaffOrderByWithRelationInput
+  tenant?: Prisma.TenantOrderByWithRelationInput
 }
 
 export type SignupRequestWhereUniqueInput = Prisma.AtLeast<{
@@ -313,6 +333,7 @@ export type SignupRequestWhereUniqueInput = Prisma.AtLeast<{
   email?: Prisma.StringFilter<"SignupRequest"> | string
   phone?: Prisma.StringFilter<"SignupRequest"> | string
   profession?: Prisma.StringFilter<"SignupRequest"> | string
+  role?: Prisma.EnumStaffRoleFilter<"SignupRequest"> | $Enums.StaffRole
   department?: Prisma.EnumDepartmentFilter<"SignupRequest"> | $Enums.Department
   facility?: Prisma.StringNullableFilter<"SignupRequest"> | string | null
   licenseNumber?: Prisma.StringNullableFilter<"SignupRequest"> | string | null
@@ -321,9 +342,11 @@ export type SignupRequestWhereUniqueInput = Prisma.AtLeast<{
   reviewedBy?: Prisma.StringNullableFilter<"SignupRequest"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"SignupRequest"> | Date | string | null
   reviewNotes?: Prisma.StringNullableFilter<"SignupRequest"> | string | null
+  tenantId?: Prisma.StringFilter<"SignupRequest"> | string
   createdAt?: Prisma.DateTimeFilter<"SignupRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SignupRequest"> | Date | string
   createdStaff?: Prisma.XOR<Prisma.StaffNullableScalarRelationFilter, Prisma.StaffWhereInput> | null
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }, "id" | "createdStaffId">
 
 export type SignupRequestOrderByWithAggregationInput = {
@@ -333,6 +356,7 @@ export type SignupRequestOrderByWithAggregationInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   profession?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   department?: Prisma.SortOrder
   facility?: Prisma.SortOrderInput | Prisma.SortOrder
   licenseNumber?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -342,6 +366,7 @@ export type SignupRequestOrderByWithAggregationInput = {
   reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdStaffId?: Prisma.SortOrderInput | Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.SignupRequestCountOrderByAggregateInput
@@ -359,6 +384,7 @@ export type SignupRequestScalarWhereWithAggregatesInput = {
   email?: Prisma.StringWithAggregatesFilter<"SignupRequest"> | string
   phone?: Prisma.StringWithAggregatesFilter<"SignupRequest"> | string
   profession?: Prisma.StringWithAggregatesFilter<"SignupRequest"> | string
+  role?: Prisma.EnumStaffRoleWithAggregatesFilter<"SignupRequest"> | $Enums.StaffRole
   department?: Prisma.EnumDepartmentWithAggregatesFilter<"SignupRequest"> | $Enums.Department
   facility?: Prisma.StringNullableWithAggregatesFilter<"SignupRequest"> | string | null
   licenseNumber?: Prisma.StringNullableWithAggregatesFilter<"SignupRequest"> | string | null
@@ -368,6 +394,7 @@ export type SignupRequestScalarWhereWithAggregatesInput = {
   reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SignupRequest"> | Date | string | null
   reviewNotes?: Prisma.StringNullableWithAggregatesFilter<"SignupRequest"> | string | null
   createdStaffId?: Prisma.StringNullableWithAggregatesFilter<"SignupRequest"> | string | null
+  tenantId?: Prisma.StringWithAggregatesFilter<"SignupRequest"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SignupRequest"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"SignupRequest"> | Date | string
 }
@@ -379,6 +406,7 @@ export type SignupRequestCreateInput = {
   email: string
   phone: string
   profession: string
+  role: $Enums.StaffRole
   department: $Enums.Department
   facility?: string | null
   licenseNumber?: string | null
@@ -390,6 +418,7 @@ export type SignupRequestCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdStaff?: Prisma.StaffCreateNestedOneWithoutSignUpRequestInput
+  tenant: Prisma.TenantCreateNestedOneWithoutSignupRequestsInput
 }
 
 export type SignupRequestUncheckedCreateInput = {
@@ -399,6 +428,7 @@ export type SignupRequestUncheckedCreateInput = {
   email: string
   phone: string
   profession: string
+  role: $Enums.StaffRole
   department: $Enums.Department
   facility?: string | null
   licenseNumber?: string | null
@@ -408,6 +438,7 @@ export type SignupRequestUncheckedCreateInput = {
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
   createdStaffId?: string | null
+  tenantId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -419,6 +450,7 @@ export type SignupRequestUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   profession?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
   department?: Prisma.EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
   facility?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -430,6 +462,7 @@ export type SignupRequestUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdStaff?: Prisma.StaffUpdateOneWithoutSignUpRequestNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutSignupRequestsNestedInput
 }
 
 export type SignupRequestUncheckedUpdateInput = {
@@ -439,6 +472,7 @@ export type SignupRequestUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   profession?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
   department?: Prisma.EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
   facility?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -448,6 +482,7 @@ export type SignupRequestUncheckedUpdateInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdStaffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -459,6 +494,7 @@ export type SignupRequestCreateManyInput = {
   email: string
   phone: string
   profession: string
+  role: $Enums.StaffRole
   department: $Enums.Department
   facility?: string | null
   licenseNumber?: string | null
@@ -468,6 +504,7 @@ export type SignupRequestCreateManyInput = {
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
   createdStaffId?: string | null
+  tenantId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -479,6 +516,7 @@ export type SignupRequestUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   profession?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
   department?: Prisma.EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
   facility?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -498,6 +536,7 @@ export type SignupRequestUncheckedUpdateManyInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   profession?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
   department?: Prisma.EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
   facility?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -507,8 +546,19 @@ export type SignupRequestUncheckedUpdateManyInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdStaffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SignupRequestListRelationFilter = {
+  every?: Prisma.SignupRequestWhereInput
+  some?: Prisma.SignupRequestWhereInput
+  none?: Prisma.SignupRequestWhereInput
+}
+
+export type SignupRequestOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type SignupRequestNullableScalarRelationFilter = {
@@ -523,6 +573,7 @@ export type SignupRequestCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   profession?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   department?: Prisma.SortOrder
   facility?: Prisma.SortOrder
   licenseNumber?: Prisma.SortOrder
@@ -532,6 +583,7 @@ export type SignupRequestCountOrderByAggregateInput = {
   reviewedAt?: Prisma.SortOrder
   reviewNotes?: Prisma.SortOrder
   createdStaffId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -543,6 +595,7 @@ export type SignupRequestMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   profession?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   department?: Prisma.SortOrder
   facility?: Prisma.SortOrder
   licenseNumber?: Prisma.SortOrder
@@ -552,6 +605,7 @@ export type SignupRequestMaxOrderByAggregateInput = {
   reviewedAt?: Prisma.SortOrder
   reviewNotes?: Prisma.SortOrder
   createdStaffId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -563,6 +617,7 @@ export type SignupRequestMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   profession?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   department?: Prisma.SortOrder
   facility?: Prisma.SortOrder
   licenseNumber?: Prisma.SortOrder
@@ -572,8 +627,51 @@ export type SignupRequestMinOrderByAggregateInput = {
   reviewedAt?: Prisma.SortOrder
   reviewNotes?: Prisma.SortOrder
   createdStaffId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type SignupRequestCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.SignupRequestCreateWithoutTenantInput, Prisma.SignupRequestUncheckedCreateWithoutTenantInput> | Prisma.SignupRequestCreateWithoutTenantInput[] | Prisma.SignupRequestUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.SignupRequestCreateOrConnectWithoutTenantInput | Prisma.SignupRequestCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.SignupRequestCreateManyTenantInputEnvelope
+  connect?: Prisma.SignupRequestWhereUniqueInput | Prisma.SignupRequestWhereUniqueInput[]
+}
+
+export type SignupRequestUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.SignupRequestCreateWithoutTenantInput, Prisma.SignupRequestUncheckedCreateWithoutTenantInput> | Prisma.SignupRequestCreateWithoutTenantInput[] | Prisma.SignupRequestUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.SignupRequestCreateOrConnectWithoutTenantInput | Prisma.SignupRequestCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.SignupRequestCreateManyTenantInputEnvelope
+  connect?: Prisma.SignupRequestWhereUniqueInput | Prisma.SignupRequestWhereUniqueInput[]
+}
+
+export type SignupRequestUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.SignupRequestCreateWithoutTenantInput, Prisma.SignupRequestUncheckedCreateWithoutTenantInput> | Prisma.SignupRequestCreateWithoutTenantInput[] | Prisma.SignupRequestUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.SignupRequestCreateOrConnectWithoutTenantInput | Prisma.SignupRequestCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.SignupRequestUpsertWithWhereUniqueWithoutTenantInput | Prisma.SignupRequestUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.SignupRequestCreateManyTenantInputEnvelope
+  set?: Prisma.SignupRequestWhereUniqueInput | Prisma.SignupRequestWhereUniqueInput[]
+  disconnect?: Prisma.SignupRequestWhereUniqueInput | Prisma.SignupRequestWhereUniqueInput[]
+  delete?: Prisma.SignupRequestWhereUniqueInput | Prisma.SignupRequestWhereUniqueInput[]
+  connect?: Prisma.SignupRequestWhereUniqueInput | Prisma.SignupRequestWhereUniqueInput[]
+  update?: Prisma.SignupRequestUpdateWithWhereUniqueWithoutTenantInput | Prisma.SignupRequestUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.SignupRequestUpdateManyWithWhereWithoutTenantInput | Prisma.SignupRequestUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.SignupRequestScalarWhereInput | Prisma.SignupRequestScalarWhereInput[]
+}
+
+export type SignupRequestUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.SignupRequestCreateWithoutTenantInput, Prisma.SignupRequestUncheckedCreateWithoutTenantInput> | Prisma.SignupRequestCreateWithoutTenantInput[] | Prisma.SignupRequestUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.SignupRequestCreateOrConnectWithoutTenantInput | Prisma.SignupRequestCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.SignupRequestUpsertWithWhereUniqueWithoutTenantInput | Prisma.SignupRequestUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.SignupRequestCreateManyTenantInputEnvelope
+  set?: Prisma.SignupRequestWhereUniqueInput | Prisma.SignupRequestWhereUniqueInput[]
+  disconnect?: Prisma.SignupRequestWhereUniqueInput | Prisma.SignupRequestWhereUniqueInput[]
+  delete?: Prisma.SignupRequestWhereUniqueInput | Prisma.SignupRequestWhereUniqueInput[]
+  connect?: Prisma.SignupRequestWhereUniqueInput | Prisma.SignupRequestWhereUniqueInput[]
+  update?: Prisma.SignupRequestUpdateWithWhereUniqueWithoutTenantInput | Prisma.SignupRequestUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.SignupRequestUpdateManyWithWhereWithoutTenantInput | Prisma.SignupRequestUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.SignupRequestScalarWhereInput | Prisma.SignupRequestScalarWhereInput[]
 }
 
 export type SignupRequestCreateNestedOneWithoutCreatedStaffInput = {
@@ -612,13 +710,14 @@ export type EnumSignupRequestStatusFieldUpdateOperationsInput = {
   set?: $Enums.SignupRequestStatus
 }
 
-export type SignupRequestCreateWithoutCreatedStaffInput = {
+export type SignupRequestCreateWithoutTenantInput = {
   id?: string
   firstName: string
   lastName: string
   email: string
   phone: string
   profession: string
+  role: $Enums.StaffRole
   department: $Enums.Department
   facility?: string | null
   licenseNumber?: string | null
@@ -629,6 +728,100 @@ export type SignupRequestCreateWithoutCreatedStaffInput = {
   reviewNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdStaff?: Prisma.StaffCreateNestedOneWithoutSignUpRequestInput
+}
+
+export type SignupRequestUncheckedCreateWithoutTenantInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  profession: string
+  role: $Enums.StaffRole
+  department: $Enums.Department
+  facility?: string | null
+  licenseNumber?: string | null
+  message?: string | null
+  status?: $Enums.SignupRequestStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
+  reviewNotes?: string | null
+  createdStaffId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SignupRequestCreateOrConnectWithoutTenantInput = {
+  where: Prisma.SignupRequestWhereUniqueInput
+  create: Prisma.XOR<Prisma.SignupRequestCreateWithoutTenantInput, Prisma.SignupRequestUncheckedCreateWithoutTenantInput>
+}
+
+export type SignupRequestCreateManyTenantInputEnvelope = {
+  data: Prisma.SignupRequestCreateManyTenantInput | Prisma.SignupRequestCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type SignupRequestUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.SignupRequestWhereUniqueInput
+  update: Prisma.XOR<Prisma.SignupRequestUpdateWithoutTenantInput, Prisma.SignupRequestUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.SignupRequestCreateWithoutTenantInput, Prisma.SignupRequestUncheckedCreateWithoutTenantInput>
+}
+
+export type SignupRequestUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.SignupRequestWhereUniqueInput
+  data: Prisma.XOR<Prisma.SignupRequestUpdateWithoutTenantInput, Prisma.SignupRequestUncheckedUpdateWithoutTenantInput>
+}
+
+export type SignupRequestUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.SignupRequestScalarWhereInput
+  data: Prisma.XOR<Prisma.SignupRequestUpdateManyMutationInput, Prisma.SignupRequestUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type SignupRequestScalarWhereInput = {
+  AND?: Prisma.SignupRequestScalarWhereInput | Prisma.SignupRequestScalarWhereInput[]
+  OR?: Prisma.SignupRequestScalarWhereInput[]
+  NOT?: Prisma.SignupRequestScalarWhereInput | Prisma.SignupRequestScalarWhereInput[]
+  id?: Prisma.StringFilter<"SignupRequest"> | string
+  firstName?: Prisma.StringFilter<"SignupRequest"> | string
+  lastName?: Prisma.StringFilter<"SignupRequest"> | string
+  email?: Prisma.StringFilter<"SignupRequest"> | string
+  phone?: Prisma.StringFilter<"SignupRequest"> | string
+  profession?: Prisma.StringFilter<"SignupRequest"> | string
+  role?: Prisma.EnumStaffRoleFilter<"SignupRequest"> | $Enums.StaffRole
+  department?: Prisma.EnumDepartmentFilter<"SignupRequest"> | $Enums.Department
+  facility?: Prisma.StringNullableFilter<"SignupRequest"> | string | null
+  licenseNumber?: Prisma.StringNullableFilter<"SignupRequest"> | string | null
+  message?: Prisma.StringNullableFilter<"SignupRequest"> | string | null
+  status?: Prisma.EnumSignupRequestStatusFilter<"SignupRequest"> | $Enums.SignupRequestStatus
+  reviewedBy?: Prisma.StringNullableFilter<"SignupRequest"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"SignupRequest"> | Date | string | null
+  reviewNotes?: Prisma.StringNullableFilter<"SignupRequest"> | string | null
+  createdStaffId?: Prisma.StringNullableFilter<"SignupRequest"> | string | null
+  tenantId?: Prisma.StringFilter<"SignupRequest"> | string
+  createdAt?: Prisma.DateTimeFilter<"SignupRequest"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"SignupRequest"> | Date | string
+}
+
+export type SignupRequestCreateWithoutCreatedStaffInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  profession: string
+  role: $Enums.StaffRole
+  department: $Enums.Department
+  facility?: string | null
+  licenseNumber?: string | null
+  message?: string | null
+  status?: $Enums.SignupRequestStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
+  reviewNotes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutSignupRequestsInput
 }
 
 export type SignupRequestUncheckedCreateWithoutCreatedStaffInput = {
@@ -638,6 +831,7 @@ export type SignupRequestUncheckedCreateWithoutCreatedStaffInput = {
   email: string
   phone: string
   profession: string
+  role: $Enums.StaffRole
   department: $Enums.Department
   facility?: string | null
   licenseNumber?: string | null
@@ -646,6 +840,7 @@ export type SignupRequestUncheckedCreateWithoutCreatedStaffInput = {
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
+  tenantId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -673,6 +868,7 @@ export type SignupRequestUpdateWithoutCreatedStaffInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   profession?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
   department?: Prisma.EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
   facility?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -683,6 +879,7 @@ export type SignupRequestUpdateWithoutCreatedStaffInput = {
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutSignupRequestsNestedInput
 }
 
 export type SignupRequestUncheckedUpdateWithoutCreatedStaffInput = {
@@ -692,6 +889,7 @@ export type SignupRequestUncheckedUpdateWithoutCreatedStaffInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   profession?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
   department?: Prisma.EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
   facility?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -700,6 +898,91 @@ export type SignupRequestUncheckedUpdateWithoutCreatedStaffInput = {
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SignupRequestCreateManyTenantInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  profession: string
+  role: $Enums.StaffRole
+  department: $Enums.Department
+  facility?: string | null
+  licenseNumber?: string | null
+  message?: string | null
+  status?: $Enums.SignupRequestStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
+  reviewNotes?: string | null
+  createdStaffId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SignupRequestUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  department?: Prisma.EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+  facility?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumSignupRequestStatusFieldUpdateOperationsInput | $Enums.SignupRequestStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdStaff?: Prisma.StaffUpdateOneWithoutSignUpRequestNestedInput
+}
+
+export type SignupRequestUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  department?: Prisma.EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+  facility?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumSignupRequestStatusFieldUpdateOperationsInput | $Enums.SignupRequestStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdStaffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SignupRequestUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  department?: Prisma.EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+  facility?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumSignupRequestStatusFieldUpdateOperationsInput | $Enums.SignupRequestStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdStaffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -713,6 +996,7 @@ export type SignupRequestSelect<ExtArgs extends runtime.Types.Extensions.Interna
   email?: boolean
   phone?: boolean
   profession?: boolean
+  role?: boolean
   department?: boolean
   facility?: boolean
   licenseNumber?: boolean
@@ -722,9 +1006,11 @@ export type SignupRequestSelect<ExtArgs extends runtime.Types.Extensions.Interna
   reviewedAt?: boolean
   reviewNotes?: boolean
   createdStaffId?: boolean
+  tenantId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdStaff?: boolean | Prisma.SignupRequest$createdStaffArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["signupRequest"]>
 
 export type SignupRequestSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -734,6 +1020,7 @@ export type SignupRequestSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   email?: boolean
   phone?: boolean
   profession?: boolean
+  role?: boolean
   department?: boolean
   facility?: boolean
   licenseNumber?: boolean
@@ -743,9 +1030,11 @@ export type SignupRequestSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   reviewedAt?: boolean
   reviewNotes?: boolean
   createdStaffId?: boolean
+  tenantId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdStaff?: boolean | Prisma.SignupRequest$createdStaffArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["signupRequest"]>
 
 export type SignupRequestSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -755,6 +1044,7 @@ export type SignupRequestSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   email?: boolean
   phone?: boolean
   profession?: boolean
+  role?: boolean
   department?: boolean
   facility?: boolean
   licenseNumber?: boolean
@@ -764,9 +1054,11 @@ export type SignupRequestSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   reviewedAt?: boolean
   reviewNotes?: boolean
   createdStaffId?: boolean
+  tenantId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdStaff?: boolean | Prisma.SignupRequest$createdStaffArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["signupRequest"]>
 
 export type SignupRequestSelectScalar = {
@@ -776,6 +1068,7 @@ export type SignupRequestSelectScalar = {
   email?: boolean
   phone?: boolean
   profession?: boolean
+  role?: boolean
   department?: boolean
   facility?: boolean
   licenseNumber?: boolean
@@ -785,25 +1078,30 @@ export type SignupRequestSelectScalar = {
   reviewedAt?: boolean
   reviewNotes?: boolean
   createdStaffId?: boolean
+  tenantId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SignupRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "phone" | "profession" | "department" | "facility" | "licenseNumber" | "message" | "status" | "reviewedBy" | "reviewedAt" | "reviewNotes" | "createdStaffId" | "createdAt" | "updatedAt", ExtArgs["result"]["signupRequest"]>
+export type SignupRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "phone" | "profession" | "role" | "department" | "facility" | "licenseNumber" | "message" | "status" | "reviewedBy" | "reviewedAt" | "reviewNotes" | "createdStaffId" | "tenantId" | "createdAt" | "updatedAt", ExtArgs["result"]["signupRequest"]>
 export type SignupRequestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdStaff?: boolean | Prisma.SignupRequest$createdStaffArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
 export type SignupRequestIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdStaff?: boolean | Prisma.SignupRequest$createdStaffArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
 export type SignupRequestIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdStaff?: boolean | Prisma.SignupRequest$createdStaffArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
 
 export type $SignupRequestPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "SignupRequest"
   objects: {
     createdStaff: Prisma.$StaffPayload<ExtArgs> | null
+    tenant: Prisma.$TenantPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -812,6 +1110,7 @@ export type $SignupRequestPayload<ExtArgs extends runtime.Types.Extensions.Inter
     email: string
     phone: string
     profession: string
+    role: $Enums.StaffRole
     department: $Enums.Department
     facility: string | null
     licenseNumber: string | null
@@ -821,6 +1120,7 @@ export type $SignupRequestPayload<ExtArgs extends runtime.Types.Extensions.Inter
     reviewedAt: Date | null
     reviewNotes: string | null
     createdStaffId: string | null
+    tenantId: string
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["signupRequest"]>
@@ -1218,6 +1518,7 @@ readonly fields: SignupRequestFieldRefs;
 export interface Prisma__SignupRequestClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   createdStaff<T extends Prisma.SignupRequest$createdStaffArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SignupRequest$createdStaffArgs<ExtArgs>>): Prisma.Prisma__StaffClient<runtime.Types.Result.GetResult<Prisma.$StaffPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1253,6 +1554,7 @@ export interface SignupRequestFieldRefs {
   readonly email: Prisma.FieldRef<"SignupRequest", 'String'>
   readonly phone: Prisma.FieldRef<"SignupRequest", 'String'>
   readonly profession: Prisma.FieldRef<"SignupRequest", 'String'>
+  readonly role: Prisma.FieldRef<"SignupRequest", 'StaffRole'>
   readonly department: Prisma.FieldRef<"SignupRequest", 'Department'>
   readonly facility: Prisma.FieldRef<"SignupRequest", 'String'>
   readonly licenseNumber: Prisma.FieldRef<"SignupRequest", 'String'>
@@ -1262,6 +1564,7 @@ export interface SignupRequestFieldRefs {
   readonly reviewedAt: Prisma.FieldRef<"SignupRequest", 'DateTime'>
   readonly reviewNotes: Prisma.FieldRef<"SignupRequest", 'String'>
   readonly createdStaffId: Prisma.FieldRef<"SignupRequest", 'String'>
+  readonly tenantId: Prisma.FieldRef<"SignupRequest", 'String'>
   readonly createdAt: Prisma.FieldRef<"SignupRequest", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"SignupRequest", 'DateTime'>
 }

@@ -28,6 +28,7 @@ export interface JWTPayload {
   isHOD:      boolean
   canVerify:  boolean
   email:      string
+  tenantId:   string
   iat?:       number
   exp?:       number
 }

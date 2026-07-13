@@ -3,14 +3,16 @@ import { z } from 'zod'
 import { authenticate } from '../middleware/authenticate'
 import { signupService } from '../services/signUp'
 
-// ── Validation schemas ───────────────────────────────────────
-
 const createSignupSchema = z.object({
   firstName:     z.string().min(1, 'First name is required').max(50),
   lastName:      z.string().min(1, 'Last name is required').max(50),
   email:         z.string().email('Valid email is required'),
   phone:         z.string().min(10, 'Phone number is required'),
   profession:    z.string().min(1, 'Profession is required'),
+  role:          z.enum([
+    'DOCTOR', 'NURSES', 'LAB_SCIENTIST', 'IMAGING_TECH',
+    'PHARMACIST', 'RECEPTIONIST', 'BILLING_OFFICER', 'HIM_OFFICER',
+  ]),
   department:    z.enum([
     'LABORATORY', 'RADIOLOGY', 'CARDIOLOGY', 'PHARMACY',
     'GENERAL', 'EMERGENCY', 'PAEDIATRICS', 'OBSTETRICS',
@@ -36,13 +38,8 @@ const reviewBodySchema = z.object({
   reviewNotes: z.string().optional(),
 })
 
-// ── Routes ────────────────────────────────────────────────────
-
 export async function signupRoutes(fastify: FastifyInstance) {
 
-  // POST /api/signup — PUBLIC
-  // Prospective staff submit a sign-up request.
-  // Strict rate limit to prevent abuse.
   fastify.post('/signup', {
     config: {
       rateLimit: {
@@ -60,7 +57,10 @@ export async function signupRoutes(fastify: FastifyInstance) {
       }
 
       try {
-        const result = await signupService.create(parse.data)
+        const result = await signupService.create({
+          ...parse.data,
+          tenantId: request.tenantId,
+        })
         return reply.status(201).send({
           message: 'Sign-up request submitted successfully. You will be notified when it is reviewed.',
           id:      result.id,
@@ -77,18 +77,14 @@ export async function signupRoutes(fastify: FastifyInstance) {
     },
   })
 
-  // GET /api/admin/signup-requests — AUTHENTICATED
-  // List sign-up requests for admin review.
   fastify.get('/admin/signup-requests', {
     preHandler: [authenticate],
     handler: async (request, reply) => {
       const query = listQuerySchema.parse(request.query)
-      return signupService.list(query)
+      return signupService.list({ ...query, tenantId: request.tenantId })
     },
   })
 
-  // GET /api/admin/signup-requests/:id — AUTHENTICATED
-  // Get a single sign-up request for review.
   fastify.get('/admin/signup-requests/:id', {
     preHandler: [authenticate],
     handler: async (request, reply) => {
@@ -101,8 +97,6 @@ export async function signupRoutes(fastify: FastifyInstance) {
     },
   })
 
-  // PATCH /api/admin/signup-requests/:id — AUTHENTICATED
-  // Approve or reject a sign-up request.
   fastify.patch('/admin/signup-requests/:id', {
     preHandler: [authenticate],
     handler: async (request, reply) => {

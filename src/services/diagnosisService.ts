@@ -28,20 +28,20 @@ function validateDiagnosisInput(data: Partial<CreateDiagnosisInput>, partial = f
 
 export const diagnosisService = {
 
-  async createDiagnosis(data: CreateDiagnosisInput) {
+  async createDiagnosis(data: CreateDiagnosisInput & { tenantId: string }) {
     const { valid, errors } = validateDiagnosisInput(data, false);
     if (!valid) throw new Error(errors.join(', '));
 
     // Verify encounter belongs to patient
     const encounter = await prisma.encounter.findFirst({
-      where: { id: data.encounterId, patientId: data.patientId },
+      where: { id: data.encounterId, patientId: data.patientId, patient: { tenantId: data.tenantId } },
     });
     if (!encounter) throw new Error('Encounter not found or does not belong to patient');
 
     // If isPrimary, demote any existing primary for this encounter
     if (data.isPrimary) {
       await prisma.diagnosis.updateMany({
-        where: { encounterId: data.encounterId, isPrimary: true },
+        where: { encounterId: data.encounterId, isPrimary: true, patient: { tenantId: data.tenantId } },
         data:  { isPrimary: false },
       });
     }
@@ -62,44 +62,44 @@ export const diagnosisService = {
     });
   },
 
-  async getDiagnosesByPatient(patientId: string) {
+  async getDiagnosesByPatient(patientId: string, tenantId: string) {
     return prisma.diagnosis.findMany({
-      where:   { patientId },
+      where:   { patientId, patient: { tenantId } },
       orderBy: { diagnosedAt: 'desc' },
       include: { encounter: { select: { encounteredAt: true, type: true } } },
     });
   },
 
   // Active problem list — what EVEE uses for history-based rules
-  async getActiveDiagnosesByPatient(patientId: string) {
+  async getActiveDiagnosesByPatient(patientId: string, tenantId: string) {
     return prisma.diagnosis.findMany({
-      where:   { patientId, status: { in: ['ACTIVE', 'CHRONIC'] } },
+      where:   { patientId, status: { in: ['ACTIVE', 'CHRONIC'] }, patient: { tenantId } },
       orderBy: { diagnosedAt: 'desc' },
     });
   },
 
-  async getDiagnosesByEncounter(encounterId: string) {
+  async getDiagnosesByEncounter(encounterId: string, tenantId: string) {
     return prisma.diagnosis.findMany({
-      where:   { encounterId },
+      where:   { encounterId, patient: { tenantId } },
       orderBy: [{ isPrimary: 'desc' }, { diagnosedAt: 'asc' }],
     });
   },
 
-  async getDiagnosisById(id: string) {
-    return prisma.diagnosis.findUnique({ where: { id } });
+  async getDiagnosisById(id: string, tenantId: string) {
+    return prisma.diagnosis.findFirst({ where: { id, patient: { tenantId } } });
   },
 
-  async updateDiagnosis(id: string, data: UpdateDiagnosisInput) {
+  async updateDiagnosis(id: string, tenantId: string, data: UpdateDiagnosisInput) {
     const { valid, errors } = validateDiagnosisInput(data, true);
     if (!valid) throw new Error(errors.join(', '));
 
-    const existing = await prisma.diagnosis.findUnique({ where: { id } });
+    const existing = await prisma.diagnosis.findFirst({ where: { id, patient: { tenantId } } });
     if (!existing) throw new Error('Diagnosis not found');
 
     // If promoting to primary, demote others in same encounter
     if (data.isPrimary) {
       await prisma.diagnosis.updateMany({
-        where: { encounterId: existing.encounterId, isPrimary: true },
+        where: { encounterId: existing.encounterId, isPrimary: true, patient: { tenantId } },
         data:  { isPrimary: false },
       });
     }
@@ -118,10 +118,11 @@ export const diagnosisService = {
   },
 
   // Search patient history by ICD code — useful clinically and for EVEE temporal reasoning
-  async findDiagnosisByICDCode(patientId: string, icdCode: string) {
+  async findDiagnosisByICDCode(patientId: string, tenantId: string, icdCode: string) {
     return prisma.diagnosis.findMany({
       where: {
         patientId,
+        patient: { tenantId },
         icdCode: { startsWith: icdCode.toUpperCase(), mode: 'insensitive' },
       },
       orderBy: { diagnosedAt: 'desc' },

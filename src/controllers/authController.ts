@@ -16,7 +16,7 @@ export const authController = {
   async login(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { email, password } = request.body as LoginBody;
-      const staff = await staffService.login({ email, password });
+      const staff = await staffService.login({ email, password }, request.tenantId);
 
       const token = await reply.jwtSign({
         sub:        staff.id,
@@ -25,6 +25,7 @@ export const authController = {
         isHOD:      staff.isHOD,
         canVerify:  staff.canVerify,
         email:      staff.email,
+        tenantId:   staff.tenantId,
       });
 
       return reply.status(200).send({
@@ -52,6 +53,7 @@ export const authController = {
         request.user.sub,
         currentPassword,
         newPassword,
+        request.tenantId,
       );
       return reply.status(200).send({ message: 'Password updated successfully' });
     } catch (err: any) {
@@ -61,7 +63,7 @@ export const authController = {
 
   async me(request: FastifyRequest, reply: FastifyReply) {
     try {
-      const staff = await staffService.getStaffById(request.user.sub);
+      const staff = await staffService.getStaffById(request.user.sub, request.tenantId);
       if (!staff) return reply.status(404).send({ error: 'Staff not found' });
       return reply.status(200).send(staff);
     } catch (err: any) {

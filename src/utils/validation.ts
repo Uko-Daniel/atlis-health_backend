@@ -32,6 +32,10 @@ export function validatePatient(data: Partial<Patient>, partial = false): { vali
         if (!['MALE', 'FEMALE', 'OTHER'].includes(data.gender as string)) errors.push('Gender must be MALE, FEMALE, or OTHER.');
     }
 
+    if (!partial || data.tenantId !== undefined) {
+        if (!data.tenantId) errors.push('Tenant ID is required.');
+    }
+
     if (data.email && !/^\S+@\S+\.\S+$/.test(data.email)) errors.push('Invalid email format.');
     if (data.phoneNumber && !/^\+?\d{7,15}$/.test(data.phoneNumber)) errors.push('Invalid phone number format.');
 
