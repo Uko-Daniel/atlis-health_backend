@@ -32,6 +32,9 @@ export type StaffMinAggregateOutputType = {
   email: string | null
   password: string | null
   phoneNumber: string | null
+  maritalStatus: $Enums.MaritalStatus | null
+  religion: string | null
+  leaveStatus: $Enums.LeaveStatus | null
   department: $Enums.Department | null
   isHOD: boolean | null
   canVerify: boolean | null
@@ -49,6 +52,9 @@ export type StaffMaxAggregateOutputType = {
   email: string | null
   password: string | null
   phoneNumber: string | null
+  maritalStatus: $Enums.MaritalStatus | null
+  religion: string | null
+  leaveStatus: $Enums.LeaveStatus | null
   department: $Enums.Department | null
   isHOD: boolean | null
   canVerify: boolean | null
@@ -66,6 +72,9 @@ export type StaffCountAggregateOutputType = {
   email: number
   password: number
   phoneNumber: number
+  maritalStatus: number
+  religion: number
+  leaveStatus: number
   department: number
   isHOD: number
   canVerify: number
@@ -85,6 +94,9 @@ export type StaffMinAggregateInputType = {
   email?: true
   password?: true
   phoneNumber?: true
+  maritalStatus?: true
+  religion?: true
+  leaveStatus?: true
   department?: true
   isHOD?: true
   canVerify?: true
@@ -102,6 +114,9 @@ export type StaffMaxAggregateInputType = {
   email?: true
   password?: true
   phoneNumber?: true
+  maritalStatus?: true
+  religion?: true
+  leaveStatus?: true
   department?: true
   isHOD?: true
   canVerify?: true
@@ -119,6 +134,9 @@ export type StaffCountAggregateInputType = {
   email?: true
   password?: true
   phoneNumber?: true
+  maritalStatus?: true
+  religion?: true
+  leaveStatus?: true
   department?: true
   isHOD?: true
   canVerify?: true
@@ -209,6 +227,9 @@ export type StaffGroupByOutputType = {
   email: string
   password: string
   phoneNumber: string | null
+  maritalStatus: $Enums.MaritalStatus | null
+  religion: string | null
+  leaveStatus: $Enums.LeaveStatus
   department: $Enums.Department | null
   isHOD: boolean
   canVerify: boolean
@@ -247,6 +268,9 @@ export type StaffWhereInput = {
   email?: Prisma.StringFilter<"Staff"> | string
   password?: Prisma.StringFilter<"Staff"> | string
   phoneNumber?: Prisma.StringNullableFilter<"Staff"> | string | null
+  maritalStatus?: Prisma.EnumMaritalStatusNullableFilter<"Staff"> | $Enums.MaritalStatus | null
+  religion?: Prisma.StringNullableFilter<"Staff"> | string | null
+  leaveStatus?: Prisma.EnumLeaveStatusFilter<"Staff"> | $Enums.LeaveStatus
   department?: Prisma.EnumDepartmentNullableFilter<"Staff"> | $Enums.Department | null
   isHOD?: Prisma.BoolFilter<"Staff"> | boolean
   canVerify?: Prisma.BoolFilter<"Staff"> | boolean
@@ -254,6 +278,7 @@ export type StaffWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
   tenantId?: Prisma.StringFilter<"Staff"> | string
+  nok?: Prisma.XOR<Prisma.StaffNextOfKinNullableScalarRelationFilter, Prisma.StaffNextOfKinWhereInput> | null
   SignUpRequest?: Prisma.XOR<Prisma.SignupRequestNullableScalarRelationFilter, Prisma.SignupRequestWhereInput> | null
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }
@@ -266,6 +291,9 @@ export type StaffOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  maritalStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  religion?: Prisma.SortOrderInput | Prisma.SortOrder
+  leaveStatus?: Prisma.SortOrder
   department?: Prisma.SortOrderInput | Prisma.SortOrder
   isHOD?: Prisma.SortOrder
   canVerify?: Prisma.SortOrder
@@ -273,6 +301,7 @@ export type StaffOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
+  nok?: Prisma.StaffNextOfKinOrderByWithRelationInput
   SignUpRequest?: Prisma.SignupRequestOrderByWithRelationInput
   tenant?: Prisma.TenantOrderByWithRelationInput
 }
@@ -288,6 +317,9 @@ export type StaffWhereUniqueInput = Prisma.AtLeast<{
   role?: Prisma.EnumStaffRoleFilter<"Staff"> | $Enums.StaffRole
   password?: Prisma.StringFilter<"Staff"> | string
   phoneNumber?: Prisma.StringNullableFilter<"Staff"> | string | null
+  maritalStatus?: Prisma.EnumMaritalStatusNullableFilter<"Staff"> | $Enums.MaritalStatus | null
+  religion?: Prisma.StringNullableFilter<"Staff"> | string | null
+  leaveStatus?: Prisma.EnumLeaveStatusFilter<"Staff"> | $Enums.LeaveStatus
   department?: Prisma.EnumDepartmentNullableFilter<"Staff"> | $Enums.Department | null
   isHOD?: Prisma.BoolFilter<"Staff"> | boolean
   canVerify?: Prisma.BoolFilter<"Staff"> | boolean
@@ -295,6 +327,7 @@ export type StaffWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
   tenantId?: Prisma.StringFilter<"Staff"> | string
+  nok?: Prisma.XOR<Prisma.StaffNextOfKinNullableScalarRelationFilter, Prisma.StaffNextOfKinWhereInput> | null
   SignUpRequest?: Prisma.XOR<Prisma.SignupRequestNullableScalarRelationFilter, Prisma.SignupRequestWhereInput> | null
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }, "id" | "email">
@@ -307,6 +340,9 @@ export type StaffOrderByWithAggregationInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  maritalStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  religion?: Prisma.SortOrderInput | Prisma.SortOrder
+  leaveStatus?: Prisma.SortOrder
   department?: Prisma.SortOrderInput | Prisma.SortOrder
   isHOD?: Prisma.SortOrder
   canVerify?: Prisma.SortOrder
@@ -330,6 +366,9 @@ export type StaffScalarWhereWithAggregatesInput = {
   email?: Prisma.StringWithAggregatesFilter<"Staff"> | string
   password?: Prisma.StringWithAggregatesFilter<"Staff"> | string
   phoneNumber?: Prisma.StringNullableWithAggregatesFilter<"Staff"> | string | null
+  maritalStatus?: Prisma.EnumMaritalStatusNullableWithAggregatesFilter<"Staff"> | $Enums.MaritalStatus | null
+  religion?: Prisma.StringNullableWithAggregatesFilter<"Staff"> | string | null
+  leaveStatus?: Prisma.EnumLeaveStatusWithAggregatesFilter<"Staff"> | $Enums.LeaveStatus
   department?: Prisma.EnumDepartmentNullableWithAggregatesFilter<"Staff"> | $Enums.Department | null
   isHOD?: Prisma.BoolWithAggregatesFilter<"Staff"> | boolean
   canVerify?: Prisma.BoolWithAggregatesFilter<"Staff"> | boolean
@@ -347,12 +386,16 @@ export type StaffCreateInput = {
   email: string
   password: string
   phoneNumber?: string | null
+  maritalStatus?: $Enums.MaritalStatus | null
+  religion?: string | null
+  leaveStatus?: $Enums.LeaveStatus
   department?: $Enums.Department | null
   isHOD?: boolean
   canVerify?: boolean
   status?: $Enums.AccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  nok?: Prisma.StaffNextOfKinCreateNestedOneWithoutStaffInput
   SignUpRequest?: Prisma.SignupRequestCreateNestedOneWithoutCreatedStaffInput
   tenant: Prisma.TenantCreateNestedOneWithoutStaffInput
 }
@@ -365,6 +408,9 @@ export type StaffUncheckedCreateInput = {
   email: string
   password: string
   phoneNumber?: string | null
+  maritalStatus?: $Enums.MaritalStatus | null
+  religion?: string | null
+  leaveStatus?: $Enums.LeaveStatus
   department?: $Enums.Department | null
   isHOD?: boolean
   canVerify?: boolean
@@ -372,6 +418,7 @@ export type StaffUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantId: string
+  nok?: Prisma.StaffNextOfKinUncheckedCreateNestedOneWithoutStaffInput
   SignUpRequest?: Prisma.SignupRequestUncheckedCreateNestedOneWithoutCreatedStaffInput
 }
 
@@ -383,12 +430,16 @@ export type StaffUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+  religion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaveStatus?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
   department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
   isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nok?: Prisma.StaffNextOfKinUpdateOneWithoutStaffNestedInput
   SignUpRequest?: Prisma.SignupRequestUpdateOneWithoutCreatedStaffNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutStaffNestedInput
 }
@@ -401,6 +452,9 @@ export type StaffUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+  religion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaveStatus?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
   department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
   isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -408,6 +462,7 @@ export type StaffUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  nok?: Prisma.StaffNextOfKinUncheckedUpdateOneWithoutStaffNestedInput
   SignUpRequest?: Prisma.SignupRequestUncheckedUpdateOneWithoutCreatedStaffNestedInput
 }
 
@@ -419,6 +474,9 @@ export type StaffCreateManyInput = {
   email: string
   password: string
   phoneNumber?: string | null
+  maritalStatus?: $Enums.MaritalStatus | null
+  religion?: string | null
+  leaveStatus?: $Enums.LeaveStatus
   department?: $Enums.Department | null
   isHOD?: boolean
   canVerify?: boolean
@@ -436,6 +494,9 @@ export type StaffUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+  religion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaveStatus?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
   department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
   isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -452,6 +513,9 @@ export type StaffUncheckedUpdateManyInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+  religion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaveStatus?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
   department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
   isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -479,6 +543,9 @@ export type StaffCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
+  maritalStatus?: Prisma.SortOrder
+  religion?: Prisma.SortOrder
+  leaveStatus?: Prisma.SortOrder
   department?: Prisma.SortOrder
   isHOD?: Prisma.SortOrder
   canVerify?: Prisma.SortOrder
@@ -496,6 +563,9 @@ export type StaffMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
+  maritalStatus?: Prisma.SortOrder
+  religion?: Prisma.SortOrder
+  leaveStatus?: Prisma.SortOrder
   department?: Prisma.SortOrder
   isHOD?: Prisma.SortOrder
   canVerify?: Prisma.SortOrder
@@ -513,6 +583,9 @@ export type StaffMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
+  maritalStatus?: Prisma.SortOrder
+  religion?: Prisma.SortOrder
+  leaveStatus?: Prisma.SortOrder
   department?: Prisma.SortOrder
   isHOD?: Prisma.SortOrder
   canVerify?: Prisma.SortOrder
@@ -520,6 +593,11 @@ export type StaffMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
+}
+
+export type StaffScalarRelationFilter = {
+  is?: Prisma.StaffWhereInput
+  isNot?: Prisma.StaffWhereInput
 }
 
 export type StaffNullableScalarRelationFilter = {
@@ -573,12 +651,30 @@ export type EnumStaffRoleFieldUpdateOperationsInput = {
   set?: $Enums.StaffRole
 }
 
+export type EnumLeaveStatusFieldUpdateOperationsInput = {
+  set?: $Enums.LeaveStatus
+}
+
 export type NullableEnumDepartmentFieldUpdateOperationsInput = {
   set?: $Enums.Department | null
 }
 
 export type EnumAccountStatusFieldUpdateOperationsInput = {
   set?: $Enums.AccountStatus
+}
+
+export type StaffCreateNestedOneWithoutNokInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutNokInput, Prisma.StaffUncheckedCreateWithoutNokInput>
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutNokInput
+  connect?: Prisma.StaffWhereUniqueInput
+}
+
+export type StaffUpdateOneRequiredWithoutNokNestedInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutNokInput, Prisma.StaffUncheckedCreateWithoutNokInput>
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutNokInput
+  upsert?: Prisma.StaffUpsertWithoutNokInput
+  connect?: Prisma.StaffWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StaffUpdateToOneWithWhereWithoutNokInput, Prisma.StaffUpdateWithoutNokInput>, Prisma.StaffUncheckedUpdateWithoutNokInput>
 }
 
 export type StaffCreateNestedOneWithoutSignUpRequestInput = {
@@ -605,12 +701,16 @@ export type StaffCreateWithoutTenantInput = {
   email: string
   password: string
   phoneNumber?: string | null
+  maritalStatus?: $Enums.MaritalStatus | null
+  religion?: string | null
+  leaveStatus?: $Enums.LeaveStatus
   department?: $Enums.Department | null
   isHOD?: boolean
   canVerify?: boolean
   status?: $Enums.AccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  nok?: Prisma.StaffNextOfKinCreateNestedOneWithoutStaffInput
   SignUpRequest?: Prisma.SignupRequestCreateNestedOneWithoutCreatedStaffInput
 }
 
@@ -622,12 +722,16 @@ export type StaffUncheckedCreateWithoutTenantInput = {
   email: string
   password: string
   phoneNumber?: string | null
+  maritalStatus?: $Enums.MaritalStatus | null
+  religion?: string | null
+  leaveStatus?: $Enums.LeaveStatus
   department?: $Enums.Department | null
   isHOD?: boolean
   canVerify?: boolean
   status?: $Enums.AccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  nok?: Prisma.StaffNextOfKinUncheckedCreateNestedOneWithoutStaffInput
   SignUpRequest?: Prisma.SignupRequestUncheckedCreateNestedOneWithoutCreatedStaffInput
 }
 
@@ -668,6 +772,9 @@ export type StaffScalarWhereInput = {
   email?: Prisma.StringFilter<"Staff"> | string
   password?: Prisma.StringFilter<"Staff"> | string
   phoneNumber?: Prisma.StringNullableFilter<"Staff"> | string | null
+  maritalStatus?: Prisma.EnumMaritalStatusNullableFilter<"Staff"> | $Enums.MaritalStatus | null
+  religion?: Prisma.StringNullableFilter<"Staff"> | string | null
+  leaveStatus?: Prisma.EnumLeaveStatusFilter<"Staff"> | $Enums.LeaveStatus
   department?: Prisma.EnumDepartmentNullableFilter<"Staff"> | $Enums.Department | null
   isHOD?: Prisma.BoolFilter<"Staff"> | boolean
   canVerify?: Prisma.BoolFilter<"Staff"> | boolean
@@ -675,6 +782,106 @@ export type StaffScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
   tenantId?: Prisma.StringFilter<"Staff"> | string
+}
+
+export type StaffCreateWithoutNokInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  role: $Enums.StaffRole
+  email: string
+  password: string
+  phoneNumber?: string | null
+  maritalStatus?: $Enums.MaritalStatus | null
+  religion?: string | null
+  leaveStatus?: $Enums.LeaveStatus
+  department?: $Enums.Department | null
+  isHOD?: boolean
+  canVerify?: boolean
+  status?: $Enums.AccountStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  SignUpRequest?: Prisma.SignupRequestCreateNestedOneWithoutCreatedStaffInput
+  tenant: Prisma.TenantCreateNestedOneWithoutStaffInput
+}
+
+export type StaffUncheckedCreateWithoutNokInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  role: $Enums.StaffRole
+  email: string
+  password: string
+  phoneNumber?: string | null
+  maritalStatus?: $Enums.MaritalStatus | null
+  religion?: string | null
+  leaveStatus?: $Enums.LeaveStatus
+  department?: $Enums.Department | null
+  isHOD?: boolean
+  canVerify?: boolean
+  status?: $Enums.AccountStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenantId: string
+  SignUpRequest?: Prisma.SignupRequestUncheckedCreateNestedOneWithoutCreatedStaffInput
+}
+
+export type StaffCreateOrConnectWithoutNokInput = {
+  where: Prisma.StaffWhereUniqueInput
+  create: Prisma.XOR<Prisma.StaffCreateWithoutNokInput, Prisma.StaffUncheckedCreateWithoutNokInput>
+}
+
+export type StaffUpsertWithoutNokInput = {
+  update: Prisma.XOR<Prisma.StaffUpdateWithoutNokInput, Prisma.StaffUncheckedUpdateWithoutNokInput>
+  create: Prisma.XOR<Prisma.StaffCreateWithoutNokInput, Prisma.StaffUncheckedCreateWithoutNokInput>
+  where?: Prisma.StaffWhereInput
+}
+
+export type StaffUpdateToOneWithWhereWithoutNokInput = {
+  where?: Prisma.StaffWhereInput
+  data: Prisma.XOR<Prisma.StaffUpdateWithoutNokInput, Prisma.StaffUncheckedUpdateWithoutNokInput>
+}
+
+export type StaffUpdateWithoutNokInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+  religion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaveStatus?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+  department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
+  isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  SignUpRequest?: Prisma.SignupRequestUpdateOneWithoutCreatedStaffNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStaffNestedInput
+}
+
+export type StaffUncheckedUpdateWithoutNokInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+  religion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaveStatus?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+  department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
+  isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  SignUpRequest?: Prisma.SignupRequestUncheckedUpdateOneWithoutCreatedStaffNestedInput
 }
 
 export type StaffCreateWithoutSignUpRequestInput = {
@@ -685,12 +892,16 @@ export type StaffCreateWithoutSignUpRequestInput = {
   email: string
   password: string
   phoneNumber?: string | null
+  maritalStatus?: $Enums.MaritalStatus | null
+  religion?: string | null
+  leaveStatus?: $Enums.LeaveStatus
   department?: $Enums.Department | null
   isHOD?: boolean
   canVerify?: boolean
   status?: $Enums.AccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  nok?: Prisma.StaffNextOfKinCreateNestedOneWithoutStaffInput
   tenant: Prisma.TenantCreateNestedOneWithoutStaffInput
 }
 
@@ -702,6 +913,9 @@ export type StaffUncheckedCreateWithoutSignUpRequestInput = {
   email: string
   password: string
   phoneNumber?: string | null
+  maritalStatus?: $Enums.MaritalStatus | null
+  religion?: string | null
+  leaveStatus?: $Enums.LeaveStatus
   department?: $Enums.Department | null
   isHOD?: boolean
   canVerify?: boolean
@@ -709,6 +923,7 @@ export type StaffUncheckedCreateWithoutSignUpRequestInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantId: string
+  nok?: Prisma.StaffNextOfKinUncheckedCreateNestedOneWithoutStaffInput
 }
 
 export type StaffCreateOrConnectWithoutSignUpRequestInput = {
@@ -735,12 +950,16 @@ export type StaffUpdateWithoutSignUpRequestInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+  religion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaveStatus?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
   department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
   isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nok?: Prisma.StaffNextOfKinUpdateOneWithoutStaffNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutStaffNestedInput
 }
 
@@ -752,6 +971,9 @@ export type StaffUncheckedUpdateWithoutSignUpRequestInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+  religion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaveStatus?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
   department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
   isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -759,6 +981,7 @@ export type StaffUncheckedUpdateWithoutSignUpRequestInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  nok?: Prisma.StaffNextOfKinUncheckedUpdateOneWithoutStaffNestedInput
 }
 
 export type StaffCreateManyTenantInput = {
@@ -769,6 +992,9 @@ export type StaffCreateManyTenantInput = {
   email: string
   password: string
   phoneNumber?: string | null
+  maritalStatus?: $Enums.MaritalStatus | null
+  religion?: string | null
+  leaveStatus?: $Enums.LeaveStatus
   department?: $Enums.Department | null
   isHOD?: boolean
   canVerify?: boolean
@@ -785,12 +1011,16 @@ export type StaffUpdateWithoutTenantInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+  religion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaveStatus?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
   department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
   isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nok?: Prisma.StaffNextOfKinUpdateOneWithoutStaffNestedInput
   SignUpRequest?: Prisma.SignupRequestUpdateOneWithoutCreatedStaffNestedInput
 }
 
@@ -802,12 +1032,16 @@ export type StaffUncheckedUpdateWithoutTenantInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+  religion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaveStatus?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
   department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
   isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nok?: Prisma.StaffNextOfKinUncheckedUpdateOneWithoutStaffNestedInput
   SignUpRequest?: Prisma.SignupRequestUncheckedUpdateOneWithoutCreatedStaffNestedInput
 }
 
@@ -819,6 +1053,9 @@ export type StaffUncheckedUpdateManyWithoutTenantInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+  religion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaveStatus?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
   department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
   isHOD?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canVerify?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -837,6 +1074,9 @@ export type StaffSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   email?: boolean
   password?: boolean
   phoneNumber?: boolean
+  maritalStatus?: boolean
+  religion?: boolean
+  leaveStatus?: boolean
   department?: boolean
   isHOD?: boolean
   canVerify?: boolean
@@ -844,6 +1084,7 @@ export type StaffSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdAt?: boolean
   updatedAt?: boolean
   tenantId?: boolean
+  nok?: boolean | Prisma.Staff$nokArgs<ExtArgs>
   SignUpRequest?: boolean | Prisma.Staff$SignUpRequestArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["staff"]>
@@ -856,6 +1097,9 @@ export type StaffSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   email?: boolean
   password?: boolean
   phoneNumber?: boolean
+  maritalStatus?: boolean
+  religion?: boolean
+  leaveStatus?: boolean
   department?: boolean
   isHOD?: boolean
   canVerify?: boolean
@@ -874,6 +1118,9 @@ export type StaffSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   email?: boolean
   password?: boolean
   phoneNumber?: boolean
+  maritalStatus?: boolean
+  religion?: boolean
+  leaveStatus?: boolean
   department?: boolean
   isHOD?: boolean
   canVerify?: boolean
@@ -892,6 +1139,9 @@ export type StaffSelectScalar = {
   email?: boolean
   password?: boolean
   phoneNumber?: boolean
+  maritalStatus?: boolean
+  religion?: boolean
+  leaveStatus?: boolean
   department?: boolean
   isHOD?: boolean
   canVerify?: boolean
@@ -901,8 +1151,9 @@ export type StaffSelectScalar = {
   tenantId?: boolean
 }
 
-export type StaffOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "role" | "email" | "password" | "phoneNumber" | "department" | "isHOD" | "canVerify" | "status" | "createdAt" | "updatedAt" | "tenantId", ExtArgs["result"]["staff"]>
+export type StaffOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "role" | "email" | "password" | "phoneNumber" | "maritalStatus" | "religion" | "leaveStatus" | "department" | "isHOD" | "canVerify" | "status" | "createdAt" | "updatedAt" | "tenantId", ExtArgs["result"]["staff"]>
 export type StaffInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  nok?: boolean | Prisma.Staff$nokArgs<ExtArgs>
   SignUpRequest?: boolean | Prisma.Staff$SignUpRequestArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
@@ -916,6 +1167,7 @@ export type StaffIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type $StaffPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Staff"
   objects: {
+    nok: Prisma.$StaffNextOfKinPayload<ExtArgs> | null
     SignUpRequest: Prisma.$SignupRequestPayload<ExtArgs> | null
     tenant: Prisma.$TenantPayload<ExtArgs>
   }
@@ -927,6 +1179,9 @@ export type $StaffPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     email: string
     password: string
     phoneNumber: string | null
+    maritalStatus: $Enums.MaritalStatus | null
+    religion: string | null
+    leaveStatus: $Enums.LeaveStatus
     department: $Enums.Department | null
     isHOD: boolean
     canVerify: boolean
@@ -1328,6 +1583,7 @@ readonly fields: StaffFieldRefs;
  */
 export interface Prisma__StaffClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  nok<T extends Prisma.Staff$nokArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Staff$nokArgs<ExtArgs>>): Prisma.Prisma__StaffNextOfKinClient<runtime.Types.Result.GetResult<Prisma.$StaffNextOfKinPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   SignUpRequest<T extends Prisma.Staff$SignUpRequestArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Staff$SignUpRequestArgs<ExtArgs>>): Prisma.Prisma__SignupRequestClient<runtime.Types.Result.GetResult<Prisma.$SignupRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1366,6 +1622,9 @@ export interface StaffFieldRefs {
   readonly email: Prisma.FieldRef<"Staff", 'String'>
   readonly password: Prisma.FieldRef<"Staff", 'String'>
   readonly phoneNumber: Prisma.FieldRef<"Staff", 'String'>
+  readonly maritalStatus: Prisma.FieldRef<"Staff", 'MaritalStatus'>
+  readonly religion: Prisma.FieldRef<"Staff", 'String'>
+  readonly leaveStatus: Prisma.FieldRef<"Staff", 'LeaveStatus'>
   readonly department: Prisma.FieldRef<"Staff", 'Department'>
   readonly isHOD: Prisma.FieldRef<"Staff", 'Boolean'>
   readonly canVerify: Prisma.FieldRef<"Staff", 'Boolean'>
@@ -1771,6 +2030,25 @@ export type StaffDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Staff to delete.
    */
   limit?: number
+}
+
+/**
+ * Staff.nok
+ */
+export type Staff$nokArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StaffNextOfKin
+   */
+  select?: Prisma.StaffNextOfKinSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StaffNextOfKin
+   */
+  omit?: Prisma.StaffNextOfKinOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StaffNextOfKinInclude<ExtArgs> | null
+  where?: Prisma.StaffNextOfKinWhereInput
 }
 
 /**

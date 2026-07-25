@@ -410,6 +410,7 @@ export const ModelName = {
   Result: 'Result',
   ResultEditSession: 'ResultEditSession',
   Staff: 'Staff',
+  StaffNextOfKin: 'StaffNextOfKin',
   SignupRequest: 'SignupRequest',
   Settings: 'Settings',
   AuditLog: 'AuditLog',
@@ -439,7 +440,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "tenant" | "tenantPermission" | "tenantSetting" | "billingPeriod" | "payer" | "tariff" | "claim" | "patient" | "nextOfKin" | "visitor" | "record" | "encounter" | "vital" | "diagnosis" | "allergy" | "report" | "medication" | "admission" | "patientUser" | "service" | "template" | "order" | "orderService" | "result" | "resultEditSession" | "staff" | "signupRequest" | "settings" | "auditLog" | "eveeEvaluation" | "eveeAlert" | "googleCredential" | "supplier" | "request" | "purchaseOrder" | "purchaseOrderItem" | "inventoryItem" | "inventoryTransaction" | "expenseCategory" | "expense"
+    modelProps: "tenant" | "tenantPermission" | "tenantSetting" | "billingPeriod" | "payer" | "tariff" | "claim" | "patient" | "nextOfKin" | "visitor" | "record" | "encounter" | "vital" | "diagnosis" | "allergy" | "report" | "medication" | "admission" | "patientUser" | "service" | "template" | "order" | "orderService" | "result" | "resultEditSession" | "staff" | "staffNextOfKin" | "signupRequest" | "settings" | "auditLog" | "eveeEvaluation" | "eveeAlert" | "googleCredential" | "supplier" | "request" | "purchaseOrder" | "purchaseOrderItem" | "inventoryItem" | "inventoryTransaction" | "expenseCategory" | "expense"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2367,6 +2368,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    StaffNextOfKin: {
+      payload: Prisma.$StaffNextOfKinPayload<ExtArgs>
+      fields: Prisma.StaffNextOfKinFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StaffNextOfKinFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffNextOfKinPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StaffNextOfKinFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffNextOfKinPayload>
+        }
+        findFirst: {
+          args: Prisma.StaffNextOfKinFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffNextOfKinPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StaffNextOfKinFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffNextOfKinPayload>
+        }
+        findMany: {
+          args: Prisma.StaffNextOfKinFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffNextOfKinPayload>[]
+        }
+        create: {
+          args: Prisma.StaffNextOfKinCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffNextOfKinPayload>
+        }
+        createMany: {
+          args: Prisma.StaffNextOfKinCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StaffNextOfKinCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffNextOfKinPayload>[]
+        }
+        delete: {
+          args: Prisma.StaffNextOfKinDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffNextOfKinPayload>
+        }
+        update: {
+          args: Prisma.StaffNextOfKinUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffNextOfKinPayload>
+        }
+        deleteMany: {
+          args: Prisma.StaffNextOfKinDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StaffNextOfKinUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StaffNextOfKinUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffNextOfKinPayload>[]
+        }
+        upsert: {
+          args: Prisma.StaffNextOfKinUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffNextOfKinPayload>
+        }
+        aggregate: {
+          args: Prisma.StaffNextOfKinAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStaffNextOfKin>
+        }
+        groupBy: {
+          args: Prisma.StaffNextOfKinGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StaffNextOfKinGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StaffNextOfKinCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StaffNextOfKinCountAggregateOutputType> | number
+        }
+      }
+    }
     SignupRequest: {
       payload: Prisma.$SignupRequestPayload<ExtArgs>
       fields: Prisma.SignupRequestFieldRefs
@@ -3792,6 +3867,7 @@ export type TemplateScalarFieldEnum = (typeof TemplateScalarFieldEnum)[keyof typ
 export const OrderScalarFieldEnum = {
   id: 'id',
   patientId: 'patientId',
+  paymentMethod: 'paymentMethod',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -3858,6 +3934,9 @@ export const StaffScalarFieldEnum = {
   email: 'email',
   password: 'password',
   phoneNumber: 'phoneNumber',
+  maritalStatus: 'maritalStatus',
+  religion: 'religion',
+  leaveStatus: 'leaveStatus',
   department: 'department',
   isHOD: 'isHOD',
   canVerify: 'canVerify',
@@ -3868,6 +3947,20 @@ export const StaffScalarFieldEnum = {
 } as const
 
 export type StaffScalarFieldEnum = (typeof StaffScalarFieldEnum)[keyof typeof StaffScalarFieldEnum]
+
+
+export const StaffNextOfKinScalarFieldEnum = {
+  id: 'id',
+  staffId: 'staffId',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  relation: 'relation',
+  phoneNumber: 'phoneNumber',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StaffNextOfKinScalarFieldEnum = (typeof StaffNextOfKinScalarFieldEnum)[keyof typeof StaffNextOfKinScalarFieldEnum]
 
 
 export const SignupRequestScalarFieldEnum = {
@@ -4455,6 +4548,20 @@ export type ListEnumDepartmentFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
+ * Reference to a field of type 'PaymentMethod'
+ */
+export type EnumPaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMethod'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentMethod[]'
+ */
+export type ListEnumPaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMethod[]'>
+    
+
+
+/**
  * Reference to a field of type 'OrderStatus'
  */
 export type EnumOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrderStatus'>
@@ -4479,6 +4586,20 @@ export type EnumResultStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
  * Reference to a field of type 'ResultStatus[]'
  */
 export type ListEnumResultStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ResultStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'LeaveStatus'
+ */
+export type EnumLeaveStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeaveStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'LeaveStatus[]'
+ */
+export type ListEnumLeaveStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeaveStatus[]'>
     
 
 
@@ -4700,6 +4821,7 @@ export type GlobalOmitConfig = {
   result?: Prisma.ResultOmit
   resultEditSession?: Prisma.ResultEditSessionOmit
   staff?: Prisma.StaffOmit
+  staffNextOfKin?: Prisma.StaffNextOfKinOmit
   signupRequest?: Prisma.SignupRequestOmit
   settings?: Prisma.SettingsOmit
   auditLog?: Prisma.AuditLogOmit

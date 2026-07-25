@@ -77,6 +77,7 @@ export const ModelName = {
   Result: 'Result',
   ResultEditSession: 'ResultEditSession',
   Staff: 'Staff',
+  StaffNextOfKin: 'StaffNextOfKin',
   SignupRequest: 'SignupRequest',
   Settings: 'Settings',
   AuditLog: 'AuditLog',
@@ -459,6 +460,7 @@ export type TemplateScalarFieldEnum = (typeof TemplateScalarFieldEnum)[keyof typ
 export const OrderScalarFieldEnum = {
   id: 'id',
   patientId: 'patientId',
+  paymentMethod: 'paymentMethod',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -525,6 +527,9 @@ export const StaffScalarFieldEnum = {
   email: 'email',
   password: 'password',
   phoneNumber: 'phoneNumber',
+  maritalStatus: 'maritalStatus',
+  religion: 'religion',
+  leaveStatus: 'leaveStatus',
   department: 'department',
   isHOD: 'isHOD',
   canVerify: 'canVerify',
@@ -535,6 +540,20 @@ export const StaffScalarFieldEnum = {
 } as const
 
 export type StaffScalarFieldEnum = (typeof StaffScalarFieldEnum)[keyof typeof StaffScalarFieldEnum]
+
+
+export const StaffNextOfKinScalarFieldEnum = {
+  id: 'id',
+  staffId: 'staffId',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  relation: 'relation',
+  phoneNumber: 'phoneNumber',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StaffNextOfKinScalarFieldEnum = (typeof StaffNextOfKinScalarFieldEnum)[keyof typeof StaffNextOfKinScalarFieldEnum]
 
 
 export const SignupRequestScalarFieldEnum = {

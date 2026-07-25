@@ -27,6 +27,7 @@ export type AggregateOrder = {
 export type OrderMinAggregateOutputType = {
   id: string | null
   patientId: string | null
+  paymentMethod: $Enums.PaymentMethod | null
   status: $Enums.OrderStatus | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -35,6 +36,7 @@ export type OrderMinAggregateOutputType = {
 export type OrderMaxAggregateOutputType = {
   id: string | null
   patientId: string | null
+  paymentMethod: $Enums.PaymentMethod | null
   status: $Enums.OrderStatus | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -43,6 +45,7 @@ export type OrderMaxAggregateOutputType = {
 export type OrderCountAggregateOutputType = {
   id: number
   patientId: number
+  paymentMethod: number
   status: number
   createdAt: number
   updatedAt: number
@@ -53,6 +56,7 @@ export type OrderCountAggregateOutputType = {
 export type OrderMinAggregateInputType = {
   id?: true
   patientId?: true
+  paymentMethod?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -61,6 +65,7 @@ export type OrderMinAggregateInputType = {
 export type OrderMaxAggregateInputType = {
   id?: true
   patientId?: true
+  paymentMethod?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -69,6 +74,7 @@ export type OrderMaxAggregateInputType = {
 export type OrderCountAggregateInputType = {
   id?: true
   patientId?: true
+  paymentMethod?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -150,6 +156,7 @@ export type OrderGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type OrderGroupByOutputType = {
   id: string
   patientId: string
+  paymentMethod: $Enums.PaymentMethod
   status: $Enums.OrderStatus
   createdAt: Date
   updatedAt: Date
@@ -179,6 +186,7 @@ export type OrderWhereInput = {
   NOT?: Prisma.OrderWhereInput | Prisma.OrderWhereInput[]
   id?: Prisma.StringFilter<"Order"> | string
   patientId?: Prisma.StringFilter<"Order"> | string
+  paymentMethod?: Prisma.EnumPaymentMethodFilter<"Order"> | $Enums.PaymentMethod
   status?: Prisma.EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFilter<"Order"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Order"> | Date | string
@@ -191,6 +199,7 @@ export type OrderWhereInput = {
 export type OrderOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
+  paymentMethod?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -206,6 +215,7 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.OrderWhereInput[]
   NOT?: Prisma.OrderWhereInput | Prisma.OrderWhereInput[]
   patientId?: Prisma.StringFilter<"Order"> | string
+  paymentMethod?: Prisma.EnumPaymentMethodFilter<"Order"> | $Enums.PaymentMethod
   status?: Prisma.EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFilter<"Order"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Order"> | Date | string
@@ -218,6 +228,7 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
 export type OrderOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
+  paymentMethod?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -232,6 +243,7 @@ export type OrderScalarWhereWithAggregatesInput = {
   NOT?: Prisma.OrderScalarWhereWithAggregatesInput | Prisma.OrderScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Order"> | string
   patientId?: Prisma.StringWithAggregatesFilter<"Order"> | string
+  paymentMethod?: Prisma.EnumPaymentMethodWithAggregatesFilter<"Order"> | $Enums.PaymentMethod
   status?: Prisma.EnumOrderStatusWithAggregatesFilter<"Order"> | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Order"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Order"> | Date | string
@@ -239,6 +251,7 @@ export type OrderScalarWhereWithAggregatesInput = {
 
 export type OrderCreateInput = {
   id?: string
+  paymentMethod?: $Enums.PaymentMethod
   status?: $Enums.OrderStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -251,6 +264,7 @@ export type OrderCreateInput = {
 export type OrderUncheckedCreateInput = {
   id?: string
   patientId: string
+  paymentMethod?: $Enums.PaymentMethod
   status?: $Enums.OrderStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -261,6 +275,7 @@ export type OrderUncheckedCreateInput = {
 
 export type OrderUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -273,6 +288,7 @@ export type OrderUpdateInput = {
 export type OrderUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -284,6 +300,7 @@ export type OrderUncheckedUpdateInput = {
 export type OrderCreateManyInput = {
   id?: string
   patientId: string
+  paymentMethod?: $Enums.PaymentMethod
   status?: $Enums.OrderStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -291,6 +308,7 @@ export type OrderCreateManyInput = {
 
 export type OrderUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -299,6 +317,7 @@ export type OrderUpdateManyMutationInput = {
 export type OrderUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -322,6 +341,7 @@ export type OrderOrderByRelationAggregateInput = {
 export type OrderCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
+  paymentMethod?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -330,6 +350,7 @@ export type OrderCountOrderByAggregateInput = {
 export type OrderMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
+  paymentMethod?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -338,6 +359,7 @@ export type OrderMaxOrderByAggregateInput = {
 export type OrderMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
+  paymentMethod?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -406,6 +428,10 @@ export type OrderUncheckedUpdateManyWithoutPatientNestedInput = {
   deleteMany?: Prisma.OrderScalarWhereInput | Prisma.OrderScalarWhereInput[]
 }
 
+export type EnumPaymentMethodFieldUpdateOperationsInput = {
+  set?: $Enums.PaymentMethod
+}
+
 export type EnumOrderStatusFieldUpdateOperationsInput = {
   set?: $Enums.OrderStatus
 }
@@ -440,6 +466,7 @@ export type OrderUpdateOneRequiredWithoutResultsNestedInput = {
 
 export type OrderCreateWithoutClaimsInput = {
   id?: string
+  paymentMethod?: $Enums.PaymentMethod
   status?: $Enums.OrderStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -451,6 +478,7 @@ export type OrderCreateWithoutClaimsInput = {
 export type OrderUncheckedCreateWithoutClaimsInput = {
   id?: string
   patientId: string
+  paymentMethod?: $Enums.PaymentMethod
   status?: $Enums.OrderStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -476,6 +504,7 @@ export type OrderUpdateToOneWithWhereWithoutClaimsInput = {
 
 export type OrderUpdateWithoutClaimsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -487,6 +516,7 @@ export type OrderUpdateWithoutClaimsInput = {
 export type OrderUncheckedUpdateWithoutClaimsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -496,6 +526,7 @@ export type OrderUncheckedUpdateWithoutClaimsInput = {
 
 export type OrderCreateWithoutPatientInput = {
   id?: string
+  paymentMethod?: $Enums.PaymentMethod
   status?: $Enums.OrderStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -506,6 +537,7 @@ export type OrderCreateWithoutPatientInput = {
 
 export type OrderUncheckedCreateWithoutPatientInput = {
   id?: string
+  paymentMethod?: $Enums.PaymentMethod
   status?: $Enums.OrderStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -546,6 +578,7 @@ export type OrderScalarWhereInput = {
   NOT?: Prisma.OrderScalarWhereInput | Prisma.OrderScalarWhereInput[]
   id?: Prisma.StringFilter<"Order"> | string
   patientId?: Prisma.StringFilter<"Order"> | string
+  paymentMethod?: Prisma.EnumPaymentMethodFilter<"Order"> | $Enums.PaymentMethod
   status?: Prisma.EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFilter<"Order"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Order"> | Date | string
@@ -553,6 +586,7 @@ export type OrderScalarWhereInput = {
 
 export type OrderCreateWithoutServicesInput = {
   id?: string
+  paymentMethod?: $Enums.PaymentMethod
   status?: $Enums.OrderStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -564,6 +598,7 @@ export type OrderCreateWithoutServicesInput = {
 export type OrderUncheckedCreateWithoutServicesInput = {
   id?: string
   patientId: string
+  paymentMethod?: $Enums.PaymentMethod
   status?: $Enums.OrderStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -589,6 +624,7 @@ export type OrderUpdateToOneWithWhereWithoutServicesInput = {
 
 export type OrderUpdateWithoutServicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -600,6 +636,7 @@ export type OrderUpdateWithoutServicesInput = {
 export type OrderUncheckedUpdateWithoutServicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -609,6 +646,7 @@ export type OrderUncheckedUpdateWithoutServicesInput = {
 
 export type OrderCreateWithoutResultsInput = {
   id?: string
+  paymentMethod?: $Enums.PaymentMethod
   status?: $Enums.OrderStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -620,6 +658,7 @@ export type OrderCreateWithoutResultsInput = {
 export type OrderUncheckedCreateWithoutResultsInput = {
   id?: string
   patientId: string
+  paymentMethod?: $Enums.PaymentMethod
   status?: $Enums.OrderStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -645,6 +684,7 @@ export type OrderUpdateToOneWithWhereWithoutResultsInput = {
 
 export type OrderUpdateWithoutResultsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -656,6 +696,7 @@ export type OrderUpdateWithoutResultsInput = {
 export type OrderUncheckedUpdateWithoutResultsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -665,6 +706,7 @@ export type OrderUncheckedUpdateWithoutResultsInput = {
 
 export type OrderCreateManyPatientInput = {
   id?: string
+  paymentMethod?: $Enums.PaymentMethod
   status?: $Enums.OrderStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -672,6 +714,7 @@ export type OrderCreateManyPatientInput = {
 
 export type OrderUpdateWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -682,6 +725,7 @@ export type OrderUpdateWithoutPatientInput = {
 
 export type OrderUncheckedUpdateWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -692,6 +736,7 @@ export type OrderUncheckedUpdateWithoutPatientInput = {
 
 export type OrderUncheckedUpdateManyWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -749,6 +794,7 @@ export type OrderCountOutputTypeCountResultsArgs<ExtArgs extends runtime.Types.E
 export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   patientId?: boolean
+  paymentMethod?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -762,6 +808,7 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type OrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   patientId?: boolean
+  paymentMethod?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -771,6 +818,7 @@ export type OrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type OrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   patientId?: boolean
+  paymentMethod?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -780,12 +828,13 @@ export type OrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type OrderSelectScalar = {
   id?: boolean
   patientId?: boolean
+  paymentMethod?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "patientId" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
+export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "patientId" | "paymentMethod" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
 export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
   services?: boolean | Prisma.Order$servicesArgs<ExtArgs>
@@ -811,6 +860,7 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     patientId: string
+    paymentMethod: $Enums.PaymentMethod
     status: $Enums.OrderStatus
     createdAt: Date
     updatedAt: Date
@@ -1243,6 +1293,7 @@ export interface Prisma__OrderClient<T, Null = never, ExtArgs extends runtime.Ty
 export interface OrderFieldRefs {
   readonly id: Prisma.FieldRef<"Order", 'String'>
   readonly patientId: Prisma.FieldRef<"Order", 'String'>
+  readonly paymentMethod: Prisma.FieldRef<"Order", 'PaymentMethod'>
   readonly status: Prisma.FieldRef<"Order", 'OrderStatus'>
   readonly createdAt: Prisma.FieldRef<"Order", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Order", 'DateTime'>

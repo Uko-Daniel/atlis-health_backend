@@ -172,6 +172,11 @@ export type ResultEditSession = Prisma.ResultEditSessionModel
  */
 export type Staff = Prisma.StaffModel
 /**
+ * Model StaffNextOfKin
+ * 
+ */
+export type StaffNextOfKin = Prisma.StaffNextOfKinModel
+/**
  * Model SignupRequest
  * 
  */

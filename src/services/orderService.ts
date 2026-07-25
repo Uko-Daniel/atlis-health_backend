@@ -3,11 +3,11 @@ import { validateOrder } from '../utils/validation';
 import { getSkipTake, paginate } from '../utils/pagination';
 import type { OrderStatus } from '../types/order';
 import { validateEnum } from '../utils/validation';
-import { OrderStatus as Status } from '../../generated/prisma/enums';
+import { PaymentMethod as paymentMethod, OrderStatus as Status } from '../../generated/prisma/enums';
 
 export const orderService = {
 
-    async createOrder(patientId: string, serviceIds: string[], tenantId: string) {
+    async createOrder(patientId: string, serviceIds: string[], tenantId: string, paymentMethod: paymentMethod,) {
         const { valid, errors } = validateOrder({ patientId, serviceIds });
         if (!valid) throw new Error(errors?.join(', '));
         if (!tenantId) throw new Error('tenantId is required');
@@ -28,19 +28,16 @@ export const orderService = {
         // Create order + link services
         return prisma.order.create({
             data: {
-                patientId,
-                services: {
-                    create: serviceIds.map(serviceId => ({
-                        serviceId,
-                    })),
-                },
+            patientId,
+            paymentMethod: paymentMethod ?? 'CASH',
+            services: {
+                create: serviceIds.map(serviceId => ({ serviceId })),
+            },
             },
             include: {
-                services: {
-                    include: {
-                        service: true,
-                    },
-                },
+            services: {
+                include: { service: true },
+            },
             },
         });
     },

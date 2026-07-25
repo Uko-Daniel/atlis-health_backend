@@ -1,6 +1,7 @@
 import { type FastifyRequest, type FastifyReply } from 'fastify';
 import { orderService }   from '../services/orderService';
 import { serviceService } from '../services/serviceService';
+import { PaymentMethod } from '../../generated/prisma/enums';
 
 // ── ORDER ─────────────────────────────────────────────────────
 
@@ -8,11 +9,12 @@ export const orderController = {
 
   async createOrder(request: FastifyRequest, reply: FastifyReply) {
     try {
-      const { patientId, serviceIds } = request.body as {
+      const { patientId, serviceIds, paymentMethod } = request.body as {
         patientId:  string;
         serviceIds: string[];
+        paymentMethod: PaymentMethod;
       };
-      const order = await orderService.createOrder(patientId, serviceIds, request.tenantId);
+      const order = await orderService.createOrder(patientId, serviceIds, request.tenantId, paymentMethod);
       return reply.status(201).send(order);
     } catch (err: any) {
       const status = err.message.includes('not found') ? 404 : 400;

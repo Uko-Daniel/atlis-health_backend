@@ -8,12 +8,22 @@ import type { Result } from '../types/result';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+/*
+function decryptStoredResultData(data: unknown) {
+  if (typeof data !== 'string') {
+    // Local dev bypass — seeded plain JSON passes through
+    return data;
+  }
+  return decryptJSON(data);
+}
+*/
 function decryptStoredResultData(data: unknown) {
   if (typeof data !== 'string') {
     throw new Error('Stored result data is not an encrypted string');
   }
   return decryptJSON(data);
 }
+
 
 function assertValidDepartment(dept: string): Department {
   if (!Object.values(Department).includes(dept as Department)) {
@@ -102,9 +112,17 @@ async function getResultById(id: string, tenantId: string, staffDepartment?: str
   const result = await prisma.result.findFirst({
     where:   { id, patient: { tenantId } },
     include: {
-      patient:  { select: { id: true, firstName: true, lastName: true } },
+      patient:  { select: { id: true, firstName: true, lastName: true, gender: true, dob: true } },
       template: true,
       editSession: true,
+      order: {
+        include: {
+          services: {
+            include: { service: { select: { name: true } } },
+            take: 1,   // we only need the first service
+          },
+        },
+      },
     },
   });
 
@@ -121,6 +139,9 @@ async function getResultById(id: string, tenantId: string, staffDepartment?: str
   return {
     ...result,
     data: decryptStoredResultData(result.data),
+    /*data: typeof result.data === 'string' && result.data.includes(':')
+  ? decryptStoredResultData(result.data)
+  : result.data,*/
   };
 }
 
@@ -150,7 +171,7 @@ async function getResultsByPatient(patientId: string, params?: {
       where,
       orderBy: { createdAt: 'desc' },
       include: {
-        patient:  { select: { id: true, firstName: true, lastName: true } },
+        patient:  { select: { id: true, firstName: true, lastName: true, gender: true, dob: true } },
         template: true,
         editSession: true,
       },
@@ -209,7 +230,7 @@ async function getResultsByDepartment(department: string, params?: {
       where,
       orderBy: { createdAt: 'asc' }, // oldest first — FIFO worklist
       include: {
-        patient:  { select: { id: true, firstName: true, lastName: true } },
+        patient:  { select: { id: true, firstName: true, lastName: true, gender: true, dob: true } },
         template:    true,
         editSession: { select: { staffId: true, lastSavedAt: true, expiresAt: true } },
       },

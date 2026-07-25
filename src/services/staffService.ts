@@ -8,23 +8,36 @@ import {
 // ── TYPES ─────────────────────────────────────────────────────
 
 export interface CreateStaffInput {
-  firstName:   string;
-  lastName:    string;
-  email:       string;
-  password:    string;
-  role:        StaffRole;
-  tenantId:    string; 
-  department?: Department;
-  phoneNumber?: string;
-  isHOD?:      boolean;
-  canVerify?:  boolean;
+  firstName:      string;
+  lastName:       string;
+  email:          string;
+  password:       string;
+  role:           StaffRole;
+  tenantId:       string; 
+  department?:    Department;
+  phoneNumber?:   string;
+  isHOD?:         boolean;
+  canVerify?:     boolean;
+  // Bio
+  maritalStatus?: string;
+  religion?:      string;
+  leaveStatus?:   string;
+  nok?: {
+    firstName:   string;
+    lastName:    string;
+    relation:    string;
+    phoneNumber: string;
+  };
 }
 
 export interface UpdateStaffInput {
-  firstName?:   string;
-  lastName?:    string;
-  phoneNumber?: string;
-  department?:  Department;
+  firstName?:     string;
+  lastName?:      string;
+  phoneNumber?:   string;
+  department?:    Department;
+  maritalStatus?: string;
+  religion?:      string;
+  leaveStatus?:   string;
 }
 
 export interface UpdatePermissionsInput {
@@ -57,7 +70,6 @@ function validateCreateStaff(data: CreateStaffInput) {
   if (!data.role)               errors.push('role is required');
   if (!VALID_ROLES.includes(data.role)) errors.push(`Invalid role: ${data.role}`);
 
-  // Email format
   if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
     errors.push('Invalid email format');
   }
@@ -66,8 +78,6 @@ function validateCreateStaff(data: CreateStaffInput) {
 }
 
 // ── DEPT-SCOPED ROLES ─────────────────────────────────────────
-// These roles must have a department assigned
-
 const DEPT_REQUIRED_ROLES: StaffRole[] = [
   'LAB_SCIENTIST','IMAGING_TECH','DOCTOR','NURSES','PHARMACIST',
 ];
@@ -80,7 +90,6 @@ export const staffService = {
     const { valid, errors } = validateCreateStaff(data);
     if (!valid) throw new Error(errors.join(', '));
 
-    // Department required for clinical roles
     if (DEPT_REQUIRED_ROLES.includes(data.role) && !data.department) {
       throw new Error(`Role ${data.role} requires a department`);
     }
@@ -92,27 +101,45 @@ export const staffService = {
 
     const hashed = await argon2.hash(data.password);
 
-    return prisma.staff.create({
+    const staff = await prisma.staff.create({
       data: {
-        firstName:   data.firstName.trim(),
-        lastName:    data.lastName.trim(),
-        email:       data.email.toLowerCase().trim(),
-        password:    hashed,
-        role:        data.role,
-        department:  data.department  ?? null,
-        phoneNumber: data.phoneNumber ?? null,
-        isHOD:       data.isHOD      ?? false,
-        canVerify:   data.canVerify   ?? false,
+        firstName:     data.firstName.trim(),
+        lastName:      data.lastName.trim(),
+        email:         data.email.toLowerCase().trim(),
+        password:      hashed,
+        role:          data.role,
+        maritalStatus: (data.maritalStatus as any) ?? null,
+        religion:      data.religion      ?? null,
+        leaveStatus:   (data.leaveStatus as any)   ?? 'ACTIVE',
+        department:    data.department    ?? null,
+        phoneNumber:   data.phoneNumber   ?? null,
+        isHOD:         data.isHOD        ?? false,
+        canVerify:     data.canVerify     ?? false,
         tenant:        { connect: { id: data.tenantId } },
       },
-      // Never return password
       select: {
         id: true, firstName: true, lastName: true,
         email: true, role: true, department: true,
         isHOD: true, canVerify: true, phoneNumber: true,
+        maritalStatus: true, religion: true, leaveStatus: true,
         createdAt: true,
       },
     });
+
+    // Create Next of Kin if provided
+    if (data.nok?.firstName) {
+      await prisma.staffNextOfKin.create({
+        data: {
+          staffId:     staff.id,
+          firstName:   data.nok.firstName,
+          lastName:    data.nok.lastName,
+          relation:    data.nok.relation,
+          phoneNumber: data.nok.phoneNumber,
+        },
+      });
+    }
+
+    return staff;
   },
 
   async login(data: LoginInput, tenantId?: string) {
@@ -132,7 +159,6 @@ export const staffService = {
     if (!valid) throw new Error('Invalid credentials');
 
     const { password: _password, ...safeStaff } = staff;
-
     return safeStaff;
   },
 
@@ -143,27 +169,28 @@ export const staffService = {
         id: true, firstName: true, lastName: true,
         email: true, role: true, department: true,
         isHOD: true, canVerify: true, phoneNumber: true,
+        maritalStatus: true, religion: true, leaveStatus: true,
         createdAt: true, updatedAt: true,
+        nok: true,
       },
     });
   },
 
-async getAllStaff(tenantId: string, department?: Department) {
-  return prisma.staff.findMany({
-    where: {
-      tenantId,
-      ...(department && { department }),
-    },
-    orderBy: [{ department: 'asc' as const }, { lastName: 'asc' as const }],
-    select: {
-      id: true, firstName: true, lastName: true,
-      email: true, role: true, department: true,
-      isHOD: true, canVerify: true, phoneNumber: true,
-      createdAt: true,
-    },
-   });
+  async getAllStaff(tenantId: string, department?: Department) {
+    return prisma.staff.findMany({
+      where: { tenantId, ...(department && { department }) },
+      orderBy: [{ department: 'asc' as const }, { lastName: 'asc' as const }],
+      select: {
+        id: true, firstName: true, lastName: true,
+        email: true, role: true, department: true,
+        isHOD: true, canVerify: true, phoneNumber: true,
+        maritalStatus: true, religion: true, leaveStatus: true,
+        createdAt: true,
+        nok: true,
+      },
+    });
   },
-  
+
   async getStaffActivity(staffId: string, tenantId: string) {
     return prisma.auditLog.findMany({
       where: { userId: staffId, tenantId },
@@ -175,7 +202,7 @@ async getAllStaff(tenantId: string, department?: Department) {
         entityType: true,
         createdAt: true,
       },
-    })
+    });
   },
 
   async updateStaff(id: string, tenantId: string, data: UpdateStaffInput) {
@@ -189,17 +216,20 @@ async getAllStaff(tenantId: string, department?: Department) {
         ...(data.lastName    && { lastName:    data.lastName.trim()    }),
         ...(data.phoneNumber !== undefined && { phoneNumber: data.phoneNumber }),
         ...(data.department  !== undefined && { department:  data.department  }),
+        ...(data.maritalStatus !== undefined && { maritalStatus: data.maritalStatus as any }),
+        ...(data.religion      !== undefined && { religion:      data.religion      }),
+        ...(data.leaveStatus   !== undefined && { leaveStatus:   data.leaveStatus as any }),
       },
       select: {
         id: true, firstName: true, lastName: true,
         email: true, role: true, department: true,
         isHOD: true, canVerify: true, phoneNumber: true,
+        maritalStatus: true, religion: true, leaveStatus: true,
         updatedAt: true,
       },
     });
   },
 
-  // Only ADMIN can update permissions
   async updatePermissions(id: string, tenantId: string, data: UpdatePermissionsInput) {
     const existing = await prisma.staff.findFirst({ where: { id, tenantId } });
     if (!existing) throw new Error('Staff member not found');
@@ -242,9 +272,6 @@ async getAllStaff(tenantId: string, department?: Department) {
     });
   },
 
-  // Soft approach — in a real hospital you rarely hard-delete staff
-  // because audit logs reference their ID. Mark inactive via role
-  // change or handle via HR process. Hard delete only for test accounts.
   async deleteStaff(id: string, tenantId: string) {
     const existing = await prisma.staff.findFirst({ where: { id, tenantId } });
     if (!existing) throw new Error('Staff member not found');

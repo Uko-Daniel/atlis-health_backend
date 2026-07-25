@@ -153,12 +153,25 @@ enum PayerType {
   CORPORATE
 }
 
+enum PaymentMethod {
+  CASH
+  BANK_TRANSFER
+  CARD
+}
+
 enum ClaimStatus {
   DRAFT
   SUBMITTED
   VETTED
   PAID
   REJECTED
+}
+
+enum LeaveStatus {
+  ACTIVE    // currently working
+  ON_LEAVE  // temporarily away
+  SICK      // sick leave
+  SUSPENDED // disciplinary
 }
 
 // ── CORE MODELS ───────────────────────────────────────────────
@@ -611,6 +624,7 @@ model Order {
   id        String       @id @default(cuid())
   patient   Patient      @relation(fields: [patientId], references: [id])
   patientId String
+  paymentMethod PaymentMethod   @default(CASH)
   status    OrderStatus  @default(PENDING)
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
@@ -697,6 +711,10 @@ model Staff {
   email       String    @unique
   password    String
   phoneNumber String?
+  maritalStatus MaritalStatus?
+  religion      String?
+  leaveStatus   LeaveStatus @default(ACTIVE)
+  nok           StaffNextOfKin?
 
   department Department? 
   isHOD      Boolean     @default(false) // Head of Department flag
@@ -708,6 +726,18 @@ model Staff {
   updatedAt   DateTime  @updatedAt
   tenant       Tenant   @relation(fields: [tenantId], references: [id])
   tenantId     String
+}
+
+model StaffNextOfKin {
+  id          String   @id @default(cuid())
+  staff       Staff    @relation(fields: [staffId], references: [id])
+  staffId     String   @unique
+  firstName   String
+  lastName    String
+  relation    String
+  phoneNumber String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model SignupRequest {

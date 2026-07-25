@@ -197,6 +197,15 @@ export const PayerType = {
 export type PayerType = (typeof PayerType)[keyof typeof PayerType]
 
 
+export const PaymentMethod = {
+  CASH: 'CASH',
+  BANK_TRANSFER: 'BANK_TRANSFER',
+  CARD: 'CARD'
+} as const
+
+export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
+
+
 export const ClaimStatus = {
   DRAFT: 'DRAFT',
   SUBMITTED: 'SUBMITTED',
@@ -206,6 +215,16 @@ export const ClaimStatus = {
 } as const
 
 export type ClaimStatus = (typeof ClaimStatus)[keyof typeof ClaimStatus]
+
+
+export const LeaveStatus = {
+  ACTIVE: 'ACTIVE',
+  ON_LEAVE: 'ON_LEAVE',
+  SICK: 'SICK',
+  SUSPENDED: 'SUSPENDED'
+} as const
+
+export type LeaveStatus = (typeof LeaveStatus)[keyof typeof LeaveStatus]
 
 
 export const PlanTier = {
