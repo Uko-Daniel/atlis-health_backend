@@ -31,6 +31,10 @@ export type TenantMinAggregateOutputType = {
   customDomain: string | null
   themePrimaryColor: string | null
   logoUrl: string | null
+  paystackPublicKey: string | null
+  paystackSecretKey: string | null
+  paystackWebhookSecret: string | null
+  paystackConfigured: boolean | null
   planTier: $Enums.PlanTier | null
   subscriptionStatus: $Enums.SubscriptionStatus | null
   licenseExpiresAt: Date | null
@@ -51,6 +55,10 @@ export type TenantMaxAggregateOutputType = {
   customDomain: string | null
   themePrimaryColor: string | null
   logoUrl: string | null
+  paystackPublicKey: string | null
+  paystackSecretKey: string | null
+  paystackWebhookSecret: string | null
+  paystackConfigured: boolean | null
   planTier: $Enums.PlanTier | null
   subscriptionStatus: $Enums.SubscriptionStatus | null
   licenseExpiresAt: Date | null
@@ -71,6 +79,10 @@ export type TenantCountAggregateOutputType = {
   customDomain: number
   themePrimaryColor: number
   logoUrl: number
+  paystackPublicKey: number
+  paystackSecretKey: number
+  paystackWebhookSecret: number
+  paystackConfigured: number
   planTier: number
   subscriptionStatus: number
   licenseExpiresAt: number
@@ -93,6 +105,10 @@ export type TenantMinAggregateInputType = {
   customDomain?: true
   themePrimaryColor?: true
   logoUrl?: true
+  paystackPublicKey?: true
+  paystackSecretKey?: true
+  paystackWebhookSecret?: true
+  paystackConfigured?: true
   planTier?: true
   subscriptionStatus?: true
   licenseExpiresAt?: true
@@ -113,6 +129,10 @@ export type TenantMaxAggregateInputType = {
   customDomain?: true
   themePrimaryColor?: true
   logoUrl?: true
+  paystackPublicKey?: true
+  paystackSecretKey?: true
+  paystackWebhookSecret?: true
+  paystackConfigured?: true
   planTier?: true
   subscriptionStatus?: true
   licenseExpiresAt?: true
@@ -133,6 +153,10 @@ export type TenantCountAggregateInputType = {
   customDomain?: true
   themePrimaryColor?: true
   logoUrl?: true
+  paystackPublicKey?: true
+  paystackSecretKey?: true
+  paystackWebhookSecret?: true
+  paystackConfigured?: true
   planTier?: true
   subscriptionStatus?: true
   licenseExpiresAt?: true
@@ -226,6 +250,10 @@ export type TenantGroupByOutputType = {
   customDomain: string | null
   themePrimaryColor: string | null
   logoUrl: string | null
+  paystackPublicKey: string | null
+  paystackSecretKey: string | null
+  paystackWebhookSecret: string | null
+  paystackConfigured: boolean
   planTier: $Enums.PlanTier
   subscriptionStatus: $Enums.SubscriptionStatus
   licenseExpiresAt: Date
@@ -267,6 +295,10 @@ export type TenantWhereInput = {
   customDomain?: Prisma.StringNullableFilter<"Tenant"> | string | null
   themePrimaryColor?: Prisma.StringNullableFilter<"Tenant"> | string | null
   logoUrl?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  paystackPublicKey?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  paystackSecretKey?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  paystackWebhookSecret?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  paystackConfigured?: Prisma.BoolFilter<"Tenant"> | boolean
   planTier?: Prisma.EnumPlanTierFilter<"Tenant"> | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFilter<"Tenant"> | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
@@ -295,6 +327,9 @@ export type TenantWhereInput = {
   signupRequests?: Prisma.SignupRequestListRelationFilter
   settings?: Prisma.TenantSettingListRelationFilter
   audits?: Prisma.AuditLogListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
+  emailLogs?: Prisma.EmailLogListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
 }
 
 export type TenantOrderByWithRelationInput = {
@@ -304,6 +339,10 @@ export type TenantOrderByWithRelationInput = {
   customDomain?: Prisma.SortOrderInput | Prisma.SortOrder
   themePrimaryColor?: Prisma.SortOrderInput | Prisma.SortOrder
   logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  paystackPublicKey?: Prisma.SortOrderInput | Prisma.SortOrder
+  paystackSecretKey?: Prisma.SortOrderInput | Prisma.SortOrder
+  paystackWebhookSecret?: Prisma.SortOrderInput | Prisma.SortOrder
+  paystackConfigured?: Prisma.SortOrder
   planTier?: Prisma.SortOrder
   subscriptionStatus?: Prisma.SortOrder
   licenseExpiresAt?: Prisma.SortOrder
@@ -332,6 +371,9 @@ export type TenantOrderByWithRelationInput = {
   signupRequests?: Prisma.SignupRequestOrderByRelationAggregateInput
   settings?: Prisma.TenantSettingOrderByRelationAggregateInput
   audits?: Prisma.AuditLogOrderByRelationAggregateInput
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput
+  emailLogs?: Prisma.EmailLogOrderByRelationAggregateInput
+  payments?: Prisma.PaymentOrderByRelationAggregateInput
 }
 
 export type TenantWhereUniqueInput = Prisma.AtLeast<{
@@ -344,6 +386,10 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   facilityName?: Prisma.StringFilter<"Tenant"> | string
   themePrimaryColor?: Prisma.StringNullableFilter<"Tenant"> | string | null
   logoUrl?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  paystackPublicKey?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  paystackSecretKey?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  paystackWebhookSecret?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  paystackConfigured?: Prisma.BoolFilter<"Tenant"> | boolean
   planTier?: Prisma.EnumPlanTierFilter<"Tenant"> | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFilter<"Tenant"> | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
@@ -372,6 +418,9 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   signupRequests?: Prisma.SignupRequestListRelationFilter
   settings?: Prisma.TenantSettingListRelationFilter
   audits?: Prisma.AuditLogListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
+  emailLogs?: Prisma.EmailLogListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
 }, "id" | "subdomain" | "customDomain">
 
 export type TenantOrderByWithAggregationInput = {
@@ -381,6 +430,10 @@ export type TenantOrderByWithAggregationInput = {
   customDomain?: Prisma.SortOrderInput | Prisma.SortOrder
   themePrimaryColor?: Prisma.SortOrderInput | Prisma.SortOrder
   logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  paystackPublicKey?: Prisma.SortOrderInput | Prisma.SortOrder
+  paystackSecretKey?: Prisma.SortOrderInput | Prisma.SortOrder
+  paystackWebhookSecret?: Prisma.SortOrderInput | Prisma.SortOrder
+  paystackConfigured?: Prisma.SortOrder
   planTier?: Prisma.SortOrder
   subscriptionStatus?: Prisma.SortOrder
   licenseExpiresAt?: Prisma.SortOrder
@@ -407,6 +460,10 @@ export type TenantScalarWhereWithAggregatesInput = {
   customDomain?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
   themePrimaryColor?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
   logoUrl?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
+  paystackPublicKey?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
+  paystackSecretKey?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
+  paystackWebhookSecret?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
+  paystackConfigured?: Prisma.BoolWithAggregatesFilter<"Tenant"> | boolean
   planTier?: Prisma.EnumPlanTierWithAggregatesFilter<"Tenant"> | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusWithAggregatesFilter<"Tenant"> | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeWithAggregatesFilter<"Tenant"> | Date | string
@@ -427,6 +484,10 @@ export type TenantCreateInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -455,6 +516,9 @@ export type TenantCreateInput = {
   signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateInput = {
@@ -464,6 +528,10 @@ export type TenantUncheckedCreateInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -492,6 +560,9 @@ export type TenantUncheckedCreateInput = {
   signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUpdateInput = {
@@ -501,6 +572,10 @@ export type TenantUpdateInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -529,6 +604,9 @@ export type TenantUpdateInput = {
   signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateInput = {
@@ -538,6 +616,10 @@ export type TenantUncheckedUpdateInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -566,6 +648,9 @@ export type TenantUncheckedUpdateInput = {
   signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateManyInput = {
@@ -575,6 +660,10 @@ export type TenantCreateManyInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -595,6 +684,10 @@ export type TenantUpdateManyMutationInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -615,6 +708,10 @@ export type TenantUncheckedUpdateManyInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -635,6 +732,10 @@ export type TenantCountOrderByAggregateInput = {
   customDomain?: Prisma.SortOrder
   themePrimaryColor?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
+  paystackPublicKey?: Prisma.SortOrder
+  paystackSecretKey?: Prisma.SortOrder
+  paystackWebhookSecret?: Prisma.SortOrder
+  paystackConfigured?: Prisma.SortOrder
   planTier?: Prisma.SortOrder
   subscriptionStatus?: Prisma.SortOrder
   licenseExpiresAt?: Prisma.SortOrder
@@ -655,6 +756,10 @@ export type TenantMaxOrderByAggregateInput = {
   customDomain?: Prisma.SortOrder
   themePrimaryColor?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
+  paystackPublicKey?: Prisma.SortOrder
+  paystackSecretKey?: Prisma.SortOrder
+  paystackWebhookSecret?: Prisma.SortOrder
+  paystackConfigured?: Prisma.SortOrder
   planTier?: Prisma.SortOrder
   subscriptionStatus?: Prisma.SortOrder
   licenseExpiresAt?: Prisma.SortOrder
@@ -675,6 +780,10 @@ export type TenantMinOrderByAggregateInput = {
   customDomain?: Prisma.SortOrder
   themePrimaryColor?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
+  paystackPublicKey?: Prisma.SortOrder
+  paystackSecretKey?: Prisma.SortOrder
+  paystackWebhookSecret?: Prisma.SortOrder
+  paystackConfigured?: Prisma.SortOrder
   planTier?: Prisma.SortOrder
   subscriptionStatus?: Prisma.SortOrder
   licenseExpiresAt?: Prisma.SortOrder
@@ -701,6 +810,10 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type EnumPlanTierFieldUpdateOperationsInput = {
   set?: $Enums.PlanTier
 }
@@ -715,10 +828,6 @@ export type DateTimeFieldUpdateOperationsInput = {
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
 }
 
 export type TenantCreateNestedOneWithoutPermissionsInput = {
@@ -747,6 +856,20 @@ export type TenantUpdateOneRequiredWithoutSettingsNestedInput = {
   upsert?: Prisma.TenantUpsertWithoutSettingsInput
   connect?: Prisma.TenantWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutSettingsInput, Prisma.TenantUpdateWithoutSettingsInput>, Prisma.TenantUncheckedUpdateWithoutSettingsInput>
+}
+
+export type TenantCreateNestedOneWithoutPaymentsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutPaymentsInput, Prisma.TenantUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutPaymentsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutPaymentsInput, Prisma.TenantUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutPaymentsInput
+  upsert?: Prisma.TenantUpsertWithoutPaymentsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutPaymentsInput, Prisma.TenantUpdateWithoutPaymentsInput>, Prisma.TenantUncheckedUpdateWithoutPaymentsInput>
 }
 
 export type TenantCreateNestedOneWithoutBillingPeriodsInput = {
@@ -959,6 +1082,34 @@ export type TenantUpdateOneRequiredWithoutExpensesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutExpensesInput, Prisma.TenantUpdateWithoutExpensesInput>, Prisma.TenantUncheckedUpdateWithoutExpensesInput>
 }
 
+export type TenantCreateNestedOneWithoutNotificationsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutNotificationsInput, Prisma.TenantUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutNotificationsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutNotificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutNotificationsInput, Prisma.TenantUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutNotificationsInput
+  upsert?: Prisma.TenantUpsertWithoutNotificationsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutNotificationsInput, Prisma.TenantUpdateWithoutNotificationsInput>, Prisma.TenantUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type TenantCreateNestedOneWithoutEmailLogsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutEmailLogsInput, Prisma.TenantUncheckedCreateWithoutEmailLogsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutEmailLogsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutEmailLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutEmailLogsInput, Prisma.TenantUncheckedCreateWithoutEmailLogsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutEmailLogsInput
+  upsert?: Prisma.TenantUpsertWithoutEmailLogsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutEmailLogsInput, Prisma.TenantUpdateWithoutEmailLogsInput>, Prisma.TenantUncheckedUpdateWithoutEmailLogsInput>
+}
+
 export type TenantCreateWithoutPermissionsInput = {
   id?: string
   facilityName: string
@@ -966,6 +1117,10 @@ export type TenantCreateWithoutPermissionsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -993,6 +1148,9 @@ export type TenantCreateWithoutPermissionsInput = {
   signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPermissionsInput = {
@@ -1002,6 +1160,10 @@ export type TenantUncheckedCreateWithoutPermissionsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -1029,6 +1191,9 @@ export type TenantUncheckedCreateWithoutPermissionsInput = {
   signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPermissionsInput = {
@@ -1054,6 +1219,10 @@ export type TenantUpdateWithoutPermissionsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1081,6 +1250,9 @@ export type TenantUpdateWithoutPermissionsInput = {
   signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPermissionsInput = {
@@ -1090,6 +1262,10 @@ export type TenantUncheckedUpdateWithoutPermissionsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1117,6 +1293,9 @@ export type TenantUncheckedUpdateWithoutPermissionsInput = {
   signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSettingsInput = {
@@ -1126,6 +1305,10 @@ export type TenantCreateWithoutSettingsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -1153,6 +1336,9 @@ export type TenantCreateWithoutSettingsInput = {
   templates?: Prisma.TemplateCreateNestedManyWithoutTenantInput
   signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSettingsInput = {
@@ -1162,6 +1348,10 @@ export type TenantUncheckedCreateWithoutSettingsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -1189,6 +1379,9 @@ export type TenantUncheckedCreateWithoutSettingsInput = {
   templates?: Prisma.TemplateUncheckedCreateNestedManyWithoutTenantInput
   signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSettingsInput = {
@@ -1214,6 +1407,10 @@ export type TenantUpdateWithoutSettingsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1241,6 +1438,9 @@ export type TenantUpdateWithoutSettingsInput = {
   templates?: Prisma.TemplateUpdateManyWithoutTenantNestedInput
   signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSettingsInput = {
@@ -1250,6 +1450,10 @@ export type TenantUncheckedUpdateWithoutSettingsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1277,6 +1481,197 @@ export type TenantUncheckedUpdateWithoutSettingsInput = {
   templates?: Prisma.TemplateUncheckedUpdateManyWithoutTenantNestedInput
   signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutPaymentsInput = {
+  id?: string
+  facilityName: string
+  subdomain: string
+  customDomain?: string | null
+  themePrimaryColor?: string | null
+  logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
+  planTier?: $Enums.PlanTier
+  subscriptionStatus?: $Enums.SubscriptionStatus
+  licenseExpiresAt: Date | string
+  gracePeriodEndsAt?: Date | string | null
+  eveeEnabled?: boolean
+  videoConsultEnabled?: boolean
+  videoConsultMetered?: boolean
+  customDomainEnabled?: boolean
+  prioritySupport?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patients?: Prisma.PatientCreateNestedManyWithoutTenantInput
+  payers?: Prisma.PayerCreateNestedManyWithoutTenantInput
+  claims?: Prisma.ClaimCreateNestedManyWithoutTenantInput
+  suppliers?: Prisma.SupplierCreateNestedManyWithoutTenantInput
+  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutTenantInput
+  requests?: Prisma.RequestCreateNestedManyWithoutTenantInput
+  expenseCategories?: Prisma.ExpenseCategoryCreateNestedManyWithoutTenantInput
+  expenses?: Prisma.ExpenseCreateNestedManyWithoutTenantInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutTenantInput
+  staff?: Prisma.StaffCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.TenantPermissionCreateNestedManyWithoutTenantInput
+  billingPeriods?: Prisma.BillingPeriodCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
+  templates?: Prisma.TemplateCreateNestedManyWithoutTenantInput
+  signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
+  settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
+  audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutPaymentsInput = {
+  id?: string
+  facilityName: string
+  subdomain: string
+  customDomain?: string | null
+  themePrimaryColor?: string | null
+  logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
+  planTier?: $Enums.PlanTier
+  subscriptionStatus?: $Enums.SubscriptionStatus
+  licenseExpiresAt: Date | string
+  gracePeriodEndsAt?: Date | string | null
+  eveeEnabled?: boolean
+  videoConsultEnabled?: boolean
+  videoConsultMetered?: boolean
+  customDomainEnabled?: boolean
+  prioritySupport?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patients?: Prisma.PatientUncheckedCreateNestedManyWithoutTenantInput
+  payers?: Prisma.PayerUncheckedCreateNestedManyWithoutTenantInput
+  claims?: Prisma.ClaimUncheckedCreateNestedManyWithoutTenantInput
+  suppliers?: Prisma.SupplierUncheckedCreateNestedManyWithoutTenantInput
+  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutTenantInput
+  requests?: Prisma.RequestUncheckedCreateNestedManyWithoutTenantInput
+  expenseCategories?: Prisma.ExpenseCategoryUncheckedCreateNestedManyWithoutTenantInput
+  expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutTenantInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutTenantInput
+  staff?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.TenantPermissionUncheckedCreateNestedManyWithoutTenantInput
+  billingPeriods?: Prisma.BillingPeriodUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
+  templates?: Prisma.TemplateUncheckedCreateNestedManyWithoutTenantInput
+  signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
+  settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
+  audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutPaymentsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutPaymentsInput, Prisma.TenantUncheckedCreateWithoutPaymentsInput>
+}
+
+export type TenantUpsertWithoutPaymentsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutPaymentsInput, Prisma.TenantUncheckedUpdateWithoutPaymentsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutPaymentsInput, Prisma.TenantUncheckedCreateWithoutPaymentsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutPaymentsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutPaymentsInput, Prisma.TenantUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type TenantUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  facilityName?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
+  subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+  licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gracePeriodEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  eveeEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  videoConsultEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  videoConsultMetered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  customDomainEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  prioritySupport?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patients?: Prisma.PatientUpdateManyWithoutTenantNestedInput
+  payers?: Prisma.PayerUpdateManyWithoutTenantNestedInput
+  claims?: Prisma.ClaimUpdateManyWithoutTenantNestedInput
+  suppliers?: Prisma.SupplierUpdateManyWithoutTenantNestedInput
+  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutTenantNestedInput
+  requests?: Prisma.RequestUpdateManyWithoutTenantNestedInput
+  expenseCategories?: Prisma.ExpenseCategoryUpdateManyWithoutTenantNestedInput
+  expenses?: Prisma.ExpenseUpdateManyWithoutTenantNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutTenantNestedInput
+  staff?: Prisma.StaffUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.TenantPermissionUpdateManyWithoutTenantNestedInput
+  billingPeriods?: Prisma.BillingPeriodUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
+  templates?: Prisma.TemplateUpdateManyWithoutTenantNestedInput
+  signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
+  audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  facilityName?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
+  subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+  licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gracePeriodEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  eveeEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  videoConsultEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  videoConsultMetered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  customDomainEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  prioritySupport?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patients?: Prisma.PatientUncheckedUpdateManyWithoutTenantNestedInput
+  payers?: Prisma.PayerUncheckedUpdateManyWithoutTenantNestedInput
+  claims?: Prisma.ClaimUncheckedUpdateManyWithoutTenantNestedInput
+  suppliers?: Prisma.SupplierUncheckedUpdateManyWithoutTenantNestedInput
+  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutTenantNestedInput
+  requests?: Prisma.RequestUncheckedUpdateManyWithoutTenantNestedInput
+  expenseCategories?: Prisma.ExpenseCategoryUncheckedUpdateManyWithoutTenantNestedInput
+  expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutTenantNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutTenantNestedInput
+  staff?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.TenantPermissionUncheckedUpdateManyWithoutTenantNestedInput
+  billingPeriods?: Prisma.BillingPeriodUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
+  templates?: Prisma.TemplateUncheckedUpdateManyWithoutTenantNestedInput
+  signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
+  audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutBillingPeriodsInput = {
@@ -1286,6 +1681,10 @@ export type TenantCreateWithoutBillingPeriodsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -1313,6 +1712,9 @@ export type TenantCreateWithoutBillingPeriodsInput = {
   signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutBillingPeriodsInput = {
@@ -1322,6 +1724,10 @@ export type TenantUncheckedCreateWithoutBillingPeriodsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -1349,6 +1755,9 @@ export type TenantUncheckedCreateWithoutBillingPeriodsInput = {
   signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutBillingPeriodsInput = {
@@ -1374,6 +1783,10 @@ export type TenantUpdateWithoutBillingPeriodsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1401,6 +1814,9 @@ export type TenantUpdateWithoutBillingPeriodsInput = {
   signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutBillingPeriodsInput = {
@@ -1410,6 +1826,10 @@ export type TenantUncheckedUpdateWithoutBillingPeriodsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1437,6 +1857,9 @@ export type TenantUncheckedUpdateWithoutBillingPeriodsInput = {
   signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPayersInput = {
@@ -1446,6 +1869,10 @@ export type TenantCreateWithoutPayersInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -1473,6 +1900,9 @@ export type TenantCreateWithoutPayersInput = {
   signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPayersInput = {
@@ -1482,6 +1912,10 @@ export type TenantUncheckedCreateWithoutPayersInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -1509,6 +1943,9 @@ export type TenantUncheckedCreateWithoutPayersInput = {
   signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPayersInput = {
@@ -1534,6 +1971,10 @@ export type TenantUpdateWithoutPayersInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1561,6 +2002,9 @@ export type TenantUpdateWithoutPayersInput = {
   signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPayersInput = {
@@ -1570,6 +2014,10 @@ export type TenantUncheckedUpdateWithoutPayersInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1597,6 +2045,9 @@ export type TenantUncheckedUpdateWithoutPayersInput = {
   signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutClaimsInput = {
@@ -1606,6 +2057,10 @@ export type TenantCreateWithoutClaimsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -1633,6 +2088,9 @@ export type TenantCreateWithoutClaimsInput = {
   signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutClaimsInput = {
@@ -1642,6 +2100,10 @@ export type TenantUncheckedCreateWithoutClaimsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -1669,6 +2131,9 @@ export type TenantUncheckedCreateWithoutClaimsInput = {
   signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutClaimsInput = {
@@ -1694,6 +2159,10 @@ export type TenantUpdateWithoutClaimsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1721,6 +2190,9 @@ export type TenantUpdateWithoutClaimsInput = {
   signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutClaimsInput = {
@@ -1730,6 +2202,10 @@ export type TenantUncheckedUpdateWithoutClaimsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1757,6 +2233,9 @@ export type TenantUncheckedUpdateWithoutClaimsInput = {
   signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPatientsInput = {
@@ -1766,6 +2245,10 @@ export type TenantCreateWithoutPatientsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -1793,6 +2276,9 @@ export type TenantCreateWithoutPatientsInput = {
   signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPatientsInput = {
@@ -1802,6 +2288,10 @@ export type TenantUncheckedCreateWithoutPatientsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -1829,6 +2319,9 @@ export type TenantUncheckedCreateWithoutPatientsInput = {
   signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPatientsInput = {
@@ -1854,6 +2347,10 @@ export type TenantUpdateWithoutPatientsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1881,6 +2378,9 @@ export type TenantUpdateWithoutPatientsInput = {
   signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPatientsInput = {
@@ -1890,6 +2390,10 @@ export type TenantUncheckedUpdateWithoutPatientsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1917,6 +2421,9 @@ export type TenantUncheckedUpdateWithoutPatientsInput = {
   signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutServicesInput = {
@@ -1926,6 +2433,10 @@ export type TenantCreateWithoutServicesInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -1953,6 +2464,9 @@ export type TenantCreateWithoutServicesInput = {
   signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutServicesInput = {
@@ -1962,6 +2476,10 @@ export type TenantUncheckedCreateWithoutServicesInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -1989,6 +2507,9 @@ export type TenantUncheckedCreateWithoutServicesInput = {
   signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutServicesInput = {
@@ -2014,6 +2535,10 @@ export type TenantUpdateWithoutServicesInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2041,6 +2566,9 @@ export type TenantUpdateWithoutServicesInput = {
   signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutServicesInput = {
@@ -2050,6 +2578,10 @@ export type TenantUncheckedUpdateWithoutServicesInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2077,6 +2609,9 @@ export type TenantUncheckedUpdateWithoutServicesInput = {
   signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutTemplatesInput = {
@@ -2086,6 +2621,10 @@ export type TenantCreateWithoutTemplatesInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -2113,6 +2652,9 @@ export type TenantCreateWithoutTemplatesInput = {
   signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutTemplatesInput = {
@@ -2122,6 +2664,10 @@ export type TenantUncheckedCreateWithoutTemplatesInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -2149,6 +2695,9 @@ export type TenantUncheckedCreateWithoutTemplatesInput = {
   signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutTemplatesInput = {
@@ -2174,6 +2723,10 @@ export type TenantUpdateWithoutTemplatesInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2201,6 +2754,9 @@ export type TenantUpdateWithoutTemplatesInput = {
   signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutTemplatesInput = {
@@ -2210,6 +2766,10 @@ export type TenantUncheckedUpdateWithoutTemplatesInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2237,6 +2797,9 @@ export type TenantUncheckedUpdateWithoutTemplatesInput = {
   signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutStaffInput = {
@@ -2246,6 +2809,10 @@ export type TenantCreateWithoutStaffInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -2273,6 +2840,9 @@ export type TenantCreateWithoutStaffInput = {
   signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutStaffInput = {
@@ -2282,6 +2852,10 @@ export type TenantUncheckedCreateWithoutStaffInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -2309,6 +2883,9 @@ export type TenantUncheckedCreateWithoutStaffInput = {
   signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutStaffInput = {
@@ -2334,6 +2911,10 @@ export type TenantUpdateWithoutStaffInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2361,6 +2942,9 @@ export type TenantUpdateWithoutStaffInput = {
   signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutStaffInput = {
@@ -2370,6 +2954,10 @@ export type TenantUncheckedUpdateWithoutStaffInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2397,6 +2985,9 @@ export type TenantUncheckedUpdateWithoutStaffInput = {
   signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSignupRequestsInput = {
@@ -2406,6 +2997,10 @@ export type TenantCreateWithoutSignupRequestsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -2433,6 +3028,9 @@ export type TenantCreateWithoutSignupRequestsInput = {
   templates?: Prisma.TemplateCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSignupRequestsInput = {
@@ -2442,6 +3040,10 @@ export type TenantUncheckedCreateWithoutSignupRequestsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -2469,6 +3071,9 @@ export type TenantUncheckedCreateWithoutSignupRequestsInput = {
   templates?: Prisma.TemplateUncheckedCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSignupRequestsInput = {
@@ -2494,6 +3099,10 @@ export type TenantUpdateWithoutSignupRequestsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2521,6 +3130,9 @@ export type TenantUpdateWithoutSignupRequestsInput = {
   templates?: Prisma.TemplateUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSignupRequestsInput = {
@@ -2530,6 +3142,10 @@ export type TenantUncheckedUpdateWithoutSignupRequestsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2557,6 +3173,9 @@ export type TenantUncheckedUpdateWithoutSignupRequestsInput = {
   templates?: Prisma.TemplateUncheckedUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutAuditsInput = {
@@ -2566,6 +3185,10 @@ export type TenantCreateWithoutAuditsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -2593,6 +3216,9 @@ export type TenantCreateWithoutAuditsInput = {
   templates?: Prisma.TemplateCreateNestedManyWithoutTenantInput
   signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutAuditsInput = {
@@ -2602,6 +3228,10 @@ export type TenantUncheckedCreateWithoutAuditsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -2629,6 +3259,9 @@ export type TenantUncheckedCreateWithoutAuditsInput = {
   templates?: Prisma.TemplateUncheckedCreateNestedManyWithoutTenantInput
   signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutAuditsInput = {
@@ -2654,6 +3287,10 @@ export type TenantUpdateWithoutAuditsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2681,6 +3318,9 @@ export type TenantUpdateWithoutAuditsInput = {
   templates?: Prisma.TemplateUpdateManyWithoutTenantNestedInput
   signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAuditsInput = {
@@ -2690,6 +3330,10 @@ export type TenantUncheckedUpdateWithoutAuditsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2717,6 +3361,9 @@ export type TenantUncheckedUpdateWithoutAuditsInput = {
   templates?: Prisma.TemplateUncheckedUpdateManyWithoutTenantNestedInput
   signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSuppliersInput = {
@@ -2726,6 +3373,10 @@ export type TenantCreateWithoutSuppliersInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -2753,6 +3404,9 @@ export type TenantCreateWithoutSuppliersInput = {
   signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSuppliersInput = {
@@ -2762,6 +3416,10 @@ export type TenantUncheckedCreateWithoutSuppliersInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -2789,6 +3447,9 @@ export type TenantUncheckedCreateWithoutSuppliersInput = {
   signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSuppliersInput = {
@@ -2814,6 +3475,10 @@ export type TenantUpdateWithoutSuppliersInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2841,6 +3506,9 @@ export type TenantUpdateWithoutSuppliersInput = {
   signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSuppliersInput = {
@@ -2850,6 +3518,10 @@ export type TenantUncheckedUpdateWithoutSuppliersInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2877,6 +3549,9 @@ export type TenantUncheckedUpdateWithoutSuppliersInput = {
   signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutRequestsInput = {
@@ -2886,6 +3561,10 @@ export type TenantCreateWithoutRequestsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -2913,6 +3592,9 @@ export type TenantCreateWithoutRequestsInput = {
   signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutRequestsInput = {
@@ -2922,6 +3604,10 @@ export type TenantUncheckedCreateWithoutRequestsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -2949,6 +3635,9 @@ export type TenantUncheckedCreateWithoutRequestsInput = {
   signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutRequestsInput = {
@@ -2974,6 +3663,10 @@ export type TenantUpdateWithoutRequestsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3001,6 +3694,9 @@ export type TenantUpdateWithoutRequestsInput = {
   signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutRequestsInput = {
@@ -3010,6 +3706,10 @@ export type TenantUncheckedUpdateWithoutRequestsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3037,6 +3737,9 @@ export type TenantUncheckedUpdateWithoutRequestsInput = {
   signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPurchaseOrdersInput = {
@@ -3046,6 +3749,10 @@ export type TenantCreateWithoutPurchaseOrdersInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -3073,6 +3780,9 @@ export type TenantCreateWithoutPurchaseOrdersInput = {
   signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPurchaseOrdersInput = {
@@ -3082,6 +3792,10 @@ export type TenantUncheckedCreateWithoutPurchaseOrdersInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -3109,6 +3823,9 @@ export type TenantUncheckedCreateWithoutPurchaseOrdersInput = {
   signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPurchaseOrdersInput = {
@@ -3134,6 +3851,10 @@ export type TenantUpdateWithoutPurchaseOrdersInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3161,6 +3882,9 @@ export type TenantUpdateWithoutPurchaseOrdersInput = {
   signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPurchaseOrdersInput = {
@@ -3170,6 +3894,10 @@ export type TenantUncheckedUpdateWithoutPurchaseOrdersInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3197,6 +3925,9 @@ export type TenantUncheckedUpdateWithoutPurchaseOrdersInput = {
   signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutInventoryItemsInput = {
@@ -3206,6 +3937,10 @@ export type TenantCreateWithoutInventoryItemsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -3233,6 +3968,9 @@ export type TenantCreateWithoutInventoryItemsInput = {
   signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutInventoryItemsInput = {
@@ -3242,6 +3980,10 @@ export type TenantUncheckedCreateWithoutInventoryItemsInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -3269,6 +4011,9 @@ export type TenantUncheckedCreateWithoutInventoryItemsInput = {
   signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutInventoryItemsInput = {
@@ -3294,6 +4039,10 @@ export type TenantUpdateWithoutInventoryItemsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3321,6 +4070,9 @@ export type TenantUpdateWithoutInventoryItemsInput = {
   signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutInventoryItemsInput = {
@@ -3330,6 +4082,10 @@ export type TenantUncheckedUpdateWithoutInventoryItemsInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3357,6 +4113,9 @@ export type TenantUncheckedUpdateWithoutInventoryItemsInput = {
   signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutExpenseCategoriesInput = {
@@ -3366,6 +4125,10 @@ export type TenantCreateWithoutExpenseCategoriesInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -3393,6 +4156,9 @@ export type TenantCreateWithoutExpenseCategoriesInput = {
   signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutExpenseCategoriesInput = {
@@ -3402,6 +4168,10 @@ export type TenantUncheckedCreateWithoutExpenseCategoriesInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -3429,6 +4199,9 @@ export type TenantUncheckedCreateWithoutExpenseCategoriesInput = {
   signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutExpenseCategoriesInput = {
@@ -3454,6 +4227,10 @@ export type TenantUpdateWithoutExpenseCategoriesInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3481,6 +4258,9 @@ export type TenantUpdateWithoutExpenseCategoriesInput = {
   signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutExpenseCategoriesInput = {
@@ -3490,6 +4270,10 @@ export type TenantUncheckedUpdateWithoutExpenseCategoriesInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3517,6 +4301,9 @@ export type TenantUncheckedUpdateWithoutExpenseCategoriesInput = {
   signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutExpensesInput = {
@@ -3526,6 +4313,10 @@ export type TenantCreateWithoutExpensesInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -3553,6 +4344,9 @@ export type TenantCreateWithoutExpensesInput = {
   signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutExpensesInput = {
@@ -3562,6 +4356,10 @@ export type TenantUncheckedCreateWithoutExpensesInput = {
   customDomain?: string | null
   themePrimaryColor?: string | null
   logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
   planTier?: $Enums.PlanTier
   subscriptionStatus?: $Enums.SubscriptionStatus
   licenseExpiresAt: Date | string
@@ -3589,6 +4387,9 @@ export type TenantUncheckedCreateWithoutExpensesInput = {
   signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
   settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
   audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutExpensesInput = {
@@ -3614,6 +4415,10 @@ export type TenantUpdateWithoutExpensesInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3641,6 +4446,9 @@ export type TenantUpdateWithoutExpensesInput = {
   signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutExpensesInput = {
@@ -3650,6 +4458,10 @@ export type TenantUncheckedUpdateWithoutExpensesInput = {
   customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
   subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3677,6 +4489,385 @@ export type TenantUncheckedUpdateWithoutExpensesInput = {
   signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
   settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
   audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutNotificationsInput = {
+  id?: string
+  facilityName: string
+  subdomain: string
+  customDomain?: string | null
+  themePrimaryColor?: string | null
+  logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
+  planTier?: $Enums.PlanTier
+  subscriptionStatus?: $Enums.SubscriptionStatus
+  licenseExpiresAt: Date | string
+  gracePeriodEndsAt?: Date | string | null
+  eveeEnabled?: boolean
+  videoConsultEnabled?: boolean
+  videoConsultMetered?: boolean
+  customDomainEnabled?: boolean
+  prioritySupport?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patients?: Prisma.PatientCreateNestedManyWithoutTenantInput
+  payers?: Prisma.PayerCreateNestedManyWithoutTenantInput
+  claims?: Prisma.ClaimCreateNestedManyWithoutTenantInput
+  suppliers?: Prisma.SupplierCreateNestedManyWithoutTenantInput
+  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutTenantInput
+  requests?: Prisma.RequestCreateNestedManyWithoutTenantInput
+  expenseCategories?: Prisma.ExpenseCategoryCreateNestedManyWithoutTenantInput
+  expenses?: Prisma.ExpenseCreateNestedManyWithoutTenantInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutTenantInput
+  staff?: Prisma.StaffCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.TenantPermissionCreateNestedManyWithoutTenantInput
+  billingPeriods?: Prisma.BillingPeriodCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
+  templates?: Prisma.TemplateCreateNestedManyWithoutTenantInput
+  signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
+  settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
+  audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutNotificationsInput = {
+  id?: string
+  facilityName: string
+  subdomain: string
+  customDomain?: string | null
+  themePrimaryColor?: string | null
+  logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
+  planTier?: $Enums.PlanTier
+  subscriptionStatus?: $Enums.SubscriptionStatus
+  licenseExpiresAt: Date | string
+  gracePeriodEndsAt?: Date | string | null
+  eveeEnabled?: boolean
+  videoConsultEnabled?: boolean
+  videoConsultMetered?: boolean
+  customDomainEnabled?: boolean
+  prioritySupport?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patients?: Prisma.PatientUncheckedCreateNestedManyWithoutTenantInput
+  payers?: Prisma.PayerUncheckedCreateNestedManyWithoutTenantInput
+  claims?: Prisma.ClaimUncheckedCreateNestedManyWithoutTenantInput
+  suppliers?: Prisma.SupplierUncheckedCreateNestedManyWithoutTenantInput
+  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutTenantInput
+  requests?: Prisma.RequestUncheckedCreateNestedManyWithoutTenantInput
+  expenseCategories?: Prisma.ExpenseCategoryUncheckedCreateNestedManyWithoutTenantInput
+  expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutTenantInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutTenantInput
+  staff?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.TenantPermissionUncheckedCreateNestedManyWithoutTenantInput
+  billingPeriods?: Prisma.BillingPeriodUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
+  templates?: Prisma.TemplateUncheckedCreateNestedManyWithoutTenantInput
+  signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
+  settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
+  audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutNotificationsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutNotificationsInput, Prisma.TenantUncheckedCreateWithoutNotificationsInput>
+}
+
+export type TenantUpsertWithoutNotificationsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutNotificationsInput, Prisma.TenantUncheckedUpdateWithoutNotificationsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutNotificationsInput, Prisma.TenantUncheckedCreateWithoutNotificationsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutNotificationsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutNotificationsInput, Prisma.TenantUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type TenantUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  facilityName?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
+  subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+  licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gracePeriodEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  eveeEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  videoConsultEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  videoConsultMetered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  customDomainEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  prioritySupport?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patients?: Prisma.PatientUpdateManyWithoutTenantNestedInput
+  payers?: Prisma.PayerUpdateManyWithoutTenantNestedInput
+  claims?: Prisma.ClaimUpdateManyWithoutTenantNestedInput
+  suppliers?: Prisma.SupplierUpdateManyWithoutTenantNestedInput
+  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutTenantNestedInput
+  requests?: Prisma.RequestUpdateManyWithoutTenantNestedInput
+  expenseCategories?: Prisma.ExpenseCategoryUpdateManyWithoutTenantNestedInput
+  expenses?: Prisma.ExpenseUpdateManyWithoutTenantNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutTenantNestedInput
+  staff?: Prisma.StaffUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.TenantPermissionUpdateManyWithoutTenantNestedInput
+  billingPeriods?: Prisma.BillingPeriodUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
+  templates?: Prisma.TemplateUpdateManyWithoutTenantNestedInput
+  signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
+  audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  facilityName?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
+  subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+  licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gracePeriodEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  eveeEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  videoConsultEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  videoConsultMetered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  customDomainEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  prioritySupport?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patients?: Prisma.PatientUncheckedUpdateManyWithoutTenantNestedInput
+  payers?: Prisma.PayerUncheckedUpdateManyWithoutTenantNestedInput
+  claims?: Prisma.ClaimUncheckedUpdateManyWithoutTenantNestedInput
+  suppliers?: Prisma.SupplierUncheckedUpdateManyWithoutTenantNestedInput
+  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutTenantNestedInput
+  requests?: Prisma.RequestUncheckedUpdateManyWithoutTenantNestedInput
+  expenseCategories?: Prisma.ExpenseCategoryUncheckedUpdateManyWithoutTenantNestedInput
+  expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutTenantNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutTenantNestedInput
+  staff?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.TenantPermissionUncheckedUpdateManyWithoutTenantNestedInput
+  billingPeriods?: Prisma.BillingPeriodUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
+  templates?: Prisma.TemplateUncheckedUpdateManyWithoutTenantNestedInput
+  signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
+  audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutEmailLogsInput = {
+  id?: string
+  facilityName: string
+  subdomain: string
+  customDomain?: string | null
+  themePrimaryColor?: string | null
+  logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
+  planTier?: $Enums.PlanTier
+  subscriptionStatus?: $Enums.SubscriptionStatus
+  licenseExpiresAt: Date | string
+  gracePeriodEndsAt?: Date | string | null
+  eveeEnabled?: boolean
+  videoConsultEnabled?: boolean
+  videoConsultMetered?: boolean
+  customDomainEnabled?: boolean
+  prioritySupport?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patients?: Prisma.PatientCreateNestedManyWithoutTenantInput
+  payers?: Prisma.PayerCreateNestedManyWithoutTenantInput
+  claims?: Prisma.ClaimCreateNestedManyWithoutTenantInput
+  suppliers?: Prisma.SupplierCreateNestedManyWithoutTenantInput
+  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutTenantInput
+  requests?: Prisma.RequestCreateNestedManyWithoutTenantInput
+  expenseCategories?: Prisma.ExpenseCategoryCreateNestedManyWithoutTenantInput
+  expenses?: Prisma.ExpenseCreateNestedManyWithoutTenantInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutTenantInput
+  staff?: Prisma.StaffCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.TenantPermissionCreateNestedManyWithoutTenantInput
+  billingPeriods?: Prisma.BillingPeriodCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
+  templates?: Prisma.TemplateCreateNestedManyWithoutTenantInput
+  signupRequests?: Prisma.SignupRequestCreateNestedManyWithoutTenantInput
+  settings?: Prisma.TenantSettingCreateNestedManyWithoutTenantInput
+  audits?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutEmailLogsInput = {
+  id?: string
+  facilityName: string
+  subdomain: string
+  customDomain?: string | null
+  themePrimaryColor?: string | null
+  logoUrl?: string | null
+  paystackPublicKey?: string | null
+  paystackSecretKey?: string | null
+  paystackWebhookSecret?: string | null
+  paystackConfigured?: boolean
+  planTier?: $Enums.PlanTier
+  subscriptionStatus?: $Enums.SubscriptionStatus
+  licenseExpiresAt: Date | string
+  gracePeriodEndsAt?: Date | string | null
+  eveeEnabled?: boolean
+  videoConsultEnabled?: boolean
+  videoConsultMetered?: boolean
+  customDomainEnabled?: boolean
+  prioritySupport?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patients?: Prisma.PatientUncheckedCreateNestedManyWithoutTenantInput
+  payers?: Prisma.PayerUncheckedCreateNestedManyWithoutTenantInput
+  claims?: Prisma.ClaimUncheckedCreateNestedManyWithoutTenantInput
+  suppliers?: Prisma.SupplierUncheckedCreateNestedManyWithoutTenantInput
+  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutTenantInput
+  requests?: Prisma.RequestUncheckedCreateNestedManyWithoutTenantInput
+  expenseCategories?: Prisma.ExpenseCategoryUncheckedCreateNestedManyWithoutTenantInput
+  expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutTenantInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutTenantInput
+  staff?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.TenantPermissionUncheckedCreateNestedManyWithoutTenantInput
+  billingPeriods?: Prisma.BillingPeriodUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
+  templates?: Prisma.TemplateUncheckedCreateNestedManyWithoutTenantInput
+  signupRequests?: Prisma.SignupRequestUncheckedCreateNestedManyWithoutTenantInput
+  settings?: Prisma.TenantSettingUncheckedCreateNestedManyWithoutTenantInput
+  audits?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutEmailLogsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutEmailLogsInput, Prisma.TenantUncheckedCreateWithoutEmailLogsInput>
+}
+
+export type TenantUpsertWithoutEmailLogsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutEmailLogsInput, Prisma.TenantUncheckedUpdateWithoutEmailLogsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutEmailLogsInput, Prisma.TenantUncheckedCreateWithoutEmailLogsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutEmailLogsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutEmailLogsInput, Prisma.TenantUncheckedUpdateWithoutEmailLogsInput>
+}
+
+export type TenantUpdateWithoutEmailLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  facilityName?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
+  subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+  licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gracePeriodEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  eveeEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  videoConsultEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  videoConsultMetered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  customDomainEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  prioritySupport?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patients?: Prisma.PatientUpdateManyWithoutTenantNestedInput
+  payers?: Prisma.PayerUpdateManyWithoutTenantNestedInput
+  claims?: Prisma.ClaimUpdateManyWithoutTenantNestedInput
+  suppliers?: Prisma.SupplierUpdateManyWithoutTenantNestedInput
+  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutTenantNestedInput
+  requests?: Prisma.RequestUpdateManyWithoutTenantNestedInput
+  expenseCategories?: Prisma.ExpenseCategoryUpdateManyWithoutTenantNestedInput
+  expenses?: Prisma.ExpenseUpdateManyWithoutTenantNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutTenantNestedInput
+  staff?: Prisma.StaffUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.TenantPermissionUpdateManyWithoutTenantNestedInput
+  billingPeriods?: Prisma.BillingPeriodUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
+  templates?: Prisma.TemplateUpdateManyWithoutTenantNestedInput
+  signupRequests?: Prisma.SignupRequestUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.TenantSettingUpdateManyWithoutTenantNestedInput
+  audits?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutEmailLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  facilityName?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  customDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  themePrimaryColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackPublicKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackSecretKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackWebhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paystackConfigured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  planTier?: Prisma.EnumPlanTierFieldUpdateOperationsInput | $Enums.PlanTier
+  subscriptionStatus?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+  licenseExpiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gracePeriodEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  eveeEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  videoConsultEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  videoConsultMetered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  customDomainEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  prioritySupport?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patients?: Prisma.PatientUncheckedUpdateManyWithoutTenantNestedInput
+  payers?: Prisma.PayerUncheckedUpdateManyWithoutTenantNestedInput
+  claims?: Prisma.ClaimUncheckedUpdateManyWithoutTenantNestedInput
+  suppliers?: Prisma.SupplierUncheckedUpdateManyWithoutTenantNestedInput
+  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutTenantNestedInput
+  requests?: Prisma.RequestUncheckedUpdateManyWithoutTenantNestedInput
+  expenseCategories?: Prisma.ExpenseCategoryUncheckedUpdateManyWithoutTenantNestedInput
+  expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutTenantNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutTenantNestedInput
+  staff?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.TenantPermissionUncheckedUpdateManyWithoutTenantNestedInput
+  billingPeriods?: Prisma.BillingPeriodUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
+  templates?: Prisma.TemplateUncheckedUpdateManyWithoutTenantNestedInput
+  signupRequests?: Prisma.SignupRequestUncheckedUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.TenantSettingUncheckedUpdateManyWithoutTenantNestedInput
+  audits?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 
@@ -3702,6 +4893,9 @@ export type TenantCountOutputType = {
   signupRequests: number
   settings: number
   audits: number
+  notifications: number
+  emailLogs: number
+  payments: number
 }
 
 export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3722,6 +4916,9 @@ export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   signupRequests?: boolean | TenantCountOutputTypeCountSignupRequestsArgs
   settings?: boolean | TenantCountOutputTypeCountSettingsArgs
   audits?: boolean | TenantCountOutputTypeCountAuditsArgs
+  notifications?: boolean | TenantCountOutputTypeCountNotificationsArgs
+  emailLogs?: boolean | TenantCountOutputTypeCountEmailLogsArgs
+  payments?: boolean | TenantCountOutputTypeCountPaymentsArgs
 }
 
 /**
@@ -3853,6 +5050,27 @@ export type TenantCountOutputTypeCountAuditsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.AuditLogWhereInput
 }
 
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountEmailLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EmailLogWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentWhereInput
+}
+
 
 export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3861,6 +5079,10 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   customDomain?: boolean
   themePrimaryColor?: boolean
   logoUrl?: boolean
+  paystackPublicKey?: boolean
+  paystackSecretKey?: boolean
+  paystackWebhookSecret?: boolean
+  paystackConfigured?: boolean
   planTier?: boolean
   subscriptionStatus?: boolean
   licenseExpiresAt?: boolean
@@ -3889,6 +5111,9 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   signupRequests?: boolean | Prisma.Tenant$signupRequestsArgs<ExtArgs>
   settings?: boolean | Prisma.Tenant$settingsArgs<ExtArgs>
   audits?: boolean | Prisma.Tenant$auditsArgs<ExtArgs>
+  notifications?: boolean | Prisma.Tenant$notificationsArgs<ExtArgs>
+  emailLogs?: boolean | Prisma.Tenant$emailLogsArgs<ExtArgs>
+  payments?: boolean | Prisma.Tenant$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
 
@@ -3899,6 +5124,10 @@ export type TenantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   customDomain?: boolean
   themePrimaryColor?: boolean
   logoUrl?: boolean
+  paystackPublicKey?: boolean
+  paystackSecretKey?: boolean
+  paystackWebhookSecret?: boolean
+  paystackConfigured?: boolean
   planTier?: boolean
   subscriptionStatus?: boolean
   licenseExpiresAt?: boolean
@@ -3919,6 +5148,10 @@ export type TenantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   customDomain?: boolean
   themePrimaryColor?: boolean
   logoUrl?: boolean
+  paystackPublicKey?: boolean
+  paystackSecretKey?: boolean
+  paystackWebhookSecret?: boolean
+  paystackConfigured?: boolean
   planTier?: boolean
   subscriptionStatus?: boolean
   licenseExpiresAt?: boolean
@@ -3939,6 +5172,10 @@ export type TenantSelectScalar = {
   customDomain?: boolean
   themePrimaryColor?: boolean
   logoUrl?: boolean
+  paystackPublicKey?: boolean
+  paystackSecretKey?: boolean
+  paystackWebhookSecret?: boolean
+  paystackConfigured?: boolean
   planTier?: boolean
   subscriptionStatus?: boolean
   licenseExpiresAt?: boolean
@@ -3952,7 +5189,7 @@ export type TenantSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "facilityName" | "subdomain" | "customDomain" | "themePrimaryColor" | "logoUrl" | "planTier" | "subscriptionStatus" | "licenseExpiresAt" | "gracePeriodEndsAt" | "eveeEnabled" | "videoConsultEnabled" | "videoConsultMetered" | "customDomainEnabled" | "prioritySupport" | "createdAt" | "updatedAt", ExtArgs["result"]["tenant"]>
+export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "facilityName" | "subdomain" | "customDomain" | "themePrimaryColor" | "logoUrl" | "paystackPublicKey" | "paystackSecretKey" | "paystackWebhookSecret" | "paystackConfigured" | "planTier" | "subscriptionStatus" | "licenseExpiresAt" | "gracePeriodEndsAt" | "eveeEnabled" | "videoConsultEnabled" | "videoConsultMetered" | "customDomainEnabled" | "prioritySupport" | "createdAt" | "updatedAt", ExtArgs["result"]["tenant"]>
 export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patients?: boolean | Prisma.Tenant$patientsArgs<ExtArgs>
   payers?: boolean | Prisma.Tenant$payersArgs<ExtArgs>
@@ -3971,6 +5208,9 @@ export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   signupRequests?: boolean | Prisma.Tenant$signupRequestsArgs<ExtArgs>
   settings?: boolean | Prisma.Tenant$settingsArgs<ExtArgs>
   audits?: boolean | Prisma.Tenant$auditsArgs<ExtArgs>
+  notifications?: boolean | Prisma.Tenant$notificationsArgs<ExtArgs>
+  emailLogs?: boolean | Prisma.Tenant$emailLogsArgs<ExtArgs>
+  payments?: boolean | Prisma.Tenant$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TenantIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -3996,6 +5236,9 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     signupRequests: Prisma.$SignupRequestPayload<ExtArgs>[]
     settings: Prisma.$TenantSettingPayload<ExtArgs>[]
     audits: Prisma.$AuditLogPayload<ExtArgs>[]
+    notifications: Prisma.$NotificationPayload<ExtArgs>[]
+    emailLogs: Prisma.$EmailLogPayload<ExtArgs>[]
+    payments: Prisma.$PaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -4004,6 +5247,10 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     customDomain: string | null
     themePrimaryColor: string | null
     logoUrl: string | null
+    paystackPublicKey: string | null
+    paystackSecretKey: string | null
+    paystackWebhookSecret: string | null
+    paystackConfigured: boolean
     planTier: $Enums.PlanTier
     subscriptionStatus: $Enums.SubscriptionStatus
     licenseExpiresAt: Date
@@ -4426,6 +5673,9 @@ export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.T
   signupRequests<T extends Prisma.Tenant$signupRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$signupRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SignupRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   settings<T extends Prisma.Tenant$settingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$settingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantSettingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   audits<T extends Prisma.Tenant$auditsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$auditsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notifications<T extends Prisma.Tenant$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  emailLogs<T extends Prisma.Tenant$emailLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$emailLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payments<T extends Prisma.Tenant$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4461,6 +5711,10 @@ export interface TenantFieldRefs {
   readonly customDomain: Prisma.FieldRef<"Tenant", 'String'>
   readonly themePrimaryColor: Prisma.FieldRef<"Tenant", 'String'>
   readonly logoUrl: Prisma.FieldRef<"Tenant", 'String'>
+  readonly paystackPublicKey: Prisma.FieldRef<"Tenant", 'String'>
+  readonly paystackSecretKey: Prisma.FieldRef<"Tenant", 'String'>
+  readonly paystackWebhookSecret: Prisma.FieldRef<"Tenant", 'String'>
+  readonly paystackConfigured: Prisma.FieldRef<"Tenant", 'Boolean'>
   readonly planTier: Prisma.FieldRef<"Tenant", 'PlanTier'>
   readonly subscriptionStatus: Prisma.FieldRef<"Tenant", 'SubscriptionStatus'>
   readonly licenseExpiresAt: Prisma.FieldRef<"Tenant", 'DateTime'>
@@ -5270,6 +6524,78 @@ export type Tenant$auditsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
+}
+
+/**
+ * Tenant.notifications
+ */
+export type Tenant$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
+}
+
+/**
+ * Tenant.emailLogs
+ */
+export type Tenant$emailLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EmailLog
+   */
+  select?: Prisma.EmailLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EmailLog
+   */
+  omit?: Prisma.EmailLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailLogInclude<ExtArgs> | null
+  where?: Prisma.EmailLogWhereInput
+  orderBy?: Prisma.EmailLogOrderByWithRelationInput | Prisma.EmailLogOrderByWithRelationInput[]
+  cursor?: Prisma.EmailLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EmailLogScalarFieldEnum | Prisma.EmailLogScalarFieldEnum[]
+}
+
+/**
+ * Tenant.payments
+ */
+export type Tenant$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Payment
+   */
+  select?: Prisma.PaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Payment
+   */
+  omit?: Prisma.PaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentInclude<ExtArgs> | null
+  where?: Prisma.PaymentWhereInput
+  orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
 }
 
 /**

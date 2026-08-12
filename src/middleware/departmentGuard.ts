@@ -34,7 +34,9 @@ export function guardDepartment(department: Department) {
   ): Promise<void> {
     const { role, department: userDept } = request.user;
 
-    if (role === 'SUPER_ADMIN') return; // Super Admin bypasses all dept checks
+    if (role === 'SUPER_ADMIN') return;
+    if (role === 'DOCTOR') return;
+    if (role === 'ADMIN') return; // Super Admin bypasses all dept checks
 
     if (userDept !== department) {
       forbidden(
@@ -57,7 +59,11 @@ export async function guardResultDepartment(
   request: FastifyRequest,
   reply:   FastifyReply,
 ): Promise<void> {
-  const { department: userDept } = request.user;
+  const { role, department: userDept } = request.user;
+
+  if (role === 'SUPER_ADMIN') return;
+  if (role === 'ADMIN') return;
+  if (role === 'DOCTOR') return;
 
   const { id, resultId } = request.params as {
     id?:       string;

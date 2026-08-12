@@ -176,6 +176,8 @@ export const patientService = {
     const existing = await prisma.patient.findFirst({ where: { id, tenantId } })
     if (!existing) throw new Error('Patient not found')
 
+    await prisma.staffNextOfKin.deleteMany({ where: { staffId: id } });
+
     return prisma.patient.delete({ where: { id } })
   },
 }

@@ -227,6 +227,16 @@ export const LeaveStatus = {
 export type LeaveStatus = (typeof LeaveStatus)[keyof typeof LeaveStatus]
 
 
+export const PaymentStatus = {
+  PENDING: 'PENDING',
+  SUCCESSFUL: 'SUCCESSFUL',
+  FAILED: 'FAILED',
+  REVERSED: 'REVERSED'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
 export const PlanTier = {
   TIER_1: 'TIER_1',
   TIER_2: 'TIER_2',
@@ -288,3 +298,25 @@ export const TransactionType = {
 } as const
 
 export type TransactionType = (typeof TransactionType)[keyof typeof TransactionType]
+
+
+export const NotificationType = {
+  APPOINTMENT_BOOKED: 'APPOINTMENT_BOOKED',
+  RESULT_READY: 'RESULT_READY',
+  STAFF_CREATED: 'STAFF_CREATED',
+  ORDER_PLACED: 'ORDER_PLACED',
+  REQUEST_APPROVED: 'REQUEST_APPROVED',
+  REQUEST_REJECTED: 'REQUEST_REJECTED',
+  SYSTEM: 'SYSTEM'
+} as const
+
+export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+
+
+export const EmailStatus = {
+  SENT: 'SENT',
+  FAILED: 'FAILED',
+  BOUNCED: 'BOUNCED'
+} as const
+
+export type EmailStatus = (typeof EmailStatus)[keyof typeof EmailStatus]

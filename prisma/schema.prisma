@@ -174,6 +174,13 @@ enum LeaveStatus {
   SUSPENDED // disciplinary
 }
 
+enum PaymentStatus {
+  PENDING
+  SUCCESSFUL
+  FAILED
+  REVERSED
+}
+
 // ── CORE MODELS ───────────────────────────────────────────────
 
 model Tenant {
@@ -183,6 +190,10 @@ model Tenant {
   customDomain        String?              @unique
   themePrimaryColor   String?              @default("#5580F4")
   logoUrl             String?
+  paystackPublicKey     String?  // tenant's Paystack public key
+  paystackSecretKey     String?  // encrypted at rest
+  paystackWebhookSecret String? 
+  paystackConfigured    Boolean  @default(false)
   planTier            PlanTier             @default(TIER_1)
   subscriptionStatus  SubscriptionStatus   @default(ACTIVE)
   licenseExpiresAt    DateTime
@@ -212,6 +223,9 @@ model Tenant {
   signupRequests    SignupRequest[]
   settings          TenantSetting[]
   audits            AuditLog[]
+  notifications Notification[]
+  emailLogs     EmailLog[]
+  payments      Payment[]
 
   @@index([subdomain])
   @@index([customDomain])
@@ -241,6 +255,32 @@ model TenantSetting {
 
   @@unique([tenantId, key])
 }
+
+model Payment {
+  id               String        @id @default(cuid())
+  tenantId         String
+  tenant           Tenant        @relation(fields: [tenantId], references: [id])
+  orderId          String?       @unique
+  order            Order?        @relation(fields: [orderId], references: [id])
+  patientId        String
+  patient          Patient       @relation(fields: [patientId], references: [id])
+  amount           Decimal
+  currency         String        @default("NGN")
+  status           PaymentStatus @default(PENDING)
+  reference        String        @unique
+  accessCode       String?
+  authorizationUrl String?
+  metadata         Json?
+  paidAt           DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([tenantId])
+  @@index([patientId])
+  @@index([status])
+}
+
+
 
 model BillingPeriod {
   id                String        @id @default(cuid())
@@ -340,6 +380,7 @@ model Patient {
 
   records      Record[]
   orders       Order[]
+  payments     Payment[]
   claims Claim[]
   results      Result[]
   patientUsers PatientUser[]
@@ -630,6 +671,7 @@ model Order {
   updatedAt DateTime     @updatedAt
 
   services  OrderService[]
+  payments  Payment[]
   claims Claim[]
   results   Result[]
 
@@ -1043,4 +1085,52 @@ model Expense {
   recordedBy    String
   expenseDate   DateTime @default(now())
   createdAt     DateTime @default(now())
+}
+
+model Notification {
+  id          String    @id @default(cuid())
+  tenantId    String
+  tenant      Tenant    @relation(fields: [tenantId], references: [id])
+  userId      String
+  type        NotificationType
+  title       String
+  body        String
+  link        String?
+  isRead      Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  @@index([userId])
+  @@index([tenantId])
+  @@index([isRead])
+}
+
+model EmailLog {
+  id          String    @id @default(cuid())
+  tenantId    String
+  tenant      Tenant    @relation(fields: [tenantId], references: [id])
+  toEmail     String
+  subject     String
+  body        String
+  status      EmailStatus @default(SENT)
+  error       String?
+  createdAt   DateTime  @default(now())
+
+  @@index([tenantId])
+  @@index([toEmail])
+}
+
+enum NotificationType {
+  APPOINTMENT_BOOKED
+  RESULT_READY
+  STAFF_CREATED
+  ORDER_PLACED
+  REQUEST_APPROVED
+  REQUEST_REJECTED
+  SYSTEM
+}
+
+enum EmailStatus {
+  SENT
+  FAILED
+  BOUNCED
 }

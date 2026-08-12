@@ -387,6 +387,7 @@ export const ModelName = {
   Tenant: 'Tenant',
   TenantPermission: 'TenantPermission',
   TenantSetting: 'TenantSetting',
+  Payment: 'Payment',
   BillingPeriod: 'BillingPeriod',
   Payer: 'Payer',
   Tariff: 'Tariff',
@@ -424,7 +425,9 @@ export const ModelName = {
   InventoryItem: 'InventoryItem',
   InventoryTransaction: 'InventoryTransaction',
   ExpenseCategory: 'ExpenseCategory',
-  Expense: 'Expense'
+  Expense: 'Expense',
+  Notification: 'Notification',
+  EmailLog: 'EmailLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -440,7 +443,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "tenant" | "tenantPermission" | "tenantSetting" | "billingPeriod" | "payer" | "tariff" | "claim" | "patient" | "nextOfKin" | "visitor" | "record" | "encounter" | "vital" | "diagnosis" | "allergy" | "report" | "medication" | "admission" | "patientUser" | "service" | "template" | "order" | "orderService" | "result" | "resultEditSession" | "staff" | "staffNextOfKin" | "signupRequest" | "settings" | "auditLog" | "eveeEvaluation" | "eveeAlert" | "googleCredential" | "supplier" | "request" | "purchaseOrder" | "purchaseOrderItem" | "inventoryItem" | "inventoryTransaction" | "expenseCategory" | "expense"
+    modelProps: "tenant" | "tenantPermission" | "tenantSetting" | "payment" | "billingPeriod" | "payer" | "tariff" | "claim" | "patient" | "nextOfKin" | "visitor" | "record" | "encounter" | "vital" | "diagnosis" | "allergy" | "report" | "medication" | "admission" | "patientUser" | "service" | "template" | "order" | "orderService" | "result" | "resultEditSession" | "staff" | "staffNextOfKin" | "signupRequest" | "settings" | "auditLog" | "eveeEvaluation" | "eveeAlert" | "googleCredential" | "supplier" | "request" | "purchaseOrder" | "purchaseOrderItem" | "inventoryItem" | "inventoryTransaction" | "expenseCategory" | "expense" | "notification" | "emailLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -663,6 +666,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TenantSettingCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TenantSettingCountAggregateOutputType> | number
+        }
+      }
+    }
+    Payment: {
+      payload: Prisma.$PaymentPayload<ExtArgs>
+      fields: Prisma.PaymentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PaymentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PaymentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        findFirst: {
+          args: Prisma.PaymentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PaymentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        findMany: {
+          args: Prisma.PaymentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>[]
+        }
+        create: {
+          args: Prisma.PaymentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        createMany: {
+          args: Prisma.PaymentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PaymentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>[]
+        }
+        delete: {
+          args: Prisma.PaymentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        update: {
+          args: Prisma.PaymentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        deleteMany: {
+          args: Prisma.PaymentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PaymentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PaymentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>[]
+        }
+        upsert: {
+          args: Prisma.PaymentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        aggregate: {
+          args: Prisma.PaymentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePayment>
+        }
+        groupBy: {
+          args: Prisma.PaymentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PaymentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentCountAggregateOutputType> | number
         }
       }
     }
@@ -3478,6 +3555,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Notification: {
+      payload: Prisma.$NotificationPayload<ExtArgs>
+      fields: Prisma.NotificationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.NotificationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.NotificationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        findFirst: {
+          args: Prisma.NotificationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.NotificationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        findMany: {
+          args: Prisma.NotificationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+        }
+        create: {
+          args: Prisma.NotificationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        createMany: {
+          args: Prisma.NotificationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.NotificationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+        }
+        delete: {
+          args: Prisma.NotificationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        update: {
+          args: Prisma.NotificationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        deleteMany: {
+          args: Prisma.NotificationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.NotificationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.NotificationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+        }
+        upsert: {
+          args: Prisma.NotificationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        aggregate: {
+          args: Prisma.NotificationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateNotification>
+        }
+        groupBy: {
+          args: Prisma.NotificationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NotificationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.NotificationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NotificationCountAggregateOutputType> | number
+        }
+      }
+    }
+    EmailLog: {
+      payload: Prisma.$EmailLogPayload<ExtArgs>
+      fields: Prisma.EmailLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EmailLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EmailLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailLogPayload>
+        }
+        findFirst: {
+          args: Prisma.EmailLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EmailLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailLogPayload>
+        }
+        findMany: {
+          args: Prisma.EmailLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailLogPayload>[]
+        }
+        create: {
+          args: Prisma.EmailLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailLogPayload>
+        }
+        createMany: {
+          args: Prisma.EmailLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EmailLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailLogPayload>[]
+        }
+        delete: {
+          args: Prisma.EmailLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailLogPayload>
+        }
+        update: {
+          args: Prisma.EmailLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.EmailLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EmailLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EmailLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.EmailLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailLogPayload>
+        }
+        aggregate: {
+          args: Prisma.EmailLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEmailLog>
+        }
+        groupBy: {
+          args: Prisma.EmailLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmailLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EmailLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmailLogCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3524,6 +3749,10 @@ export const TenantScalarFieldEnum = {
   customDomain: 'customDomain',
   themePrimaryColor: 'themePrimaryColor',
   logoUrl: 'logoUrl',
+  paystackPublicKey: 'paystackPublicKey',
+  paystackSecretKey: 'paystackSecretKey',
+  paystackWebhookSecret: 'paystackWebhookSecret',
+  paystackConfigured: 'paystackConfigured',
   planTier: 'planTier',
   subscriptionStatus: 'subscriptionStatus',
   licenseExpiresAt: 'licenseExpiresAt',
@@ -3563,6 +3792,26 @@ export const TenantSettingScalarFieldEnum = {
 } as const
 
 export type TenantSettingScalarFieldEnum = (typeof TenantSettingScalarFieldEnum)[keyof typeof TenantSettingScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  orderId: 'orderId',
+  patientId: 'patientId',
+  amount: 'amount',
+  currency: 'currency',
+  status: 'status',
+  reference: 'reference',
+  accessCode: 'accessCode',
+  authorizationUrl: 'authorizationUrl',
+  metadata: 'metadata',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
 export const BillingPeriodScalarFieldEnum = {
@@ -4192,6 +4441,35 @@ export const ExpenseScalarFieldEnum = {
 export type ExpenseScalarFieldEnum = (typeof ExpenseScalarFieldEnum)[keyof typeof ExpenseScalarFieldEnum]
 
 
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  body: 'body',
+  link: 'link',
+  isRead: 'isRead',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const EmailLogScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  toEmail: 'toEmail',
+  subject: 'subject',
+  body: 'body',
+  status: 'status',
+  error: 'error',
+  createdAt: 'createdAt'
+} as const
+
+export type EmailLogScalarFieldEnum = (typeof EmailLogScalarFieldEnum)[keyof typeof EmailLogScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -4261,6 +4539,13 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'PlanTier'
  */
 export type EnumPlanTierFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanTier'>
@@ -4303,13 +4588,6 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-/**
  * Reference to a field of type 'StaffRole[]'
  */
 export type ListEnumStaffRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StaffRole[]'>
@@ -4324,20 +4602,6 @@ export type EnumStaffRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-/**
  * Reference to a field of type 'Decimal'
  */
 export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
@@ -4348,6 +4612,48 @@ export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
  * Reference to a field of type 'Decimal[]'
  */
 export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentStatus'
+ */
+export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentStatus[]'
+ */
+export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -4488,20 +4794,6 @@ export type EnumAllergyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'AllergyStatus[]'
  */
 export type ListEnumAllergyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AllergyStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Json'
- */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-/**
- * Reference to a field of type 'QueryMode'
- */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -4700,6 +4992,34 @@ export type EnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$
 export type ListEnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionType[]'>
     
 
+
+/**
+ * Reference to a field of type 'NotificationType'
+ */
+export type EnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType'>
+    
+
+
+/**
+ * Reference to a field of type 'NotificationType[]'
+ */
+export type ListEnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'EmailStatus'
+ */
+export type EnumEmailStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EmailStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'EmailStatus[]'
+ */
+export type ListEnumEmailStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EmailStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -4798,6 +5118,7 @@ export type GlobalOmitConfig = {
   tenant?: Prisma.TenantOmit
   tenantPermission?: Prisma.TenantPermissionOmit
   tenantSetting?: Prisma.TenantSettingOmit
+  payment?: Prisma.PaymentOmit
   billingPeriod?: Prisma.BillingPeriodOmit
   payer?: Prisma.PayerOmit
   tariff?: Prisma.TariffOmit
@@ -4836,6 +5157,8 @@ export type GlobalOmitConfig = {
   inventoryTransaction?: Prisma.InventoryTransactionOmit
   expenseCategory?: Prisma.ExpenseCategoryOmit
   expense?: Prisma.ExpenseOmit
+  notification?: Prisma.NotificationOmit
+  emailLog?: Prisma.EmailLogOmit
 }
 
 /* Types for Logging */

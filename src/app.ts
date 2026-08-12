@@ -21,7 +21,8 @@ import { supplierRoutes } from './routes/supplierRoutes';
 import { inventoryRoutes } from './routes/inventoryRoutes';
 import { purchaseOrderRoutes } from './routes/purchaseOrderRoutes';
 import { auditLogRoutes } from './routes/auditLogRoutes';
-
+import { notificationRoutes } from './routes/notificationRoutes';
+import { paystackWebhookRoutes } from './routes/webhooks';
 
 
 
@@ -48,6 +49,8 @@ export const app = async (fastify: FastifyInstance) => {
   fastify.register(inventoryRoutes, { prefix: '/api' });
   fastify.register(purchaseOrderRoutes, { prefix: '/api' });
   fastify.register(auditLogRoutes, { prefix: '/api' });
+  fastify.register(notificationRoutes, { prefix: '/api' });
+  fastify.register(paystackWebhookRoutes, { prefix: '/api' });
 
 }
 

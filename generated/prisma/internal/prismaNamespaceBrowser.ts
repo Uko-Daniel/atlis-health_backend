@@ -54,6 +54,7 @@ export const ModelName = {
   Tenant: 'Tenant',
   TenantPermission: 'TenantPermission',
   TenantSetting: 'TenantSetting',
+  Payment: 'Payment',
   BillingPeriod: 'BillingPeriod',
   Payer: 'Payer',
   Tariff: 'Tariff',
@@ -91,7 +92,9 @@ export const ModelName = {
   InventoryItem: 'InventoryItem',
   InventoryTransaction: 'InventoryTransaction',
   ExpenseCategory: 'ExpenseCategory',
-  Expense: 'Expense'
+  Expense: 'Expense',
+  Notification: 'Notification',
+  EmailLog: 'EmailLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -117,6 +120,10 @@ export const TenantScalarFieldEnum = {
   customDomain: 'customDomain',
   themePrimaryColor: 'themePrimaryColor',
   logoUrl: 'logoUrl',
+  paystackPublicKey: 'paystackPublicKey',
+  paystackSecretKey: 'paystackSecretKey',
+  paystackWebhookSecret: 'paystackWebhookSecret',
+  paystackConfigured: 'paystackConfigured',
   planTier: 'planTier',
   subscriptionStatus: 'subscriptionStatus',
   licenseExpiresAt: 'licenseExpiresAt',
@@ -156,6 +163,26 @@ export const TenantSettingScalarFieldEnum = {
 } as const
 
 export type TenantSettingScalarFieldEnum = (typeof TenantSettingScalarFieldEnum)[keyof typeof TenantSettingScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  orderId: 'orderId',
+  patientId: 'patientId',
+  amount: 'amount',
+  currency: 'currency',
+  status: 'status',
+  reference: 'reference',
+  accessCode: 'accessCode',
+  authorizationUrl: 'authorizationUrl',
+  metadata: 'metadata',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
 export const BillingPeriodScalarFieldEnum = {
@@ -783,6 +810,35 @@ export const ExpenseScalarFieldEnum = {
 } as const
 
 export type ExpenseScalarFieldEnum = (typeof ExpenseScalarFieldEnum)[keyof typeof ExpenseScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  body: 'body',
+  link: 'link',
+  isRead: 'isRead',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const EmailLogScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  toEmail: 'toEmail',
+  subject: 'subject',
+  body: 'body',
+  status: 'status',
+  error: 'error',
+  createdAt: 'createdAt'
+} as const
+
+export type EmailLogScalarFieldEnum = (typeof EmailLogScalarFieldEnum)[keyof typeof EmailLogScalarFieldEnum]
 
 
 export const SortOrder = {

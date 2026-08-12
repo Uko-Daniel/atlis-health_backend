@@ -4,6 +4,8 @@ import {
   type StaffRole,
   type Department,
 } from '../../generated/prisma/enums';
+import { sendTemplateEmail } from '../utils/emailTemplates';
+import { createNotification } from './notificationService'
 
 // ── TYPES ─────────────────────────────────────────────────────
 
@@ -138,6 +140,35 @@ export const staffService = {
         },
       });
     }
+
+    // Send welcome email (non‑blocking)
+    const tenant = await prisma.tenant.findUnique({
+      where: { id: data.tenantId },
+      select: { facilityName: true },
+    })
+    const facilityName = tenant?.facilityName ?? 'Atlis Health'
+
+    sendTemplateEmail({
+      key: 'STAFF_WELCOME',
+      to: data.email,
+      templateParams: {
+        toName: data.firstName,
+        facilityName,
+        password: data.password,
+      },
+      tenantId: data.tenantId,
+    }).catch((err) => console.error('[Email Error]', err));
+
+    // ── In‑app notification (non‑blocking) ─────────────────────
+
+    createNotification({
+      tenantId: data.tenantId,
+      userId: staff.id,
+      type: 'STAFF_CREATED',
+      title: 'Account Created',
+      body: `Your account has been created. Please log in and change your password.`,
+      link: '/profile',
+    }).catch((err) => console.error('[Notification Error]', err))
 
     return staff;
   },
@@ -286,6 +317,8 @@ export const staffService = {
         'Contact your system administrator for account deactivation.'
       );
     }
+
+    await prisma.staffNextOfKin.deleteMany({ where: { staffId: id } });
 
     return prisma.staff.delete({ where: { id } });
   },

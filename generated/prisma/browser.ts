@@ -33,6 +33,11 @@ export type TenantPermission = Prisma.TenantPermissionModel
  */
 export type TenantSetting = Prisma.TenantSettingModel
 /**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
  * Model BillingPeriod
  * 
  */
@@ -222,3 +227,13 @@ export type ExpenseCategory = Prisma.ExpenseCategoryModel
  * 
  */
 export type Expense = Prisma.ExpenseModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
+/**
+ * Model EmailLog
+ * 
+ */
+export type EmailLog = Prisma.EmailLogModel

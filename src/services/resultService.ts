@@ -5,10 +5,11 @@ import { encryptJSON, decryptJSON } from '../utils/crypto';
 import { Department, ResultStatus, Prisma } from '../../generated/prisma/client';
 import { paginate } from '../utils/pagination';
 import type { Result } from '../types/result';
+import { sendTemplateEmail } from '../utils/emailTemplates';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-/*
+
 function decryptStoredResultData(data: unknown) {
   if (typeof data !== 'string') {
     // Local dev bypass — seeded plain JSON passes through
@@ -16,13 +17,13 @@ function decryptStoredResultData(data: unknown) {
   }
   return decryptJSON(data);
 }
-*/
-function decryptStoredResultData(data: unknown) {
+
+/*function decryptStoredResultData(data: unknown) {
   if (typeof data !== 'string') {
     throw new Error('Stored result data is not an encrypted string');
   }
   return decryptJSON(data);
-}
+}*/
 
 
 function assertValidDepartment(dept: string): Department {
@@ -470,6 +471,42 @@ async function releaseToPatient(params: {
   if (!canRelease) {
     throw new Error('Insufficient authority to release this result to the patient');
   }
+
+  // Notify the doctor who ordered it
+    const order = await prisma.order.findUnique({
+      where: { id: result.orderId },
+      include: {
+        patient: { select: { firstName: true, lastName: true } },
+      },
+    })
+
+    if (order) {
+      const lastEncounter = await prisma.encounter.findFirst({
+        where: { patientId: result.patientId },
+        orderBy: { startTime: 'desc' },
+        select: { attendingStaff: true },
+      })
+
+      if (lastEncounter) {
+        const doctor = await prisma.staff.findUnique({
+          where: { id: lastEncounter.attendingStaff },
+          select: { email: true, tenantId: true, firstName: true },
+        })
+
+        if (doctor) {
+          sendTemplateEmail({
+            key: 'RESULT_READY',
+            to: doctor.email,
+            templateParams: {
+              toName: doctor.firstName,
+              patientName: `${order.patient.firstName} ${order.patient.lastName}`,
+              resultLink: `/results/${resultId}`,
+            },
+            tenantId: doctor.tenantId,
+          }).catch(() => {})
+        }
+      }
+    }
 
   return prisma.result.update({
     where: { id: resultId },

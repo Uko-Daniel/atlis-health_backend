@@ -17,14 +17,14 @@ export async function eveeRoutes(fastify: FastifyInstance) {
   // Doctors only — runs the full CDSS evaluation
   fastify.post('/evaluate/:patientId', {
     ...eveeRateLimitConfig,
-    preHandler: [authorize(['DOCTOR'])],
+    preHandler: [authorize(['DOCTOR', 'PHARMACIST'])],
     handler:    eveeController.evaluate,
   });
 
   // ── EVALUATION HISTORY ────────────────────────────────────
   // GET /api/evee/evaluations/patient/:patientId
   fastify.get('/evaluations/patient/:patientId', {
-    preHandler: [authorize(['DOCTOR', 'NURSES'])],
+    preHandler: [authorize(['DOCTOR', 'NURSES', 'PHARMACIST'])],
     handler:    eveeController.getEvaluationsByPatient,
   });
 

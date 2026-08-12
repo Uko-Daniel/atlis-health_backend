@@ -1,5 +1,5 @@
 import { type FastifyRequest, type FastifyReply } from 'fastify';
-import { orderService }   from '../services/orderService';
+import { orderService } from '../services/orderService';
 import { serviceService } from '../services/serviceService';
 import { PaymentMethod } from '../../generated/prisma/enums';
 
@@ -9,13 +9,36 @@ export const orderController = {
 
   async createOrder(request: FastifyRequest, reply: FastifyReply) {
     try {
-      const { patientId, serviceIds, paymentMethod } = request.body as {
-        patientId:  string;
+      const { patientId, serviceIds, paymentMethod, bypassReason } = request.body as {
+        patientId: string;
         serviceIds: string[];
         paymentMethod: PaymentMethod;
+        bypassReason?: string;
       };
-      const order = await orderService.createOrder(patientId, serviceIds, request.tenantId, paymentMethod);
-      return reply.status(201).send(order);
+
+      // Get user from auth (adjust according to your authenticate middleware)
+      const user = (request as any).user;
+      if (!user) return reply.status(401).send({ error: 'Unauthorized' });
+
+      const orderInput = {
+        patientId,
+        serviceIds,
+        tenantId: request.tenantId,
+        userId: user.id,
+        userRole: user.role,
+        ...(bypassReason !== undefined ? { bypassReason } : {}),
+      };
+
+      const result = await orderService.initiateOrder(orderInput);
+
+      if (result.paymentRequired) {
+        return reply.status(200).send({
+          paymentRequired: true,
+          authorizationUrl: result.authorizationUrl,
+        });
+      }
+
+      return reply.status(201).send(result.order);
     } catch (err: any) {
       const status = err.message.includes('not found') ? 404 : 400;
       return reply.status(status).send({ error: err.message });

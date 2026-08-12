@@ -3,6 +3,7 @@ import jwt from '@fastify/jwt';
 import Fastify from 'fastify';
 import { app } from './app';
 import cors from '@fastify/cors';
+import fastifyRawBody from 'fastify-raw-body';
 import { resolveTenant } from './middleware/tenantContext';
 import { enforceSubscription } from './middleware/subscriptionGuard';
 import { AppError } from './utils/errors';
@@ -18,12 +19,14 @@ const server = Fastify({
   logger: true,
 });
 
+// ── CORS ─────────────────────────────────────────────────────
 await server.register(cors, {
   origin: true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 });
 
+// ── JWT ──────────────────────────────────────────────────────
 server.register(jwt, {
   secret: JWT_SECRET,
   sign: {
@@ -31,11 +34,36 @@ server.register(jwt, {
   },
 });
 
-// ── Global hooks: tenant resolution + subscription enforcement ─
-server.addHook('onRequest', resolveTenant);
-server.addHook('onRequest', enforceSubscription);
+// ── Raw body plugin (needed for Paystack webhook signature) ──
+server.register(fastifyRawBody, {
+  field: 'rawBody',
+  global: false, // only routes with config.rawBody = true will have rawBody
+  encoding: 'utf8',
+  runFirst: true,
+});
 
-// Register the main app
+// ── Global hooks: tenant resolution + subscription enforcement ──
+// Skip webhook endpoints because they do not carry tenant host info.
+const WEBHOOK_PATHS = [
+  '/api/webhooks/paystack',
+  // Add other webhook paths here if needed
+];
+
+function isWebhook(url: string) {
+  return WEBHOOK_PATHS.some(path => url.startsWith(path));
+}
+
+server.addHook('onRequest', async (request, reply) => {
+  if (isWebhook(request.url)) return;
+  await resolveTenant(request, reply);
+});
+
+server.addHook('onRequest', async (request, reply) => {
+  if (isWebhook(request.url)) return;
+  await enforceSubscription(request, reply);
+});
+
+// ── Register the main app ────────────────────────────────────
 server.register(app);
 
 // ── Global error handler ──────────────────────────────────────
@@ -51,7 +79,7 @@ server.setErrorHandler((error: unknown, request, reply) => {
     });
   }
 
-  // Fastify validation errors (error is FastifyError)
+  // Fastify validation errors
   const fastifyErr = error as { validation?: { instancePath: string; message: string }[] }
   if (Array.isArray(fastifyErr.validation) && fastifyErr.validation.length > 0) {
     const details: Record<string, string[]> = {}
@@ -116,6 +144,7 @@ setInterval(async () => {
   }
 }, CHECK_INTERVAL);
 
+// ── Start server ──────────────────────────────────────────────
 const start = async () => {
   try {
     await server.listen({ port: PORT, host: '0.0.0.0' });

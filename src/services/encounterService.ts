@@ -1,6 +1,9 @@
 import { prisma } from '../lib/prisma';
 import { type EncounterType } from '../../generated/prisma/enums';
 import type { CreateEncounterInput, UpdateEncounterInput } from '../types/encounter';
+import { sendTemplateEmail } from '../utils/emailTemplates';
+    import { createNotification } from './notificationService'
+
 
 const VALID_ENCOUNTER_TYPES = [
   'OUTPATIENT', 'INPATIENT', 'EMERGENCY',
@@ -76,10 +79,10 @@ export const encounterService = {
       if (!record) throw new Error('Record not found');
     }
 
+    // ── Google Calendar sync (non-blocking) ─────────────────────
     let meetLinkNote: string | null = null;
 
-    // ── Google Calendar sync (non-blocking) ─────────────────────
-  if (data.startTime) {
+    if (data.startTime) {
       try {
         const { createCalendarEvent } = await import('./googleService');
         const { getConnectionStatus } = await import('./googleService');
@@ -88,7 +91,7 @@ export const encounterService = {
         if (status.connected) {
           const endTime = data.stopTime
             ? new Date(data.stopTime)
-            : new Date(new Date(data.startTime).getTime() + 60 * 60 * 1000); // default 1hr
+            : new Date(new Date(data.startTime).getTime() + 60 * 60 * 1000);
 
           const patientName = patient.firstName + ' ' + patient.lastName;
           
@@ -99,7 +102,6 @@ export const encounterService = {
             endTime: endTime.toISOString(),
           });
 
-          // Store Meet link on the encounter
           if (meetLink) {
             meetLinkNote = meetLink;
           }
@@ -109,7 +111,8 @@ export const encounterService = {
       }
     }
 
-    return prisma.encounter.create({
+    // ── Create the encounter ────────────────────────────────────
+    const encounter = await prisma.encounter.create({
       data: {
         patientId,
         recordId,
@@ -128,6 +131,44 @@ export const encounterService = {
         diagnoses: true,
       },
     });
+
+    // ── Notify the attending doctor (non-blocking) ──────────────
+    const patientName = patient.firstName + ' ' + patient.lastName;
+
+    const doctor = await prisma.staff.findUnique({
+      where: { id: data.attendingStaff },
+      select: { id: true, email: true, tenantId: true, firstName: true },
+    });
+
+    if (doctor) {
+      sendTemplateEmail({
+        key: 'APPOINTMENT_BOOKED',
+        to: doctor.email,
+        templateParams: {
+          toName: doctor.firstName,
+          patientName,
+          appointmentType: data.type ?? 'OUTPATIENT',
+          appointmentDate: new Date(data.startTime ?? new Date()).toLocaleDateString('en-NG'),
+          encounterLink: `/encounters/${encounter.id}`,
+        },
+        tenantId: doctor.tenantId,
+      }).catch((err) => console.error('[Email Error]', err));
+    }
+
+    // ── In‑app notification (non‑blocking) ─────────────────────
+
+    if (doctor) {
+      createNotification({
+        tenantId: doctor.tenantId,
+        userId: doctor.id,
+        type: 'APPOINTMENT_BOOKED',
+        title: 'New Appointment',
+        body: `You have a new appointment with ${patientName}.`,
+        link: `/encounters/${encounter.id}`,
+      }).catch((err) => console.error('[Notification Error]', err));
+    }
+
+    return encounter;
   },
 
   async getAllEncounters(params: {
