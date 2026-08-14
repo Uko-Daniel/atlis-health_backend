@@ -23,6 +23,8 @@ import { purchaseOrderRoutes } from './routes/purchaseOrderRoutes';
 import { auditLogRoutes } from './routes/auditLogRoutes';
 import { notificationRoutes } from './routes/notificationRoutes';
 import { paystackWebhookRoutes } from './routes/webhooks';
+import adminRoutes from './routes/s-adminRoutes';
+
 
 
 
@@ -51,6 +53,7 @@ export const app = async (fastify: FastifyInstance) => {
   fastify.register(auditLogRoutes, { prefix: '/api' });
   fastify.register(notificationRoutes, { prefix: '/api' });
   fastify.register(paystackWebhookRoutes, { prefix: '/api' });
+  fastify.register(adminRoutes, { prefix: '/api/admin' });
 
 }
 
